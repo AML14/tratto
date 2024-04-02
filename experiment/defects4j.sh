@@ -103,7 +103,7 @@ while IFS=, read -r project_id bug_id modified_classes; do
           bash experiment.sh jdoctor "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}" "${classpath}" "false" "${project_id}" ${bug_id}
         # Generate toga oracles
         elif [ "${tog}" == "toga" ]; then
-          bash experiment.sh toga "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}" "${fat_jar_path}" "false" "${project_id}" ${bug_id}
+          bash experiment.sh toga "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}" "${classpath}" "false" "${project_id}" ${bug_id}
         # Generate tratto oracles
         elif [ "${tog}" == "tratto" ]; then
           bash experiment.sh tratto "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}" "${fat_jar_path}" "false" "${project_id}" "${bug_id}"
