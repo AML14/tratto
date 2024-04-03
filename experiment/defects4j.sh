@@ -65,6 +65,15 @@ while IFS=, read -r project_id bug_id modified_classes; do
         classpath=$(defects4j export -p "cp.compile" -w "$buggy_project_bug_dir")
     fi
 
+    if [ "$tog" == "tratto" ] || [ "$tog" == "toga" ]; then
+        jar cf "${project_id}_${bu_id}.jar" -C "${buggy_project_bug_dir}/${binary_path}" .
+        # Get the path to the fat jar of the project_id
+        jar_path="${buggy_project_bug_dir}/${project_id}_${bug_id}.jar"
+        if [ ! -e "$fat_jar_path" ]; then
+            echo -e "defects4j.sh: The fat jar file \"${jar_path}\" does not exist."
+        fi
+    fi
+
     cd "$ROOT_DIR"
 
     # Iterate over the modified classes and generate test cases for each class
@@ -74,7 +83,6 @@ while IFS=, read -r project_id bug_id modified_classes; do
         evosuite_prefix_scaffolding_fqn_file_path="${DEFECTS4J_DIR}/defects4jprefix/src/main/evosuite-prefixes/${project_id}/${bug_id}/${fqn_path}_ESTest_scaffolding.java"
         evosuite_simple_test_fqn_file_path="${DEFECTS4J_DIR}/defects4jprefix/src/main/evosuite-simple-tests/${project_id}/${bug_id}/${fqn_path}_ESTest.java"
         evosuite_tests_fqn_file_path="${DEFECTS4J_DIR}/defects4jprefix/src/main/evosuite-tests/${project_id}/${bug_id}/${fqn_path}_ESTest.java"
-        fat_jar_path="${DEFECTS4J_DIR}/defects4jprefix/src/main/project-jars/${project_id}/${bug_id}/${project_id}_${bug_id}b.jar"
         output_evosuite_prefix_path="${OUTPUT_DIR}/evosuite-prefixes"
         output_evosuite_prefix_fqn_path="${OUTPUT_DIR}/evosuite-prefixes/$(dirname "$fqn_path")"
         output_evosuite_simple_test_fqn_path="${OUTPUT_DIR}/evosuite-simple-tests/$(dirname "$fqn_path")"
