@@ -3,7 +3,7 @@
 current_dir=$(realpath "$(dirname "${BASH_SOURCE[0]}")")
 root_dir=$(dirname "${current_dir}")
 # Setup global variables
-source "${root_dir}/generator/utils/global_variables.sh"
+#source "${root_dir}/generator/utils/global_variables.sh"
 # setup defects4j and sdkman
 export PATH=$PATH:"${DEFECTS4J_HOME}"/framework/bin
 source "${root_dir}/generator/utils/init_sdkman.sh"
@@ -21,7 +21,7 @@ while IFS=, read -r project_id bug_id _; do
       fi
     fi
   fi
-  sdk use java "$JAVA8"
+  sdk use java "8.0.382-amzn"
   # checkout Defects4J project and export classpath
   project_dir="${root_dir}/temp/${project_id}_${bug_id}"
   defects4j checkout -p "${project_id}" -v "${bug_id}b" -w "${project_dir}"
@@ -29,7 +29,7 @@ while IFS=, read -r project_id bug_id _; do
   # insert oracles
   prefix_path="${root_dir}/output/evosuite-prefixes/${project_id}/${bug_id}"
   oracle_path="${root_dir}/output/${tog}-oracles/${project_id}/${bug_id}"
-  sdk use java "$JAVA17"
+  sdk use java "17.0.8-oracle"
   java -jar "${root_dir}/generator/resources/experiment.jar" "insert_oracles" "${prefix_path}" "${oracle_path}" "${classpath}"
   rm -r "${root_dir}/temp"
-done < "${current_dir}/resources/modified_classes.csv"
+done < "${current_dir}/resources/defects4j/modified_classes.csv"
