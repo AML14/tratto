@@ -224,6 +224,45 @@ public class OracleInserter {
     }
 
     /**
+     * Gets the fully qualified name of a given primitive field descriptor
+     * type name.
+     *
+     * @param primitiveFD a primitive field descriptor type name
+     * @return the fully qualified name corresponding to the primitive type
+     * @throws IllegalArgumentException if the given type name is not a
+     * recognized primitive type
+     */
+    private static String fieldDescriptorToFQN(String primitiveFD) {
+        switch (primitiveFD) {
+            case "Z" -> {
+                return "boolean";
+            }
+            case "B" -> {
+                return "byte";
+            }
+            case "C" -> {
+                return "char";
+            }
+            case "S" -> {
+                return "short";
+            }
+            case "I" -> {
+                return "int";
+            }
+            case "L" -> {
+                return "long";
+            }
+            case "F" -> {
+                return "float";
+            }
+            case "D" -> {
+                return "double";
+            }
+            default -> throw new IllegalArgumentException("Unrecognized primitive field descriptor " + primitiveFD);
+        }
+    }
+
+    /**
      * Converts a fully qualified name to the {@code Class.getName()} form of
      * a name. This method does not distinguish between package names and
      * inner classes, such that no "$" symbols are added.
@@ -367,7 +406,13 @@ public class OracleInserter {
     private static Type getReturnType(String className, String methodSignature) {
         Method method = getMethod(className, methodSignature);
         Class<?> returnType = method.getReturnType();
-        return StaticJavaParser.parseType(returnType.getName());
+        String returnTypeName = returnType.getName();
+        if (returnTypeName.startsWith("[")) {
+            int arrayLevel = getArrayLevel(returnTypeName);
+            String primitiveFQN = fieldDescriptorToFQN(returnTypeName.substring(arrayLevel)) + "[]".repeat(arrayLevel);
+            return StaticJavaParser.parseType(primitiveFQN);
+        }
+        return StaticJavaParser.parseType(returnTypeName);
     }
 
     /**
