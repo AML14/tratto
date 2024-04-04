@@ -13,6 +13,7 @@ import star.tratto.data.TokenDPType;
 import star.tratto.data.TokenDatapoint;
 import star.tratto.input.ClassAnalyzer;
 import star.tratto.util.javaparser.JavaParserUtils;
+import star.tratto.data.TokenNotFoundException;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -75,17 +76,20 @@ public class Tratto {
 
             while (!oracleDatapoint.getOracle().endsWith(";")) {
                 // Generate token datapoints and save to file
-                TokenDatapoint tokenDatapoint = oracleSoFarAndTokenToTokenDatapoint(oracleDatapoint, oracleSoFarTokens, "");
-                FileOutputStream tokenDatapointsOutputStream = new FileOutputStream(TOKEN_DATAPOINTS_PATH);
-                tokenDatapointsOutputStream.write(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsBytes(tokenDatapoint));
-                tokenDatapointsOutputStream.close();
-
-                String nextToken = getNextToken(); // HTTP call to ML-model API to get next token and class
-
-                oracleDatapoint.setOracle(compactExpression(oracleDatapoint.getOracle() + " " + nextToken));
-                oracleSoFarTokens.add(nextToken);
-
-                logger.info("Oracle so far: {}", oracleDatapoint.getOracle());
+                try {
+                    TokenDatapoint tokenDatapoint = oracleSoFarAndTokenToTokenDatapoint(oracleDatapoint, oracleSoFarTokens, "");
+                    FileOutputStream tokenDatapointsOutputStream = new FileOutputStream(TOKEN_DATAPOINTS_PATH);
+                    tokenDatapointsOutputStream.write(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsBytes(tokenDatapoint));
+                    tokenDatapointsOutputStream.close();
+                    String nextToken = getNextToken();
+                    oracleDatapoint.setOracle(compactExpression(oracleDatapoint.getOracle() + " " + nextToken));
+                    oracleSoFarTokens.add(nextToken);
+                    logger.info("Oracle so far: {}", oracleDatapoint.getOracle());
+                } catch (TokenNotFoundException e) {
+                    logger.error(e.getMessage());
+                    oracleDatapoint.setOracle(";");
+                    break;
+                }// HTTP call to ML-model API to get next token and class
             }
             logger.info("Final oracle: {}", oracleDatapoint.getOracle());
             logger.info("-------------------------------------------------------------------------");
@@ -105,7 +109,20 @@ public class Tratto {
         HttpURLConnection mlModelApiConn = (HttpURLConnection) new URL(ML_MODEL_API_URL).openConnection();
         mlModelApiConn.setRequestMethod("GET");
         mlModelApiConn.connect();
-        String nextToken = new String(mlModelApiConn.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
+
+        int responseCode = mlModelApiConn.getResponseCode();
+        String nextToken;
+
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            nextToken = new String(mlModelApiConn.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
+        } else if (responseCode == HttpURLConnection.HTTP_NOT_FOUND) {
+            // Handle 404 response
+            String errorResponse = new String(mlModelApiConn.getErrorStream().readAllBytes(), StandardCharsets.UTF_8);
+            throw new TokenNotFoundException(errorResponse);
+        } else {
+            throw new IOException("Unexpected response code: " + responseCode);
+        }
+
         mlModelApiConn.disconnect();
         return nextToken;
     }
