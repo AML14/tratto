@@ -106,23 +106,7 @@ public class DataAugmentation {
     }
 
     /**
-     * The returned list WILL contain the original oracle.
-     * <br>
-     * The returned list MAY contain up to 10 oracles.
-     * <br>
-     * The returned list MAY contain the following variations IF possible:
-     * <ul>
-     *     <li>Case 1: Original.</li>
-     *     <li>Case 2: Without Javadoc tag + oracle1.</li>
-     *     <li>Case 3: Without Javadoc + oracle2.</li>
-     *     <li>Case 4: Without method body + oracle3 + Javadoc tag1.</li>
-     *     <li>Case 5: Without method body and without Javadoc tag + oracle4.</li>
-     *     <li>Case 6: Without method body and without Javadoc + oracle5.</li>
-     *     <li>Case 7: Oracle6 + Javadoc tag2.</li>
-     *     <li>Case 8: Without method body + oracle7 + Javadoc tag3</li>
-     *     <li>Case 9: Oracle8 + Javadoc tag4.</li>
-     *     <li>Case 10: Without method body + oracle9 + Javadoc tag5</li>
-     * </ul>
+     * Augment oracle datapoints with new tags and corresponding Javadoc.
      */
     private static List<OracleDatapoint> getAlternateOracleDPs(OracleDatapoint oracleDatapoint) {
         List<Quartet<String, String, String, String>> oracleCombos = new ArrayList<>(); // Quartet: javadocTag, methodJavadoc, oracle, methodSourceCode
@@ -130,97 +114,14 @@ public class DataAugmentation {
 
         String javadocTag = oracleDatapoint.getJavadocTag();
         String javadoc = oracleDatapoint.getMethodJavadoc();
-        String oracle = compactExpression(oracleDatapoint.getOracle());
-        String methodSourceCode = oracleDatapoint.getMethodSourceCode();
-        String javadocEmptyTag = updateMethodJavadoc(javadoc, javadocTag, "");
-
-        // Prepare list of Javadoc tags
         List<String> currentAlternateTags = new ArrayList<>(alternateTags.getOrDefault(javadocTag, List.of()));
-        Collections.shuffle(currentAlternateTags, random);
-        currentAlternateTags.add(javadocTag); // Add default Javadoc tag
-        int tagIndex = 0;
-        int nTags = currentAlternateTags.size();
 
-        // Prepare list of method Javadoc
-        List<String> currentAlternateJavadocs = currentAlternateTags
-                .stream()
-                .map(tag -> updateMethodJavadoc(javadoc, javadocTag, tag))
-                .toList();
-
-        // Prepare list of oracles
-        List<String> currentAlternateOracles = new ArrayList<>(alternateOracles.getOrDefault(oracle, List.of()));
-        Collections.shuffle(currentAlternateOracles, random);
-        currentAlternateOracles.add(oracle); // Add default oracle
-        int oracleIndex = 0;
-        int nOracles = currentAlternateOracles.size();
-
-        // Prepare alternatives of method source code
-        String methodSignature = methodSourceCode; // If method is constructor, we cannot remove method body
-        if (getMethodDeclaration(methodSourceCode) != null) {
-            methodSignature = methodSourceCode.split("\\{")[0];
-            methodSignature = methodSignature.stripTrailing();
-            methodSignature = methodSignature.endsWith(";") ? methodSignature : methodSignature + ";";
-        }
-
-        // Case 1: Original
-        oracleCombos.add(Quartet.with(javadocTag, javadoc, oracle, methodSourceCode));
-
-        // Case 2: Without Javadoc tag + oracle1
-        oracleCombos.add(Quartet.with("", javadocEmptyTag, currentAlternateOracles.get(oracleIndex), methodSourceCode));
-        oracleIndex = (oracleIndex + 1) % nOracles;
-
-        // Case 3: Without Javadoc + oracle2
-        oracleCombos.add(Quartet.with("", "", currentAlternateOracles.get(oracleIndex), methodSourceCode));
-        oracleIndex = (oracleIndex + 1) % nOracles;
-
-        // Case 4: Without method body + oracle3 + Javadoc tag1
-        oracleCombos.add(Quartet.with(currentAlternateTags.get(tagIndex), currentAlternateJavadocs.get(tagIndex), currentAlternateOracles.get(oracleIndex), methodSignature));
-        tagIndex = (tagIndex + 1) % nTags;
-        oracleIndex = (oracleIndex + 1) % nOracles;
-
-        // Case 5: Without method body and without Javadoc tag + oracle4
-        oracleCombos.add(Quartet.with("", javadocEmptyTag, currentAlternateOracles.get(oracleIndex), methodSignature));
-        oracleIndex = (oracleIndex + 1) % nOracles;
-
-        // Case 6: Without method body and without Javadoc + oracle5
-        oracleCombos.add(Quartet.with("", "", currentAlternateOracles.get(oracleIndex), methodSignature));
-        oracleIndex = (oracleIndex + 1) % nOracles;
-
-        // Case 7: Oracle6 + Javadoc tag2
-        oracleCombos.add(Quartet.with(currentAlternateTags.get(tagIndex), currentAlternateJavadocs.get(tagIndex), currentAlternateOracles.get(oracleIndex), methodSourceCode));
-        tagIndex = (tagIndex + 1) % nTags;
-        oracleIndex = (oracleIndex + 1) % nOracles;
-
-        // Case 8: Without method body + oracle7 + Javadoc tag3
-        oracleCombos.add(Quartet.with(currentAlternateTags.get(tagIndex), currentAlternateJavadocs.get(tagIndex), currentAlternateOracles.get(oracleIndex), methodSignature));
-        tagIndex = (tagIndex + 1) % nTags;
-        oracleIndex = (oracleIndex + 1) % nOracles;
-
-        // Case 9: Oracle8 + Javadoc tag4
-        oracleCombos.add(Quartet.with(currentAlternateTags.get(tagIndex), currentAlternateJavadocs.get(tagIndex), currentAlternateOracles.get(oracleIndex), methodSourceCode));
-        tagIndex = (tagIndex + 1) % nTags;
-        oracleIndex = (oracleIndex + 1) % nOracles;
-
-        // Case 10: Without method body + oracle9 + Javadoc tag5
-        oracleCombos.add(Quartet.with(currentAlternateTags.get(tagIndex), currentAlternateJavadocs.get(tagIndex), currentAlternateOracles.get(oracleIndex), methodSignature));
-//        tagIndex = (tagIndex + 1) % nTags;
-//        oracleIndex = (oracleIndex + 1) % nOracles;
-
-        // Remove possible duplicates
-        oracleCombos = oracleCombos.stream().distinct().toList();
-
-        // Create OracleDatapoint objects
-        for (Quartet<String, String, String, String> oracleCombo : oracleCombos) {
+        alternateOracleDPs.add(oracleDatapoint);
+        for (String tag : currentAlternateTags) {
             OracleDatapoint alternateOracleDatapoint = new OracleDatapoint(oracleDatapoint);
-            alternateOracleDatapoint.setJavadocTag(oracleCombo.getValue0());
-            alternateOracleDatapoint.setMethodJavadoc(oracleCombo.getValue1());
-            alternateOracleDatapoint.setOracle(oracleCombo.getValue2());
-            alternateOracleDatapoint.setMethodSourceCode(oracleCombo.getValue3());
+            alternateOracleDatapoint.setJavadocTag(tag);
+            alternateOracleDatapoint.setMethodJavadoc(updateMethodJavadoc(javadoc, javadocTag, tag));
             alternateOracleDPs.add(alternateOracleDatapoint);
-        }
-
-        if (alternateOracleDPs.size() > 1) {
-            oracleDPsAllowingAugmentation++;
         }
 
         return alternateOracleDPs;
