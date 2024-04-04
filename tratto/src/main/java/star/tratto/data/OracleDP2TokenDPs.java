@@ -1,6 +1,6 @@
 package star.tratto.data;
 
-import org.javatuples.Triplet;
+import star.tratto.data.records.EligibleToken;
 import star.tratto.oraclegrammar.custom.Parser;
 import star.tratto.oraclegrammar.trattoGrammar.Oracle;
 
@@ -10,6 +10,7 @@ import java.util.List;
 import static star.tratto.oraclegrammar.custom.Splitter.split;
 import static star.tratto.token.TokenSuggester.getNextLegalTokensWithContextPlusInfo;
 import static star.tratto.util.StringUtils.compactExpression;
+import static star.tratto.util.javaparser.JavaParserUtils.getImports;
 
 /**
  * Handle conversions from OracleDatapoints to TokenDatapoints. These conversions may be performed
@@ -24,9 +25,7 @@ public class OracleDP2TokenDPs {
 
     private static final Parser parser = Parser.getInstance();
     private static long tokenIndex = 0;
-    private static int negativeSamples = 0;
-    private static int positiveSamples = 0;
-    public static boolean CRASH_WRONG_ORACLE = false; // TODO: make it configurable
+    public static boolean CRASH_WRONG_ORACLE = true; // TODO: make it configurable
 
     /**
      * Transform the contents of an OracleDatapoint (obtained from a row from oracles dataset) into multiple
@@ -39,18 +38,17 @@ public class OracleDP2TokenDPs {
      *     actually goes next, label is true, otherwise it is false.</li>
      * </ol>
      */
-    public static List<TokenDatapoint> oracleDatapointToTokenDatapoints(OracleDatapoint oracleDatapoint, TokenDPType tokenDPType) {
+    public static List<TokenDatapoint> oracleDatapointToTokenDatapoints(OracleDatapoint oracleDatapoint) {
         // Split oracle into tokens
         String stringOracle = oracleDatapoint.getOracle();
         Oracle oracle = parser.getOracle(stringOracle);
         List<String> oracleTokens = split(oracle);
         List<String> oracleSoFarTokens = new ArrayList<>();
-        List<String> tokenClassesSoFar = new ArrayList<>();
+        List<TokenDatapoint> tokenDatapoints = new ArrayList<>();
 
-        List<TokenDatapoint> tokenDatapoints = oracleSoFarAndTokenToTokenDatapoints(oracleDatapoint, oracleSoFarTokens, tokenClassesSoFar, oracleTokens.get(0), tokenDPType);
-        for (int i = 0; i < oracleTokens.size() - 1; i++) { // Skip last token because it is not followed by anything
-            String nextOracleToken = oracleTokens.get(i + 1);
-            tokenDatapoints.addAll(oracleSoFarAndTokenToTokenDatapoints(oracleDatapoint, oracleSoFarTokens, tokenClassesSoFar, nextOracleToken, tokenDPType));
+        for (String nextOracleToken : oracleTokens) { // Skip last token because it is not followed by anything
+            tokenDatapoints.add(oracleSoFarAndTokenToTokenDatapoint(oracleDatapoint, oracleSoFarTokens, nextOracleToken));
+            oracleSoFarTokens.add(nextOracleToken);
         }
         return tokenDatapoints;
     }
@@ -63,80 +61,39 @@ public class OracleDP2TokenDPs {
      *                          <strong>ATTENTION: at dataset-generation time, this list will be modified by
      *                          this method, while at oracle-generation time, this list will need to be manually
      *                          modified afterwards, based on the token returned by the neural module.</strong>
-     * @param tokenClassesSoFar token classes of the passed values in oracleSoFarTokens. The sizes of both lists
-     *                          must be the same. <strong>ATTENTION: at dataset-generation time, this list will
-     *                          be modified by this method, while at oracle-generation time, this list will need
-     *                          to be manually modified afterwards, based on the token returned by the neural
-     *                          module.</strong>
      * @param nextOracleToken actual token that goes next after oracleSoFar. This is needed to know the
      *                        label of each TokenDatapoint created (true if nextOracleToken is the token of that
      *                        TokenDatapoint, false otherwise). This may be set to the empty string "" at
      *                        oracle-generation time (i.e., the next token is not known a priori).
-     * @param tokenDPType type of TokenDatapoints to generate (token, class or value).
      */
-    public static List<TokenDatapoint> oracleSoFarAndTokenToTokenDatapoints(OracleDatapoint oracleDatapoint, List<String> oracleSoFarTokens, List<String> tokenClassesSoFar, String nextOracleToken, TokenDPType tokenDPType) {
-        if (oracleSoFarTokens.size() != tokenClassesSoFar.size()) {
-            throw new IllegalArgumentException("oracleSoFarTokens and tokenClassesSoFar must have the same size");
-        }
-
-        // Create copies of oracleSoFarTokens and tokenClassesSoFar since they may be modified
+    public static TokenDatapoint oracleSoFarAndTokenToTokenDatapoint(OracleDatapoint oracleDatapoint, List<String> oracleSoFarTokens, String nextOracleToken) {
         List<String> oracleSoFarTokensCopy = new ArrayList<>(oracleSoFarTokens);
-        List<String> tokenClassesSoFarCopy = new ArrayList<>(tokenClassesSoFar);
-
-        // Compute next legal tokens
-        List<Triplet<String, String, List<String>>> nextLegalTokensWithContext = getNextLegalTokensWithContextPlusInfo(oracleSoFarTokensCopy, oracleDatapoint);
-        List<TokenDatapoint> tokenDatapoints = new ArrayList<>();
-
-        // Create a new TokenDatapoint for each next legal token and add it to the list
-        boolean nextTokenActuallyLegal = false;
-        String nextOracleTokenClass = null;
-        List<String> addedTokenClasses = new ArrayList<>();
-        for (Triplet<String, String, List<String>> legalTokenWithContext : nextLegalTokensWithContext) {
-            String legalToken = legalTokenWithContext.getValue0();
-            String legalTokenClass = legalTokenWithContext.getValue1();
-            List<String> legalTokenInfo = legalTokenWithContext.getValue2();
-
-            boolean label = legalToken.equals(nextOracleToken);
-            if (label) {
-                nextTokenActuallyLegal = true;
-                nextOracleTokenClass = legalTokenClass;
-                positiveSamples++;
-            }
-
-            // For tokens or token-values dataset, add all tokens. For token-classes dataset, add only one token per class
-            // (except for right class, where one with label=true and one with label=false are added)
-            if (!tokenDPType.equals(TokenDPType.TOKEN_CLASS) || (label || !addedTokenClasses.contains(legalTokenClass))) {
-                TokenDatapoint tokenDatapoint = new TokenDatapoint(tokenIndex++, label, oracleDatapoint, compactExpression(oracleSoFarTokensCopy), tokenClassesSoFarCopy, legalToken, legalTokenClass, legalTokenInfo);
-                tokenDatapoints.add(tokenDatapoint);
-                addedTokenClasses.add(legalTokenClass);
-                if (!label) {
-                    negativeSamples++;
-                }
-            }
-        }
-
-        // If token-classes or token-values, we need to remove some negative token datapoints and update negativeSamples accordingly
-        if (!tokenDPType.equals(TokenDPType.TOKEN)) {
-            int oldSize = tokenDatapoints.size();
-            String finalNextOracleTokenClass = nextOracleTokenClass;
-            tokenDatapoints.removeIf(tdp ->
-                    (tokenDPType.equals(TokenDPType.TOKEN_VALUE) && !tdp.getTokenClass().equals(finalNextOracleTokenClass)) ||
-                            (tokenDPType.equals(TokenDPType.TOKEN_CLASS) && !tdp.getLabel() && tdp.getTokenClass().equals(finalNextOracleTokenClass))
-            );
-            negativeSamples -= oldSize - tokenDatapoints.size();
-        }
-
-        // Update original oracleSoFarTokens and tokenClassesSoFar for next iteration
-        if (!nextOracleToken.equals("")) {
-            if (nextOracleTokenClass == null) throw new AssertionError();
-            oracleSoFarTokens.add(nextOracleToken);
-            tokenClassesSoFar.add(nextOracleTokenClass);
-        } else {
-            if (nextOracleTokenClass != null) throw new AssertionError();
-        }
-
-        assertTokenLegal(nextTokenActuallyLegal, nextOracleToken, oracleSoFarTokensCopy);
-        return tokenDatapoints;
+        String oraclePackage = oracleDatapoint.getPackageName();
+        List<EligibleToken> eligibleTokens = getNextLegalTokensWithContextPlusInfo(oracleSoFarTokensCopy, oracleDatapoint)
+                .stream()
+                .map(t -> new EligibleToken(t.getValue0(), t.getValue1(), t.getValue2()))
+                .filter(t -> filterClassTokens(t, oracleDatapoint))
+                // Sort eligible tokens so that classes are at the end of the list, while keeping classes from the oracle package at the beginning
+                .sorted((t1, t2) -> {
+                    if (t1.tokenClass().equals("Class") && t2.tokenClass().equals("Class")) {
+                        if (t1.tokenInfo().get(0).equals(oraclePackage)) {
+                            return -1;
+                        } else if (t2.tokenInfo().get(0).equals(oraclePackage)) {
+                            return 1;
+                        } else {
+                            return 0;
+                        }
+                    } else if (t1.tokenClass().equals("Class")) {
+                        return 1;
+                    } else if (t2.tokenClass().equals("Class")) {
+                        return -1;
+                    } else {
+                        return 0;
+                    }
+                })
+                .toList();
+        assertTokenLegal(eligibleTokens.stream().map(EligibleToken::token).toList().contains(nextOracleToken), nextOracleToken, oracleSoFarTokensCopy);
+        return new TokenDatapoint(tokenIndex++, oracleDatapoint, compactExpression(oracleSoFarTokensCopy), eligibleTokens, nextOracleToken);
     }
 
     private static void assertTokenLegal(boolean nextTokenActuallyLegal, String token, List<String> oracleSoFarTokens) {
@@ -151,16 +108,30 @@ public class OracleDP2TokenDPs {
         }
     }
 
-    public static void resetSampleIndexes() {
-        negativeSamples = 0;
-        positiveSamples = 0;
+    /**
+     * For class tokens, keep only those that fulfill one of the following conditions:
+     * <ol>
+     *     <li>They contain the string "Utils" in their name.</li>
+     *     <li>Their package is the same as the oracle datapoint.</li>
+     *     <li>They are imported in the class source code of the oracle datapoint.</li>
+     * </ol>
+     */
+    private static boolean filterClassTokens(EligibleToken token, OracleDatapoint oracleDatapoint) {
+        if (!token.tokenClass().equals("Class")) {
+            return true;
+        }
+
+        String tokenPackage = token.tokenInfo().get(0);
+        String tokenClass = token.tokenInfo().get(1);
+        String fqTokenClass = tokenPackage + "." + tokenClass;
+        String oraclePackage = oracleDatapoint.getPackageName();
+        String oracleClassSource = oracleDatapoint.getClassSourceCode();
+        List<String> oracleClassImports = getImports(oracleClassSource);
+
+        return tokenClass.contains("Utils") || tokenPackage.equals(oraclePackage) || oracleClassImports.contains(fqTokenClass);
     }
 
-    public static int getNegativeSamples() {
-        return negativeSamples;
-    }
-
-    public static int getPositiveSamples() {
-        return positiveSamples;
+    public static long getTokenIndex() {
+        return tokenIndex;
     }
 }

@@ -4,7 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import star.tratto.data.*;
+import star.tratto.oraclegrammar.custom.Parser;
+import star.tratto.oraclegrammar.custom.Splitter;
 import star.tratto.util.FileUtils;
+import star.tratto.util.StringUtils;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -21,9 +24,10 @@ public class TokensDataset {
     private static final Logger logger = LoggerFactory.getLogger(TokensDataset.class);
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
+    private static final Parser parser = Parser.getInstance();
     public static String ORACLES_DATASET_FOLDER = "src/main/resources/oracles-dataset/";
-    public static String TOKENS_DATASET_FOLDER = "src/main/resources/tokens-dataset/";
-    public static TokenDPType DATASET_TYPE = TokenDPType.TOKEN_CLASS;
+    public static String TOKENS_DATASET_FOLDER = "src/main/resources/new-tokens-dataset/";
+    public static TokenDPType DATASET_TYPE = TokenDPType.TOKEN;
     private static int fileIndex = 0;
 
     public static void main(String[] args) throws IOException {
@@ -47,9 +51,12 @@ public class TokensDataset {
             for (Map rawOracleDatapoint : rawOracleDatapoints) {
                 OracleDatapoint oracleDatapoint = new OracleDatapoint(rawOracleDatapoint);
                 logger.info("Processing oracle: {}", oracleDatapoint.getOracle());
+                if (!StringUtils.compactExpression(oracleDatapoint.getOracle()).equals(StringUtils.compactExpression(Splitter.split(parser.parseOracle(oracleDatapoint.getOracle()))))) {
+                    throw new RuntimeException("Oracle " + oracleDatapoint.getOracle() + " does not match the parsed oracle " + Splitter.split(parser.parseOracle(oracleDatapoint.getOracle())));
+                }
                 List<TokenDatapoint> tokenDatapoints;
                 try {
-                    tokenDatapoints = oracleDatapointToTokenDatapoints(oracleDatapoint, DATASET_TYPE);
+                    tokenDatapoints = oracleDatapointToTokenDatapoints(oracleDatapoint);
                 } catch (MissingTokenException e) {
                     logger.error(e.getMessage());
                     continue;
@@ -65,7 +72,7 @@ public class TokensDataset {
                     } else if (Files.size(tokensDatasetFile) > 1) { // size=1 means file only with "["
                         tokensDatasetOutputStream.write(",".getBytes());
                     }
-                    tokensDatasetOutputStream.write(objectMapper.writeValueAsBytes(tokenDatapoint));
+                    tokensDatasetOutputStream.write(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsBytes(tokenDatapoint));
                 }
             }
             tokensDatasetOutputStream.write("]".getBytes());
@@ -74,9 +81,7 @@ public class TokensDataset {
 
         logger.info("------------------------------------------------------------");
         logger.info("Finished generating tokens dataset.");
-        logger.info("Total samples: {}", OracleDP2TokenDPs.getPositiveSamples() + OracleDP2TokenDPs.getNegativeSamples());
-        logger.info("Total positive samples: {}", OracleDP2TokenDPs.getPositiveSamples());
-        logger.info("Total negative samples: {}", OracleDP2TokenDPs.getNegativeSamples());
+        logger.info("Total samples: {}", OracleDP2TokenDPs.getTokenIndex());
         logger.info("------------------------------------------------------------");
     }
 

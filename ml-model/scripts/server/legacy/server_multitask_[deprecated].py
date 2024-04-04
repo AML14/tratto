@@ -7,7 +7,7 @@ from transformers import PreTrainedModel
 from typing import Type
 from src.pretrained.ModelClasses import ModelClasses
 from src.processors.DataProcessor import DataProcessor
-from src.server.Server import Server
+from src.server.ServerMultitask import ServerMultitask
 from src.parser.ArgumentParser import ArgumentParser
 from src.types.ClassificationType import ClassificationType
 from src.types.DeviceType import DeviceType
@@ -29,22 +29,17 @@ def resume_checkpoint(
     elif checkpoint_path.endswith(".safetensors"):
         load_model(pt_model, checkpoint_path)
 
-
 def setup_model(
         device: str,
         model_type: str,
         tokenizer_name: str,
         model_name_or_path: str,
         checkpoint_path: str,
-        tratto_model_type: Type[TrattoModelType],
         config_name: str = None
 ):
     config_class, model_class, tokenizer_class = ModelClasses.getModelClass(model_type)
     # Setup tokenizer
     tokenizer = tokenizer_class.from_pretrained(tokenizer_name)
-    # if tratto_model_type in [TrattoModelType.TOKEN_CLASSES, TrattoModelType.TOKEN_VALUES]:
-        # Enrich vocabulary
-        # DataProcessor.enrich_vocabulary(tokenizer, tratto_model_type)
     # Setup model
     config = config_class.from_pretrained(config_name if config_name else model_name_or_path)
     pt_model = model_class.from_pretrained(model_name_or_path, config=config)
@@ -67,55 +62,26 @@ if __name__ == '__main__':
     args = parser.parse_args()
     # Connect to device
     device = utils.connect_to_device(DeviceType.GPU)
-    # Setup oracles model
-    model_oracles, tokenizer_oracles = setup_model(
+    # Setup model
+    model, tokenizer = setup_model(
         device,
-        args.model_type_oracles,
-        args.tokenizer_name_oracles,
-        args.model_name_or_path_oracles,
-        args.checkpoint_path_oracles,
-        TrattoModelType.ORACLES,
-        args.config_name_oracles
-    )
-    # Setup tokenClasses model
-    model_token_classes, tokenizer_token_classes = setup_model(
-        device,
-        args.model_type_token_classes,
-        args.tokenizer_name_token_classes,
-        args.model_name_or_path_token_classes,
-        args.checkpoint_path_token_classes,
-        TrattoModelType.TOKEN_CLASSES,
-        args.config_name_token_classes
-    )
-    # Setup tokenValues model
-    model_token_values, tokenizer_token_values = setup_model(
-        device,
-        args.model_type_token_values,
-        args.tokenizer_name_token_values,
-        args.model_name_or_path_token_values,
-        args.checkpoint_path_token_values,
-        TrattoModelType.TOKEN_VALUES,
-        args.config_name_token_values
+        args.model_type_multitask,
+        args.tokenizer_name_multitask,
+        args.model_name_or_path_multitask,
+        args.checkpoint_path_multitask,
+        args.config_name_multitask
     )
     # Get transformer type
-    transformer_type_oracles = TransformerType(args.transformer_type_oracles.upper())
-    transformer_type_token_classes = TransformerType(args.transformer_type_token_classes.upper())
-    transformer_type_token_values = TransformerType(args.transformer_type_token_values.upper())
+    transformer_type = TransformerType(args.transformer_type_multitask.upper())
     # Instantiate server
-    server = Server(
+    server = ServerMultitask(
         device,
         ClassificationType(args.classification_type_oracles.upper()),
         ClassificationType(args.classification_type_token_classes.upper()),
         ClassificationType(args.classification_type_token_values.upper()),
-        transformer_type_oracles,
-        transformer_type_token_classes,
-        transformer_type_token_values,
-        model_oracles,
-        model_token_classes,
-        model_token_values,
-        tokenizer_oracles,
-        tokenizer_token_classes,
-        tokenizer_token_values
+        transformer_type,
+        model,
+        tokenizer,
     )
     # Run server
     server.run(args.port)
