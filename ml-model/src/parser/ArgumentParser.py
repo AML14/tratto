@@ -180,7 +180,7 @@ class ArgumentParser:
             help="Path to pre-trained model or shortcut name for the tokenValues model."
         )
         parser.add_argument(
-            "--config_name_multitask",
+            "--config_name_or_path_multitask",
             default=None,
             type=str,
             help="Pretrained config name or path if not the same as model_name for the multitask model."

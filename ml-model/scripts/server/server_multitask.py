@@ -18,9 +18,11 @@ def setup_model(
         model_type: str,
         tokenizer_name: str,
         model_name_or_path: str,
+        config_name_or_path: str,
         checkpoint_path: str
 ):
-    _, model_class, tokenizer_class = ModelClasses.getModelClass(model_type)
+    config_class, model_class, tokenizer_class = ModelClasses.getModelClass(model_type)
+    config = config_class.from_pretrained(config_name_or_path)
     # Setup tokenizer
     tokenizer = tokenizer_class.from_pretrained(tokenizer_name)
     tokenizer.add_bos_token = False
@@ -29,16 +31,16 @@ def setup_model(
     # Setup model
     # Creates a model with uninitialized weights, minimizing memory usage
     with init_empty_weights():
-        pt_model = model_class.from_pretrained(model_name_or_path, torch_dtype=torch.float16)
+        pt_model = model_class(config)
     abs_checkpoint_path = os.path.join(
         os.path.dirname(os.path.abspath(__file__)),
         '..',
         '..',
         checkpoint_path
     )
-    pt_model = load_checkpoint_and_dispatch(pt_model, abs_checkpoint_path, device_map="auto")
+    pt_model = load_checkpoint_and_dispatch(pt_model, abs_checkpoint_path, device_map='auto')
     pt_model.resize_token_embeddings(len(tokenizer))
-    pt_model.to(device)
+    # pt_model.to(device)
     return pt_model, tokenizer
 
 
@@ -55,6 +57,7 @@ if __name__ == '__main__':
         args.model_type_multitask,
         args.tokenizer_name_multitask,
         args.model_name_or_path_multitask,
+        args.config_name_or_path_multitask,
         args.checkpoint_path_multitask
     )
     # Get transformer type

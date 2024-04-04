@@ -69,7 +69,7 @@ if __name__ == '__main__':
         args.tokenizer_name_multitask,
         args.model_name_or_path_multitask,
         args.checkpoint_path_multitask,
-        args.config_name_multitask
+        args.config_name_or_path_multitask
     )
     # Get transformer type
     transformer_type = TransformerType(args.transformer_type_multitask.upper())
