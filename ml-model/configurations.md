@@ -16,7 +16,7 @@ The scripts for the training of the model requires the following arguments:
 --model_name_or_path [ The name of the pre-trained model, from HuggingFace - e.g. Salesforce/codet5p-770m ] \
 --tratto_model_type [ oracles, token_classes, or token_values ] \
 --task_name [ Custom name - e.g. oraclesModel_classifier_decoder ] \
---max_seq_length [ Max number of input tokens to the model - e.g. 512 ] \
+--max_src_length [ Max number of input tokens to the model - e.g. 512 ] \
 --batch_size [ Batch size to train the model - e.g. 16] \
 --learning_rate [ The learning rate during the training phase - e.g. 1e-5 ] \
 --num_epochs [ Number of epochs to train the model - e.g. 20 ] \

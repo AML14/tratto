@@ -1,7 +1,14 @@
-from transformers import RobertaConfig, RobertaTokenizer, RobertaForSequenceClassification, T5ForConditionalGeneration, T5Config
-from transformers import AutoConfig, AutoTokenizer, AutoModelForSequenceClassification
-
-from src.types.TransformerType import TransformerType
+from transformers import (
+    RobertaConfig,
+    RobertaTokenizer,
+    RobertaForSequenceClassification,
+    T5ForConditionalGeneration,
+    T5Config,
+    AutoTokenizer,
+    LlamaConfig,
+    LlamaForCausalLM,
+    CodeLlamaTokenizerFast
+)
 
 
 class ModelClasses:
@@ -18,3 +25,5 @@ class ModelClasses:
             return T5Config, T5ForConditionalGeneration, RobertaTokenizer
         if model_name == 'codet5+':
             return T5Config, T5ForConditionalGeneration, AutoTokenizer
+        if model_name == 'codellama':
+            return LlamaConfig, LlamaForCausalLM, CodeLlamaTokenizerFast

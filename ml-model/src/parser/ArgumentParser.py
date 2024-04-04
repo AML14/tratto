@@ -203,6 +203,19 @@ class ArgumentParser:
             type=str,
             help="Pretrained config name or path if not the same as model_name for the tokenValues model."
         )
+        parser.add_argument(
+            "--max_src_length",
+            default=2048,
+            type=int,
+            help="The maximum total input sequence length after tokenization. " \
+                 "Sequences longer than this will be truncated, sequences shorter will be padded."
+        )
+        parser.add_argument(
+            "--max_tgt_length",
+            default=30,
+            type=int,
+            help="The maximum total length for the target inference."
+        )
 
     @staticmethod
     def add_pre_process_dataset_arguments(parser: Type[ArgumentParser]):
@@ -494,11 +507,17 @@ class ArgumentParser:
             help="Trasformer type: encoder or decoder. Default decoder."
         )
         parser.add_argument(
-            "--max_seq_length",
-            default=512,
+            "--max_src_length",
+            default=2048,
             type=int,
             help="The maximum total input sequence length after tokenization. " \
                  "Sequences longer than this will be truncated, sequences shorter will be padded."
+        )
+        parser.add_argument(
+            "--max_tgt_length",
+            default=30,
+            type=int,
+            help="The maximum total length for the target inference."
         )
         parser.add_argument(
             "--do_train",
