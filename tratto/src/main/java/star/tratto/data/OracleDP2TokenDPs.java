@@ -10,6 +10,7 @@ import java.util.List;
 import static star.tratto.oraclegrammar.custom.Splitter.split;
 import static star.tratto.token.TokenSuggester.getNextLegalTokensWithContextPlusInfo;
 import static star.tratto.util.StringUtils.compactExpression;
+import static star.tratto.util.javaparser.JavaParserUtils.getImports;
 
 /**
  * Handle conversions from OracleDatapoints to TokenDatapoints. These conversions may be performed
@@ -67,9 +68,29 @@ public class OracleDP2TokenDPs {
      */
     public static TokenDatapoint oracleSoFarAndTokenToTokenDatapoint(OracleDatapoint oracleDatapoint, List<String> oracleSoFarTokens, String nextOracleToken) {
         List<String> oracleSoFarTokensCopy = new ArrayList<>(oracleSoFarTokens);
+        String oraclePackage = oracleDatapoint.getPackageName();
         List<EligibleToken> eligibleTokens = getNextLegalTokensWithContextPlusInfo(oracleSoFarTokensCopy, oracleDatapoint)
                 .stream()
                 .map(t -> new EligibleToken(t.getValue0(), t.getValue1(), t.getValue2()))
+                .filter(t -> filterClassTokens(t, oracleDatapoint))
+                // Sort eligible tokens so that classes are at the end of the list, while keeping classes from the oracle package at the beginning
+                .sorted((t1, t2) -> {
+                    if (t1.tokenClass().equals("Class") && t2.tokenClass().equals("Class")) {
+                        if (t1.tokenInfo().get(0).equals(oraclePackage)) {
+                            return -1;
+                        } else if (t2.tokenInfo().get(0).equals(oraclePackage)) {
+                            return 1;
+                        } else {
+                            return 0;
+                        }
+                    } else if (t1.tokenClass().equals("Class")) {
+                        return 1;
+                    } else if (t2.tokenClass().equals("Class")) {
+                        return -1;
+                    } else {
+                        return 0;
+                    }
+                })
                 .toList();
         assertTokenLegal(eligibleTokens.stream().map(EligibleToken::token).toList().contains(nextOracleToken), nextOracleToken, oracleSoFarTokensCopy);
         return new TokenDatapoint(tokenIndex++, oracleDatapoint, compactExpression(oracleSoFarTokensCopy), eligibleTokens, nextOracleToken);
@@ -85,6 +106,29 @@ public class OracleDP2TokenDPs {
                 throw new MissingTokenException(message);
             }
         }
+    }
+
+    /**
+     * For class tokens, keep only those that fulfill one of the following conditions:
+     * <ol>
+     *     <li>They contain the string "Utils" in their name.</li>
+     *     <li>Their package is the same as the oracle datapoint.</li>
+     *     <li>They are imported in the class source code of the oracle datapoint.</li>
+     * </ol>
+     */
+    private static boolean filterClassTokens(EligibleToken token, OracleDatapoint oracleDatapoint) {
+        if (!token.tokenClass().equals("Class")) {
+            return true;
+        }
+
+        String tokenPackage = token.tokenInfo().get(0);
+        String tokenClass = token.tokenInfo().get(1);
+        String fqTokenClass = tokenPackage + "." + tokenClass;
+        String oraclePackage = oracleDatapoint.getPackageName();
+        String oracleClassSource = oracleDatapoint.getClassSourceCode();
+        List<String> oracleClassImports = getImports(oracleClassSource);
+
+        return tokenClass.contains("Utils") || tokenPackage.equals(oraclePackage) || oracleClassImports.contains(fqTokenClass);
     }
 
     public static long getTokenIndex() {

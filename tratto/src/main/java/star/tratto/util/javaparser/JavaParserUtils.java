@@ -2,10 +2,7 @@ package star.tratto.util.javaparser;
 
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ParserConfiguration;
-import com.github.javaparser.ParseResult;
 import com.github.javaparser.ast.body.AnnotationDeclaration;
-import com.github.javaparser.ast.nodeTypes.NodeWithSimpleName;
-import com.github.javaparser.ParseResult;
 import com.github.javaparser.ast.AccessSpecifier;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Modifier;
@@ -36,7 +33,6 @@ import com.github.javaparser.resolution.declarations.ResolvedTypeParameterDeclar
 import com.github.javaparser.resolution.types.ResolvedType;
 import com.github.javaparser.resolution.types.ResolvedWildcard;
 import com.github.javaparser.symbolsolver.JavaSymbolSolver;
-import com.github.javaparser.resolution.types.ResolvedWildcard;
 import com.github.javaparser.symbolsolver.javaparsermodel.declarations.JavaParserMethodDeclaration;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.ClassLoaderTypeSolver;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.CombinedTypeSolver;
@@ -44,9 +40,12 @@ import com.github.javaparser.symbolsolver.resolution.typesolvers.ReflectionTypeS
 import com.github.javaparser.symbolsolver.javassistmodel.JavassistMethodDeclaration;
 import com.github.javaparser.symbolsolver.reflectionmodel.ReflectionMethodDeclaration;
 import com.github.javaparser.symbolsolver.utils.SymbolSolverCollectionStrategy;
+import com.github.javaparser.ast.ImportDeclaration;
+
 import org.javatuples.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import star.tratto.data.OracleDatapoint;
 import star.tratto.data.JPClassNotFoundException;
 import star.tratto.data.PackageDeclarationNotFoundException;
@@ -754,13 +753,14 @@ public class JavaParserUtils {
      *  "(modifiers) (type) (name)( = initial value);"
      */
     public static String getVariableDeclaration(FieldDeclaration field, VariableDeclarator variable) {
-        return (String.join("", mapList(Node::toString, field.getModifiers())) +
-                variable.getTypeAsString() + " " +
-                variable.getNameAsString() +
-                (variable.getInitializer().isPresent()
-                        ? " = " + variable.getInitializer().get()
-                        : "") +
-                ";");
+//        return (String.join("", mapList(Node::toString, field.getModifiers())) +
+//                variable.getTypeAsString() + " " +
+//                variable.getNameAsString() +
+//                (variable.getInitializer().isPresent()
+//                        ? " = " + variable.getInitializer().get()
+//                        : "") +
+//                ";");
+        return field.toString();
     }
 
     /**
@@ -890,18 +890,19 @@ public class JavaParserUtils {
      *  "[modifiers] [type] [methodName]([parameters]) throws [exceptions]"
      */
     public static String getMethodSignature(MethodDeclaration methodDeclaration) {
-        String method = methodDeclaration.toString();
-        if (methodDeclaration.getBody().isPresent()) {
-            // Remove body
-            method = method.replace(methodDeclaration.getBody().get().toString(), "");
-        }
-        for (Node comment: methodDeclaration.getAllContainedComments()) {
-            // Remove comments within method signature
-            method = method.replace(comment.toString(), "");
-        }
-        // Last line is method signature, remove everything before that
-        method = method.replaceAll("[\\s\\S]*\n", "");
-        return method.trim().replaceAll(";$", "");
+//        String method = methodDeclaration.toString();
+//        if (methodDeclaration.getBody().isPresent()) {
+//            // Remove body
+//            method = method.replace(methodDeclaration.getBody().get().toString(), "");
+//        }
+//        for (Node comment: methodDeclaration.getAllContainedComments()) {
+//            // Remove comments within method signature
+//            method = method.replace(comment.toString(), "");
+//        }
+//        // Last line is method signature, remove everything before that
+//        method = method.replaceAll("[\\s\\S]*\n", "");
+//        return method.trim().replaceAll(";$", "");
+        return methodDeclaration.toString();
     }
 
     /**
@@ -1004,6 +1005,7 @@ public class JavaParserUtils {
         // Consider JavaParserMethodDeclaration.
         if (methodDeclaration instanceof JavaParserMethodDeclaration jpMethodDeclaration) {
             MethodDeclaration jpMethod = jpMethodDeclaration.getWrappedNode();
+//            return getMethodSignature(jpMethod);
             return jpMethod.toString();
         }
         String methodModifiers = getMethodModifiers(methodDeclaration);
@@ -1196,6 +1198,11 @@ public class JavaParserUtils {
     public static boolean isNonPrivateNonStaticNonVoidMethod(MethodUsage methodUsage) {
         return !methodUsage.getDeclaration().isStatic() &&
                 isNonPrivateNonVoidMethod(methodUsage);
+    }
+
+    public static List<String> getImports(String classSourceCode) {
+        CompilationUnit cu = javaParser.parse(classSourceCode).getResult().get();
+        return cu.getImports().stream().map(ImportDeclaration::getNameAsString).toList();
     }
 
     /**
