@@ -8,6 +8,7 @@ from datasets import load_dataset, Dataset
 from torch.utils.data import DataLoader, TensorDataset
 from transformers import PreTrainedModel, PreTrainedTokenizer, DataCollatorForSeq2Seq
 from typing import Type
+from src.exceptions.TokenNotFoundException import TokenNotFoundException
 from src.types.TransformerType import TransformerType
 from src.types.TrattoModelType import TrattoModelType
 
@@ -59,7 +60,7 @@ def predict_next(
                 for token in tokens:
                     if token in eligible_tokens:
                         return token
-                raise Exception(f"Predicted token not in eligible tokens: {token}")
+                raise TokenNotFoundException(f"Predicted token not in eligible tokens: {token}", token)
             else:
                 raise Exception("Encoder predictions not implemented yet")
 

@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request, make_response
 from scripts.server import predictor_multitask
+from src.exceptions.TokenNotFoundException import TokenNotFoundException
 
 
 class ServerMultitask:
@@ -39,8 +40,8 @@ class ServerMultitask:
                 # Optionally, set any additional headers if needed
                 response.headers['Content-Type'] = 'text/plain'
                 return response
-            except Exception as e:
-                return str(e), 404
+            except TokenNotFoundException as e:
+                return str(e.predicted_token), 404
         else:
             return 'Missing filename parameter', 400  # Return an error if the 'data' parameter is missing
         return jsonify({'token': token})
