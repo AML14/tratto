@@ -47,7 +47,7 @@ elif [ "$tog" == "tratto" ] && [ ! -e "${classpath_or_jar}" ]; then
 fi
 # Check if given TOG is supported
 found=0
-valid_tog=("jdoctor" "toga" "tratto", "baseline")
+valid_tog=("jdoctor" "toga" "tratto" "baseline")
 for option in "${valid_tog[@]}"; do
   if [ "${option}" = "${tog}" ]; then
     found=1
