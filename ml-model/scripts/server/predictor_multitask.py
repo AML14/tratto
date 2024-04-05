@@ -14,7 +14,7 @@ assert_token = "assertTrue("
 no_assertion_token = "// No assertion possible"
 oracle_evaluator_eligible_tokens = [assert_token, no_assertion_token]
 
-def predict_next(
+def infer(
         device,
         model,
         dl_src,
@@ -29,9 +29,7 @@ def predict_next(
         "max_new_tokens": max_tgt_length,
         "num_beams": 1,
         "do_sample": False,
-        "pad_token_id": tokenizer.eos_token_id,
-        "output_scores": True,
-        "return_dict_in_generate": True
+        "pad_token_id": tokenizer.eos_token_id
     }
     predictions = []
     # Inference time: The prediction is performed without accumulating the gradient descent and without updating
@@ -39,8 +37,8 @@ def predict_next(
     with torch.no_grad():
         for batch_id, batch in enumerate(dl_src, 1):
             # Extract the inputs, the attention masks and the targets from the batch
-            src_input = batch[0].to(device)
-            src_masks = batch[1].to(device)
+            src_input = batch['input_ids'].to(device)
+            src_masks = batch['attention_mask'].to(device)
 
             if transformer_type == TransformerType.DECODER:
                 # Model predictions with beam-search
@@ -49,12 +47,7 @@ def predict_next(
                     attention_mask=src_masks,
                     **gen_kwargs
                 )
-                tokens = np.array(
-                    tokenizer.batch_decode(
-                        outputs['sequences'],
-                        skip_special_tokens=True
-                    )
-                )
+                tokens = tokenizer.batch_decode(outputs[:, batch['input_ids'].shape[1]:], skip_special_tokens=True)
                 # Beam search (return first token that matches the eligible tokens)
                 for token in tokens:
                     if token in eligible_tokens:
@@ -127,7 +120,7 @@ def tokenize_input(
             "attention_mask": attention_mask,
         }
 
-    src_dataset = Dataset.from_list(src)
+    src_dataset = Dataset.from_list([{ "src": src }])
 
     predict_dataset = src_dataset.map(
         preprocess_single,
@@ -137,7 +130,7 @@ def tokenize_input(
     return predict_dataset
 
 
-def next_token(
+def predict_next_token(
         device,
         filename: str,
         transformer_type: Type[TransformerType],
@@ -170,7 +163,7 @@ def next_token(
     # Predict next token
     print("Predict next token")
 
-    next_token = predict_next(
+    next_token = infer(
         device,
         model,
         dl_src,
@@ -187,7 +180,7 @@ def next_token(
             tokens_datapoint['oracleSoFar'] = "assertTrue("
             with open(filename, 'w') as json_file:
                 json.dump(tokens_datapoint, json_file, indent=4)
-            return next_token(
+            return predict_next_token(
                 device,
                 filename,
                 transformer_type,
