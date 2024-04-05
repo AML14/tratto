@@ -13,6 +13,8 @@ fi
 current_dir=$(realpath "$(dirname "${BASH_SOURCE}")")
 # Setup global variables
 source "${current_dir}/utils/global_variables.sh"
+# setup sdkman
+source "${current_dir}/utils/init_sdkman.sh"
 
 # Setup local variables
 fully_qualified_name="${1}"
