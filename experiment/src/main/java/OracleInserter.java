@@ -249,7 +249,7 @@ public class OracleInserter {
             case "I" -> {
                 return "int";
             }
-            case "L" -> {
+            case "J" -> {
                 return "long";
             }
             case "F" -> {
@@ -396,6 +396,10 @@ public class OracleInserter {
         return Modifier.isStatic(method.getModifiers());
     }
 
+    private static final List<String> allPrimitiveFieldDescriptors = List.of(
+            "Z", "B", "C", "S", "I", "J", "F", "D"
+    );
+
     /**
      * Gets the return type of a method.
      *
@@ -409,8 +413,14 @@ public class OracleInserter {
         String returnTypeName = returnType.getName();
         if (returnTypeName.startsWith("[")) {
             int arrayLevel = getArrayLevel(returnTypeName);
-            String primitiveFQN = fieldDescriptorToFQN(returnTypeName.substring(arrayLevel)) + "[]".repeat(arrayLevel);
-            return StaticJavaParser.parseType(primitiveFQN);
+            String elementGetName = returnTypeName.substring(arrayLevel);
+            String elementFqn;
+            if (allPrimitiveFieldDescriptors.contains(elementGetName)) {
+                elementFqn = fieldDescriptorToFQN(elementGetName);
+            } else {
+                elementFqn = elementGetName.substring(1, elementGetName.length() - 1);
+            }
+            return StaticJavaParser.parseType(elementFqn + "[]".repeat(arrayLevel));
         }
         return StaticJavaParser.parseType(returnTypeName);
     }
