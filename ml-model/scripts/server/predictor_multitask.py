@@ -1,19 +1,18 @@
-import os.path
-
+import json
 import torch
 import numpy as np
-import pandas as pd
 import re
-from datasets import load_dataset, Dataset
-from torch.utils.data import DataLoader, TensorDataset
+from datasets import Dataset
+from torch.utils.data import DataLoader
 from transformers import PreTrainedModel, PreTrainedTokenizer, DataCollatorForSeq2Seq
 from typing import Type
 from src.exceptions.TokenNotFoundException import TokenNotFoundException
 from src.types.TransformerType import TransformerType
-from src.types.TrattoModelType import TrattoModelType
 
 # Oracle evaluator eligible tokens
-oracle_evaluator_eligible_tokens = ["assertTrue(", "// No assertion possible"]
+assert_token = "assertTrue("
+no_assertion_token = "// No assertion possible"
+oracle_evaluator_eligible_tokens = [assert_token, no_assertion_token]
 
 def predict_next(
         device,
@@ -25,7 +24,7 @@ def predict_next(
         max_tgt_length
 ):
     # Model in evaluation mode
-    model.eval().to(device)
+    model.eval()
     gen_kwargs = {
         "max_new_tokens": max_tgt_length,
         "num_beams": 1,
@@ -66,38 +65,52 @@ def predict_next(
 
 
 def process_dataset(
-        df_dataset: pd.DataFrame,
-        pre_processing: bool = True
+        tokens_datapoint: dict
 ):
-    def generate_src(
-            row
-    ):
-        # Generate input string
-        return f"// {row['oracleType']}: \"{row['javadocTag']}\"\n// Next possible tokens: {row['eligibleTokens'] if not row['oracleSoFar'] == '' else oracle_evaluator_eligible_tokens}\n// Assertion:\n{'assertTrue(' + row['oracleSoFar'] if not row['oracleSoFar'] == '' else ''}<FILL_ME>'\n\n// Method under test:{row['methodJavadoc']}\n{row['methodSourceCode']}{row['additionalInfo']}"
-
-    if pre_processing:
-        # Mapping for oracle types
-        oracle_type_mapping = {
-            "EXCEPT_POST": "Exceptional postcondition",
-            "NORMAL_POST": "Postcondition",
-            "PRE": "Precondition"
-        }
-        # Map empty cells to empty strings
-        df_dataset.fillna('', inplace=True)
-        # Delete spurious columns for predicting the next token class
-        df_dataset = df_dataset.drop(['id', 'oracleId', 'projectName', 'packageName', 'className', 'classJavadoc', 'classSourceCode', 'token'], axis=1)
-        # Drop duplicates
-        df_dataset.drop_duplicates(inplace=True)
-        # Pre-process dataset
-        df_dataset['oracleType'] = df_dataset['oracleType'].map(oracle_type_mapping)
-        df_dataset['javadocTag'] = df_dataset['javaDocTag'].apply(lambda tag: re.sub("\n *", " ", tag))
-        df_dataset['methodJavadoc'] = df_dataset['methodJavadoc'].apply(lambda javadoc: "\n" + re.sub("\n +", "\n ", javadoc.strip()) if re.sub("\n +", "\n ", javadoc.strip()) != "" else "")
-        df_dataset['eligibleTokens'] = df_dataset['eligibleTokens'].apply(lambda tokenInfo: [t['token'] for t in tokenInfo if t["token"] != ";"])
-        df_dataset['additionalInfo'] = df_dataset['eligibleTokens'].apply(lambda tokenInfo: "\n\n// Additional context:\n" + [re.sub("\n +", "\n ", t["tokenInfo"][2].strip()) for t in tokenInfo].join("\n") if any(t["tokenClass"] in ["MethodName", "ClassField"] for t in tokenInfo) else "")
-        #df_dataset['token'] = df_dataset['token'].str.replace(";", ");")
-    assert len(df_dataset) == 1
-    df_dataset['src'] = df_dataset.apply(generate_src, axis=1)
-    return df_dataset
+    # Mapping for oracle types
+    oracle_type_mapping = {
+        "EXCEPT_POST": "Exceptional postcondition",
+        "NORMAL_POST": "Postcondition",
+        "PRE": "Precondition"
+    }
+    # Map the oracle type to the corresponding description
+    oracle_type = oracle_type_mapping.get(tokens_datapoint['oracleType'], "")
+    # Process the javadoc tag (flat it to a single line)
+    javadoc_tag = re.sub("\n *", " ", tokens_datapoint['javadocTag'])
+    # Process the method javadoc
+    method_javadoc = tokens_datapoint['methodJavadoc'].strip()
+    if not method_javadoc == "":
+        method_javadoc = "\n" + re.sub("\n +", "\n ", method_javadoc)
+    # Get the method source code
+    method_source_code = tokens_datapoint["methodSourceCode"]
+    # Get the oracle so far
+    oracle_so_far = tokens_datapoint["oracleSoFar"]
+    # Process additional information
+    additional_info = ""
+    # Check if among the eligible tokens at least one refers to a "MethodName" or "ClassField"
+    if any(t["tokenClass"] in ["MethodName", "ClassField"] for t in tokens_datapoint['eligibleTokens']):
+        # Add additional information
+        additional_info += "\n\n// Additional context:\n"
+        for t in tokens_datapoint['eligibleTokens']:
+            if t["tokenClass"] in ["MethodName", "ClassField"]:
+                additional_info += re.sub("\n +", "\n ", t["tokenInfo"][2].strip()) + "\n"
+    # Map eligible tokens to a list of raw tokens (removing additional information from them)
+    eligible_tokens = [t['token'] for t in tokens_datapoint['eligibleTokens']]
+    # If the oracle is at the beginning, the ';' is not an eligible token ("assertTrue(;" is not a valid assertion)
+    if oracle_so_far == assert_token:
+        eligible_tokens.remove(";")
+    # If the oracle is empty, the only eligible tokens are 'assertTrue(' and '// No assertion possible'
+    # The model is used as an oracle evaluator
+    elif oracle_so_far == "":
+        eligible_tokens = oracle_evaluator_eligible_tokens
+    # If the oracle is not empty, the eligible token ';' is replaced with ');'
+    else:
+        oracle_so_far = assert_token + oracle_so_far
+        eligible_tokens = [t.replace(";", ");") for t in eligible_tokens]
+    # Generate input string
+    src = f'// {oracle_type}: "{javadoc_tag}"\n// Next possible tokens: {eligible_tokens}\n// Assertion:\n{oracle_so_far}<FILL_ME>\n\n// Method under test:{method_javadoc}\n{method_source_code}{additional_info}'
+    # Return the input and the eligible tokens
+    return src, eligible_tokens
 
 
 def tokenize_input(
@@ -131,19 +144,16 @@ def next_token(
         model: Type[PreTrainedModel],
         tokenizer: PreTrainedTokenizer,
         max_src_length,
-        max_tgt_length,
-        pre_processing: bool = True,
+        max_tgt_length
 ):
     # Read json file
     print("Predict next token")
-    df_dataset = pd.read_json(filename)
+    with open(filename, 'r') as json_file:
+        tokens_datapoint = json.load(json_file)
+
     # Pre-process dataset
     print("Processing dataset")
-    df_dataset = process_dataset(df_dataset, pre_processing)
-
-    # Get input and eligible tokens
-    src = df_dataset['src'].tolist()
-    eligible_tokens = df_dataset['eligibleTokens'].tolist() if not df_dataset['oracleSoFar'] == '' else oracle_evaluator_eligible_tokens
+    src, eligible_tokens = process_dataset(tokens_datapoint)
 
     # Tokenize input
     print("Tokenize model input")
@@ -170,12 +180,13 @@ def next_token(
         max_tgt_length
     )
 
-    if df_dataset['oracleSoFar'] == '':
-        if next_token == "// No assertion possible":
+    if tokens_datapoint['oracleSoFar'] == '':
+        if next_token == no_assertion_token:
             return ";"
-        elif next_token == "assertTrue(":
-            df_dataset.loc[:, 'oracleSoFar'] = "assertTrue("
-            df_dataset.to_json(filename, orient='records')
+        elif next_token == assert_token:
+            tokens_datapoint['oracleSoFar'] = "assertTrue("
+            with open(filename, 'w') as json_file:
+                json.dump(tokens_datapoint, json_file, indent=4)
             return next_token(
                 device,
                 filename,
@@ -183,8 +194,9 @@ def next_token(
                 model,
                 tokenizer,
                 max_src_length,
-                max_tgt_length,
-                False
+                max_tgt_length
             )
         else:
             raise Exception(f"Predicted token not in eligible tokens: {next_token}")
+    else:
+        return next_token if next_token != ";)" else ";"

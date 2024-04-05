@@ -14,7 +14,6 @@ from src.utils import utils
 
 
 def setup_model(
-        device: str,
         model_type: str,
         tokenizer_name: str,
         model_name_or_path: str,
@@ -53,7 +52,6 @@ if __name__ == '__main__':
     device = utils.connect_to_device(DeviceType.GPU)
     # Setup model
     model, tokenizer = setup_model(
-        device,
         args.model_type_multitask,
         args.tokenizer_name_multitask,
         args.model_name_or_path_multitask,
