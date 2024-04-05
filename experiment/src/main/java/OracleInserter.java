@@ -334,6 +334,10 @@ public class OracleInserter {
      * @return the Class corresponding to the type name
      */
     private static Class<?> getClass(String className) {
+        System.out.println(className);
+        if (className.contains("...")) {
+            className = className.replaceAll("...", "[]");
+        }
         if (primitiveTypes.contains(className)) {
             return getPrimitiveClass(className);
         } else {
@@ -396,6 +400,7 @@ public class OracleInserter {
         return Modifier.isStatic(method.getModifiers());
     }
 
+    /** All primitive field descriptors. */
     private static final List<String> allPrimitiveFieldDescriptors = List.of(
             "Z", "B", "C", "S", "I", "J", "F", "D"
     );
@@ -1513,5 +1518,12 @@ public class OracleInserter {
         } catch (IOException e) {
             throw new Error("Unable to traverse directory " + pathToTests);
         }
+    }
+
+    public static void main(String[] args) {
+        Path pathToPrefixes = Paths.get("/Users/elliottzackrone/IdeaProjects/tratto-experiment-pipeline/experiment/output/evosuite-prefixes/JacksonDatabind/103");
+        Path pathToOracles = Paths.get("/Users/elliottzackrone/IdeaProjects/tratto-experiment-pipeline/experiment/output/jdoctor-oracles/JacksonDatabind/103");
+        String classpath = "/Users/elliottzackrone/IdeaProjects/tratto-experiment-pipeline/experiment/temp/JacksonDatabind_103/target/classes:/Users/elliottzackrone/IdeaProjects/defects4j/framework/projects/JacksonDatabind/lib/com/fasterxml/jackson/core/jackson-annotations/2.9.0/jackson-annotations-2.9.0.jar:/Users/elliottzackrone/IdeaProjects/defects4j/framework/projects/JacksonDatabind/lib/com/fasterxml/jackson/core/jackson-core/2.9.7/jackson-core-2.9.7.jar";
+        insertOracles(pathToPrefixes, pathToOracles, classpath);
     }
 }
