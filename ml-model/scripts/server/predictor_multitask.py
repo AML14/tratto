@@ -14,7 +14,7 @@ assert_token = "assertTrue("
 no_assertion_token = "// No assertion possible"
 oracle_evaluator_eligible_tokens = [assert_token, no_assertion_token]
 
-def predict_next(
+def infer(
         device,
         model,
         dl_src,
@@ -130,7 +130,7 @@ def tokenize_input(
     return predict_dataset
 
 
-def next_token(
+def predict_next_token(
         device,
         filename: str,
         transformer_type: Type[TransformerType],
@@ -163,7 +163,7 @@ def next_token(
     # Predict next token
     print("Predict next token")
 
-    next_token = predict_next(
+    next_token = infer(
         device,
         model,
         dl_src,
@@ -180,7 +180,7 @@ def next_token(
             tokens_datapoint['oracleSoFar'] = "assertTrue("
             with open(filename, 'w') as json_file:
                 json.dump(tokens_datapoint, json_file, indent=4)
-            return next_token(
+            return predict_next_token(
                 device,
                 filename,
                 transformer_type,

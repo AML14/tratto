@@ -26,7 +26,7 @@ class ServerMultitask:
         filename = request.args.get('filename')
         if filename:
             try:
-                token = predictor_multitask.next_token(
+                token = predictor_multitask.predict_next_token(
                     self._device,
                     filename,
                     self._transformer_type,
@@ -51,4 +51,3 @@ class ServerMultitask:
 
     def run(self, port):
         self._app.run(port=port)
-
