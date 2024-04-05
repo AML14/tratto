@@ -127,7 +127,7 @@ def tokenize_input(
             "attention_mask": attention_mask,
         }
 
-    src_dataset = Dataset.from_list(src)
+    src_dataset = Dataset.from_list([src])
 
     predict_dataset = src_dataset.map(
         preprocess_single,
