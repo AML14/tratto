@@ -156,8 +156,15 @@ public class OracleInserter {
         }
         return Stream.of(parameters.split(","))
                 .map(p -> {
-                    String paramTypeFQN = p.trim().split(" ")[0].trim();
-                    Class<?> paramClass = getClass(paramTypeFQN);
+                    String[] paramParts = p.trim().split(" ");
+                    StringBuilder paramTypeFqnBuilder = new StringBuilder();
+                    for (int i = 0; i < paramParts.length - 1; i++) {
+                        paramTypeFqnBuilder
+                                .append(paramParts[i].trim())
+                                .append(" ");
+                    }
+                    String paramTypeFqn = paramTypeFqnBuilder.toString().trim();
+                    Class<?> paramClass = getClass(paramTypeFqn);
                     return paramClass.getTypeName();
                 })
                 .toList();
@@ -392,7 +399,7 @@ public class OracleInserter {
         List<Class<?>> parameterTypes = getClasses(getParameterTypeNames(methodSignature));
         Class<?> receiverObjectID = getClass(className);
         try {
-            return receiverObjectID.getMethod(methodName, parameterTypes.toArray(Class[]::new));
+            return receiverObjectID.getDeclaredMethod(methodName, parameterTypes.toArray(Class[]::new));
         } catch (NoSuchMethodException e) {
             throw new Error("Unable to find method " + methodSignature + " in " + className);
         }
