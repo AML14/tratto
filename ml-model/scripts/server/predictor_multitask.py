@@ -29,9 +29,7 @@ def predict_next(
         "max_new_tokens": max_tgt_length,
         "num_beams": 1,
         "do_sample": False,
-        "pad_token_id": tokenizer.eos_token_id,
-        "output_scores": True,
-        "return_dict_in_generate": True
+        "pad_token_id": tokenizer.eos_token_id
     }
     predictions = []
     # Inference time: The prediction is performed without accumulating the gradient descent and without updating
@@ -39,8 +37,8 @@ def predict_next(
     with torch.no_grad():
         for batch_id, batch in enumerate(dl_src, 1):
             # Extract the inputs, the attention masks and the targets from the batch
-            src_input = batch[0].to(device)
-            src_masks = batch[1].to(device)
+            src_input = batch['input_ids'].to(device)
+            src_masks = batch['attention_mask'].to(device)
 
             if transformer_type == TransformerType.DECODER:
                 # Model predictions with beam-search
@@ -49,12 +47,7 @@ def predict_next(
                     attention_mask=src_masks,
                     **gen_kwargs
                 )
-                tokens = np.array(
-                    tokenizer.batch_decode(
-                        outputs['sequences'],
-                        skip_special_tokens=True
-                    )
-                )
+                tokens = tokenizer.batch_decode(outputs[:, batch['input_ids'].shape[1]:], skip_special_tokens=True)
                 # Beam search (return first token that matches the eligible tokens)
                 for token in tokens:
                     if token in eligible_tokens:
