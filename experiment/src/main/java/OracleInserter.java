@@ -45,7 +45,9 @@ import com.github.javaparser.ast.stmt.EmptyStmt;
 import com.github.javaparser.ast.stmt.ExpressionStmt;
 import com.github.javaparser.ast.stmt.IfStmt;
 import com.github.javaparser.ast.stmt.Statement;
+import com.github.javaparser.ast.stmt.ThrowStmt;
 import com.github.javaparser.ast.stmt.TryStmt;
+import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import com.github.javaparser.ast.type.PrimitiveType;
 import com.github.javaparser.ast.type.Type;
 import com.github.javaparser.ast.type.VoidType;
@@ -1082,6 +1084,13 @@ public class OracleInserter {
         return oracleOutput;
     }
 
+    /** The statement used to indicate that a pre-condition has been failed. */
+    private static final Statement preConditionFailStmt = new ThrowStmt(
+            new ObjectCreationExpr()
+                    .setType(StaticJavaParser.parseClassOrInterfaceType("Error"))
+                    .addArgument(new StringLiteralExpr("TrattoError: Precondition failed, invalid test."))
+    );
+
     /**
      * Gets all assertions corresponding to preconditions by wrapping oracles
      * as the condition of an {@code assertTrue} method call.
@@ -1089,13 +1098,24 @@ public class OracleInserter {
      * @param oracles all relevant precondition oracles
      * @return all Java statements of JUnit assertions for the given oracles
      */
-    private static NodeList<Statement> getPreConditions(
+    private static Statement getPreConditions(
             List<OracleOutput> oracles
     ) {
-        return new NodeList<>(oracles
+        if (oracles.size() == 0) {
+            return new EmptyStmt();
+        }
+        List<Expression> conditions = oracles
                 .stream()
-                .map(o -> StaticJavaParser.parseStatement("assertTrue(" + o.oracle() + ");"))
-                .toList());
+                .map(o -> (Expression) StaticJavaParser.parseExpression("!(" + o.oracle() + ")"))
+                .toList();
+        IfStmt ifStmt = new IfStmt(conditions.get(0), preConditionFailStmt, new BlockStmt());
+        IfStmt currentIfStmt = ifStmt;
+        for (int i = 1; i < conditions.size(); i++) {
+            IfStmt nextIfStmt = new IfStmt(conditions.get(i), preConditionFailStmt, new BlockStmt());
+            currentIfStmt.setElseStmt(nextIfStmt);
+            currentIfStmt = new IfStmt();
+        }
+        return ifStmt;
     }
 
     /**
@@ -1160,7 +1180,7 @@ public class OracleInserter {
         IfStmt ifStmt = new IfStmt(conditions.get(0), tryStmts.get(0), new BlockStmt());
         IfStmt currentIfStmt = ifStmt;
         for (int i = 1; i < conditions.size(); i++) {
-            IfStmt nextIfStmt = new IfStmt(conditions.get(i), tryStmts.get(1), new BlockStmt());
+            IfStmt nextIfStmt = new IfStmt(conditions.get(i), tryStmts.get(i), new BlockStmt());
             currentIfStmt.setElseStmt(nextIfStmt);
             currentIfStmt = new IfStmt();
         }
@@ -1257,10 +1277,10 @@ public class OracleInserter {
                 .stream()
                 .filter(o -> o.oracleType().equals(OracleType.NORMAL_POST))
                 .toList();
-        NodeList<Statement> preBlock = getPreConditions(preConditions);
+        Statement preBlock = getPreConditions(preConditions);
         IfStmt throwsBlock = getThrowsConditions(postStmt, throwsConditions);
         NodeList<Statement> postBlock = getPostConditions(throwsBlock, postStmt, postConditions);
-        oracleStatements.addAll(preBlock);
+        oracleStatements.add(preBlock);
         oracleStatements.add(initStmt);
         oracleStatements.addAll(postBlock);
         return new NodeList<>(oracleStatements
