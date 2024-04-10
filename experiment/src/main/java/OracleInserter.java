@@ -1084,11 +1084,11 @@ public class OracleInserter {
     }
 
     /** The statement used to indicate that a pre-condition has been failed. */
-    private static final Statement preConditionFailStmt = new ThrowStmt(
+    private static final BlockStmt preConditionFailStmt = new BlockStmt(new NodeList<>(new ThrowStmt(
             new ObjectCreationExpr()
                     .setType(StaticJavaParser.parseClassOrInterfaceType("Error"))
                     .addArgument(new StringLiteralExpr("TrattoError: Precondition failed, invalid test."))
-    );
+    )));
 
     /**
      * Gets all assertions corresponding to preconditions by wrapping oracles
