@@ -1112,7 +1112,7 @@ public class OracleInserter {
         for (int i = 1; i < conditions.size(); i++) {
             IfStmt nextIfStmt = new IfStmt(conditions.get(i), preConditionFailStmt, new BlockStmt());
             currentIfStmt.setElseStmt(nextIfStmt);
-            currentIfStmt = new IfStmt();
+            currentIfStmt = nextIfStmt;
         }
         return ifStmt;
     }
@@ -1181,7 +1181,7 @@ public class OracleInserter {
         for (int i = 1; i < conditions.size(); i++) {
             IfStmt nextIfStmt = new IfStmt(conditions.get(i), tryStmts.get(i), new BlockStmt());
             currentIfStmt.setElseStmt(nextIfStmt);
-            currentIfStmt = new IfStmt();
+            currentIfStmt = nextIfStmt;
         }
         return ifStmt;
     }
