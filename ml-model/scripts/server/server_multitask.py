@@ -21,7 +21,8 @@ def setup_model(
         checkpoint_path: str
 ):
     config_class, model_class, tokenizer_class = ModelClasses.getModelClass(model_type)
-    config = config_class.from_pretrained(config_name_or_path)
+    config = config_class.from_pretrained(model_name_or_path)
+    print(config)
     # Setup tokenizer
     tokenizer = tokenizer_class.from_pretrained(tokenizer_name)
     tokenizer.add_bos_token = False
