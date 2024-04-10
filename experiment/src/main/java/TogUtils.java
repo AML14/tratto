@@ -10,21 +10,28 @@ import com.github.javaparser.ast.body.*;
 import com.github.javaparser.ast.comments.JavadocComment;
 import com.github.javaparser.ast.expr.*;
 import com.github.javaparser.ast.nodeTypes.NodeWithSimpleName;
+import com.github.javaparser.ast.stmt.BlockStmt;
+import com.github.javaparser.ast.stmt.ExpressionStmt;
+import com.github.javaparser.ast.stmt.Statement;
 import com.github.javaparser.ast.type.ReferenceType;
 import com.github.javaparser.ast.type.TypeParameter;
+import com.github.javaparser.resolution.MethodUsage;
 import com.github.javaparser.resolution.SymbolResolver;
 import com.github.javaparser.resolution.UnsolvedSymbolException;
+import com.github.javaparser.resolution.declarations.ResolvedMethodDeclaration;
+import com.github.javaparser.resolution.declarations.ResolvedReferenceTypeDeclaration;
+import com.github.javaparser.resolution.declarations.ResolvedTypeParameterDeclaration;
+import com.github.javaparser.resolution.types.ResolvedType;
+import com.github.javaparser.symbolsolver.javaparsermodel.declarations.JavaParserMethodDeclaration;
+import com.github.javaparser.symbolsolver.javassistmodel.JavassistMethodDeclaration;
+import com.github.javaparser.symbolsolver.reflectionmodel.ReflectionMethodDeclaration;
 import com.github.javaparser.symbolsolver.utils.SymbolSolverCollectionStrategy;
-import data.Defects4JOutput;
-import data.JDoctorOutput;
+import com.github.javaparser.utils.Pair;
+import data.*;
 import data.JDoctorOutput.Parameter;
 import data.JDoctorOutput.ParamTag;
 import data.JDoctorOutput.ReturnTag;
 import data.JDoctorOutput.ThrowsTag;
-import data.TogType;
-import data.TrattoOutput;
-import data.OracleOutput;
-import data.OracleType;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
@@ -45,6 +52,8 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static org.plumelib.util.CollectionsPlume.mapList;
+
 /**
  * This class provides static methods for pre-processing inputs for a given
  * TOG and converting its output into other {@link data} outputs.
@@ -61,9 +70,35 @@ public class TogUtils {
     /** A JavaParser used to pre-process source code to be converted into TOGA input. */
     private static JavaParser javaParser;
 
+    /** Regex to match {@link ReflectionMethodDeclaration#toString()}. */
+    private static final Pattern REFLECTION_METHOD_DECLARATION = Pattern.compile(
+            "^ReflectionMethodDeclaration\\{method=((.*) )?\\S+ \\S+\\(.*}$"
+    );
+
+    /** Regex to match {@link JavassistMethodDeclaration#toString()}. */
+    private static final Pattern JAVASSIST_METHOD_DECLARATION = Pattern.compile(
+            "^JavassistMethodDeclaration\\{ctMethod=.*\\[((.*) )?\\S+ \\(.*\\).*]}$"
+    );
+
+    /** Artificial class name. */
+    private static final String SYNTHETIC_CLASS_NAME = "Tratto__AuxiliaryClass";
+    /** Artificial class source code. */
+    private static final String SYNTHETIC_CLASS_SOURCE = "public class " + SYNTHETIC_CLASS_NAME + " {}";
+    /** Artificial method name. */
+    private static final String SYNTHETIC_METHOD_NAME = "__tratto__auxiliaryMethod";
+    /** Regex to match the binary name of a class (e.g. "package.submodule.InnerClass$OuterClass") */
+    private static final Pattern PACKAGE_CLASS = Pattern.compile("[a-zA-Z_][a-zA-Z\\d_]*(\\.[a-zA-Z_][a-zA-Z\\d_]*)*");
+    /** Regex to match the Javadoc of a method */
+    private static Pattern FOCAL_METHOD = Pattern.compile("(\\s*\\/\\*\\*[.\\s\\S]*?\\*\\/\\s+)?([.\\s\\S]*)");
+
     /** Private constructor to avoid creating an instance of this class. */
     private TogUtils() {
         throw new UnsupportedOperationException("This class cannot be instantiated.");
+    }
+
+    private enum ExpressionType {
+        METHOD_CALL,
+        CONSTRUCTOR_CALL
     }
 
     /**
@@ -80,6 +115,301 @@ public class TogUtils {
         JavaParser javaParser = new JavaParser();
         javaParser.getParserConfiguration().setSymbolResolver(symbolResolver);
         return javaParser;
+    }
+
+    private static Pair<MethodUsage,List<Exception>> searchCandidateMethodUsage(CompilationUnit cuClassFile, Expression lastCallExpr) {
+        List<MethodUsage> method_not_converted = new ArrayList<>();
+        List<MethodDeclaration> method_converted = new ArrayList<>();
+        // Define the focal method. Initially null.
+        MethodUsage focalMethod = null;
+        // Define a list of candidate methods/constructors (methods/constructors with the same name and number of parameters).
+        // Initially empty.
+        List<MethodUsage> candidatesMethodUsage = new ArrayList<>();
+        // Define list of warnings
+        List<Exception> warnings = new ArrayList<>();
+        // Get the name of the focal method
+        String focalMethodName = ((MethodCallExpr) lastCallExpr).getNameAsString();
+        // Get the list of arguments of the focal method
+        NodeList<Expression> focalMethodArgs = ((MethodCallExpr) lastCallExpr).getArguments();
+
+        for(MethodUsage m : cuClassFile.getPrimaryType().get().resolve().getAllMethods()) {
+            try {
+                method_converted.add((MethodDeclaration) m.getDeclaration().toAst().get());
+            } catch(Exception e) {
+                method_not_converted.add(m);
+            }
+        }
+
+        // Iterate over the list of methods/constructors in the class file
+        for (MethodUsage methodUsage : method_not_converted) {
+            // Check if the method/constructor name is the same
+            if (methodUsage.getName().equals(focalMethodName)) {
+                // Check if the number of parameters is the same
+                if (methodUsage.getParamTypes().size() == focalMethodArgs.size()) {
+                    // Add method/constructor to candidates if the previous conditions are satisfied
+                    candidatesMethodUsage.add(methodUsage);
+                }
+            }
+        }
+
+        if (candidatesMethodUsage.size() == 0) {
+            throw new NoSuchElementException("[ERROR] - Focal method not found. No candidate methods found in the original class, analyzing both the name and the number of parameters.");
+        } else if (candidatesMethodUsage.size() == 1) {
+            // If only one candidate method/constructor is found, set the focal method to the candidate method/constructor
+            focalMethod = candidatesMethodUsage.get(0);
+        } else {
+            for (MethodUsage m : candidatesMethodUsage) {
+                // If multiple candidate methods are found, try to discern the focal method by analyzing
+                // the types of the parameters of the focal method call expression and the parameters of the
+                // candidate methods/constructors.
+
+                // Initialize the number of parameters in common to -1 (no parameters in common)
+                int bestParamsTypesInCommon = -1;
+                // Initialize the boolean flag multipleCandidates to false (only one candidate method/constructor is
+                // the most similar to the method call expression)
+                boolean multipleCandidates = false;
+                // Initialize the most similar candidate method/constructor to null
+                MethodUsage mostSimilar = null;
+                // Iterate over the list of candidate methods/constructors
+                for (MethodUsage candidate : candidatesMethodUsage) {
+                    // Get the list of parameters of the candidate method/constructor
+                    List<ResolvedType> paramsTypeList = candidate.getParamTypes();
+                    // Initialize the number of parameters in common with the current candidate to 0
+                    int paramsTypesInCommon = 0;
+                    // Iterate over the list of parameters of the current candidate method/constructor
+                    for (int i = 0; i < paramsTypeList.size(); i++) {
+                        // Get the i-th parameter
+                        ResolvedType paramType = paramsTypeList.get(i);
+                        // Get the type of the i-th parameter of the focal method call in the test
+                        // prefix, as a string
+                        String focalMethodTypeName = focalMethodArgs.get(i).calculateResolvedType().describe();
+                        // Get the type of the i-th parameter of the current candidate method, as a string
+                        String paramTypeName = paramType.describe();
+                        // Compare the parameters type names
+                        if (focalMethodTypeName.endsWith(paramTypeName)) {
+                            // If the type names corresponds, increment the number of parameters in common
+                            paramsTypesInCommon += 1;
+                        }
+                    }
+                    // If the number of parameters in common with the current candidate method/constructor is
+                    // greater or equal to the best number of parameters in common found so far, update the best
+                    // number of parameters in common and assign the current candidate method/constructor to the
+                    // most similar candidate method/constructor
+                    if (paramsTypesInCommon >= bestParamsTypesInCommon) {
+                        if (paramsTypesInCommon == bestParamsTypesInCommon) {
+                            multipleCandidates = true;
+                        } else {
+                            bestParamsTypesInCommon = paramsTypesInCommon;
+                            multipleCandidates = false;
+                            mostSimilar = candidate;
+                        }
+                    }
+                }
+                // If only one candidate method/constructor is the most similar to the focal method call expression, set
+                // the focal method to the most similar candidate method
+                if (!(multipleCandidates || mostSimilar == null)) {
+                    focalMethod = mostSimilar;
+                    if (bestParamsTypesInCommon < focalMethodArgs.size()) {
+                        // If the number of parameters in common is less than the number of parameters of
+                        // the method call expression, log a warning
+                        warnings.add(new IllegalStateException("[WARNING] - Some parameters are not matched in the method call. Check if it is a false or true positive."));
+                    }
+                } else {
+                    // Multiple candidates, impossible to discern
+                    throw new NoSuchElementException("[ERROR] - Multiple candidate methods/constructors found. Impossible to discern the focal method.");
+                }
+            }
+        }
+        return new Pair<>(focalMethod, warnings);
+    }
+
+    private static Pair<CallableDeclaration,List<Exception>> searchCandidateCallableDeclaration(CompilationUnit cuClassFile, Expression lastCallExpr, ExpressionType exprType) {
+        // Define the list of all the callable methods/constructors in the class file. Initially empty.
+        List<? extends CallableDeclaration<?>> classCallableList = new ArrayList<>();
+        // Define the name of the focal method. Initially null.
+        String focalMethodName = null;
+        // Define the list of arguments of the focal method. Initially empty.
+        NodeList<Expression> focalMethodArgs = new NodeList<>();
+        // Define the focal method. Initially null.
+        CallableDeclaration focalMethod = null;
+        // Define a list of candidate methods/constructors (methods/constructors with the same name and number of parameters).
+        // Initially empty.
+        List<CallableDeclaration> candidatesCallables = new ArrayList<>();
+        // Define list of warnings
+        List<Exception> warnings = new ArrayList<>();
+
+        if (exprType == ExpressionType.METHOD_CALL) {
+            classCallableList = cuClassFile.getPrimaryType().orElseThrow().getMethods();
+            focalMethodName = ((MethodCallExpr) lastCallExpr).getNameAsString();
+            focalMethodArgs = ((MethodCallExpr) lastCallExpr).getArguments();
+        } else if (exprType == ExpressionType.CONSTRUCTOR_CALL) {
+            classCallableList = cuClassFile.getPrimaryType().orElseThrow().getConstructors();
+            focalMethodName = ((ObjectCreationExpr) lastCallExpr).getTypeAsString();
+            focalMethodArgs = ((ObjectCreationExpr) lastCallExpr).getArguments();
+        }
+
+        // Iterate over the list of methods/constructors in the class file
+        for (CallableDeclaration callable : classCallableList) {
+            // Check if the method/constructor name is the same
+            if (callable.getNameAsString().equals(focalMethodName)) {
+                // Check if the number of parameters is the same
+                if (callable.getParameters().size() == focalMethodArgs.size()) {
+                    // Add method/constructor to candidates if the previous conditions are satisfied
+                    candidatesCallables.add(callable);
+                }
+            }
+        }
+        // If no candidate methods are found, throw an exception (focal method not found)
+        if (candidatesCallables.size() == 0) {
+            return new Pair<>(focalMethod, new ArrayList<>());
+        } else if (candidatesCallables.size() == 1) {
+            // If only one candidate method/constructor is found, set the focal method to the candidate method/constructor
+            focalMethod = candidatesCallables.get(0);
+        } else {
+            // If multiple candidate methods are found, try to discern the focal method by analyzing
+            // the types of the parameters of the focal method call expression and the parameters of the
+            // candidate methods/constructors.
+
+            // Initialize the number of parameters in common to -1 (no parameters in common)
+            int bestParamsTypesInCommon = -1;
+            // Initialize the boolean flag multipleCandidates to false (only one candidate method/constructor is
+            // the most similar to the method call expression)
+            boolean multipleCandidates = false;
+            // Initialize the most similar candidate method/constructor to null
+            CallableDeclaration mostSimilar = null;
+            // Iterate over the list of candidate methods/constructors
+            for (CallableDeclaration callable : candidatesCallables) {
+                // Get the list of parameters of the candidate method/constructor
+                NodeList<com.github.javaparser.ast.body.Parameter> paramsList = callable.getParameters();
+                // Initialize the number of parameters in common with the current candidate to 0
+                int paramsTypesInCommon = 0;
+                // Iterate over the list of parameters of the current candidate method/constructor
+                for (int i = 0; i < paramsList.size(); i++) {
+                    // Get the i-th parameter
+                    com.github.javaparser.ast.body.Parameter param = paramsList.get(i);
+                    // Get the type of the i-th parameter of the focal method call in the test
+                    // prefix, as a string
+                    String focalMethodTypeName = focalMethodArgs.get(i).calculateResolvedType().describe();
+                    // Get the type of the i-th parameter of the current candidate method, as a string
+                    String paramTypeName = param.getTypeAsString();
+                    // Compare the parameters type names
+                    if (focalMethodTypeName.endsWith(paramTypeName)) {
+                        // If the type names corresponds, increment the number of parameters in common
+                        paramsTypesInCommon += 1;
+                    }
+                }
+                // If the number of parameters in common with the current candidate method/constructor is
+                // greater or equal to the best number of parameters in common found so far, update the best
+                // number of parameters in common and assign the current candidate method/constructor to the
+                // most similar candidate method/constructor
+                if (paramsTypesInCommon >= bestParamsTypesInCommon) {
+                    if (paramsTypesInCommon == bestParamsTypesInCommon) {
+                        multipleCandidates = true;
+                    } else {
+                        bestParamsTypesInCommon = paramsTypesInCommon;
+                        multipleCandidates = false;
+                        mostSimilar = callable;
+                    }
+                }
+            }
+            // If only one candidate method/constructor is the most similar to the focal method call expression, set
+            // the focal method to the most similar candidate method
+            if (!(multipleCandidates || mostSimilar == null)) {
+                focalMethod = mostSimilar;
+                if (bestParamsTypesInCommon < focalMethodArgs.size()) {
+                    // If the number of parameters in common is less than the number of parameters of
+                    // the method call expression, log a warning
+                    warnings.add(new IllegalStateException("[WARNING] - Some parameters are not matched in the method call. Check if it is a false or true positive."));
+                }
+            } else {
+                // Multiple candidates, impossible to discern
+                throw new NoSuchElementException("[ERROR] - Multiple candidate methods/constructors found. Impossible to discern the focal method.");
+            }
+        }
+        return new Pair<>(focalMethod, warnings);
+    }
+
+    private static Pair<CallableDeclaration,List<Exception>> resolveCallExpression(CompilationUnit cuClassFile, Expression callExpr, ExpressionType exprType) {
+        // Define the focal method. Initially null.
+        CallableDeclaration focalMethod = null;
+        try {
+            if (exprType == ExpressionType.METHOD_CALL) {
+                // Try to resolve the method call expression to a method declaration
+                MethodCallExpr methodCallExpr = callExpr.asMethodCallExpr();
+                focalMethod = (MethodDeclaration) methodCallExpr.resolve().toAst().orElseThrow(() -> new UnsolvedSymbolException(methodCallExpr.getNameAsString()));
+                return new Pair<>(focalMethod, new ArrayList<>());
+            } else if (exprType == ExpressionType.CONSTRUCTOR_CALL) {
+                // Try to resolve the constructor call expression to a constructor declaration
+                ObjectCreationExpr constructorCallExpr = callExpr.asObjectCreationExpr();
+                focalMethod = (ConstructorDeclaration) constructorCallExpr.resolve().toAst().orElse(null);
+                return new Pair<>(focalMethod, new ArrayList<>());
+            }
+        } catch (UnsolvedSymbolException e) {
+            // The method call expression could not be resolved to a method declaration by
+            // Java Symbol Solver
+            focalMethod = null;
+        }
+        // If the method call expression could not be resolved to a method declaration by Java
+        // Symbol Solver, try to find the method declaration by comparing the method call expression
+        // with the list of methods in the class file (analyzing the signature and the number and types
+        // of the parameters.
+        if (focalMethod == null) {
+            return searchCandidateCallableDeclaration(cuClassFile, callExpr, exprType);
+        }
+        return new Pair<>(focalMethod, new ArrayList<>());
+    }
+
+    private static Pair<CallableDeclaration,List<Exception>> getCallableFocalMethod(CompilationUnit cuClassFile, Expression lastCallExpr)  throws IllegalStateException {
+        // Define the focal method. Initially null.
+        CallableDeclaration focalMethod = null;
+        // Define list of warnings
+        List<Exception> warnings = new ArrayList<>();
+
+        Pair<Expression, ExpressionType> result = parseExpression(lastCallExpr);
+        Expression parsedExpr = result.a;
+        ExpressionType exprType = result.b;
+        // Resolve the expression to a method/constructor declaration
+        return resolveCallExpression(cuClassFile, parsedExpr, exprType);
+    }
+
+    private static Pair<Expression,ExpressionType> parseExpression(Expression expr) {
+        Expression parsedExpr = expr;
+        if (expr.isAssignExpr()) {
+            // Get the value of the assignment expression
+            parsedExpr = expr.asAssignExpr().getValue();
+        } else if (expr.isVariableDeclarationExpr()) {
+            parsedExpr = expr.asVariableDeclarationExpr().getVariable(0).getInitializer().orElseThrow(() -> new IllegalStateException(String.format("[ERROR] - Last statement in test is a variable declaration, but the inizializer cannot be resolved.")));
+        }
+        if (parsedExpr.isCastExpr()) {
+            // Get the expression of the cast expression
+            parsedExpr = parsedExpr.asCastExpr().getExpression();
+        }
+        // Check if the last expression is a method call or a constructor call
+        if (parsedExpr.isMethodCallExpr()) {
+            return new Pair<>(parsedExpr, ExpressionType.METHOD_CALL);
+        } else if (parsedExpr.isObjectCreationExpr()) {
+            return new Pair<>(parsedExpr, ExpressionType.CONSTRUCTOR_CALL);
+        } else {
+            throw new IllegalStateException(String.format("[ERROR] - Unable to parse last statement as a MethodCallExpr or an ObjectCreationExpr statement."));
+        }
+    }
+
+    private static String getClassFullyQualifiedNameFromExpression(Expression expr) {
+        try {
+            if (expr.isMethodCallExpr()) {
+                String methodFQN = expr.asMethodCallExpr().resolve().getQualifiedName();
+                if (methodFQN.contains("java.lang.Object")) {
+                    throw new IllegalStateException("[ERROR] - Unable to manage built-in java classes.");
+                }
+                return methodFQN.substring(0, methodFQN.lastIndexOf("."));
+            } else if (expr.isObjectCreationExpr()) {
+                return expr.asObjectCreationExpr().getType().resolve().describe();
+            } else {
+                throw new IllegalStateException("[ERROR] - Unable to get the fully qualified name from the expression.");
+            }
+        } catch (UnsolvedSymbolException e) {
+            throw new UnsolvedSymbolException("[ERROR] - Unable to resolve the expression and get the fully qualified name of the corresponding class.");
+        }
     }
 
     /**
@@ -101,8 +431,8 @@ public class TogUtils {
      */
     public static void generateTOGAInput(Path srcDirPath, String fullyQualifiedClassName) {
         javaParser = getJavaParser(srcDirPath);
-        Path prefixPath = output.resolve(Paths.get("toga", "input"));
-        Path errorPath = output.resolve(Paths.get("toga", "err"));
+        Path prefixPath = output.resolve(Paths.get("toga-input"));
+        Path errorPath = output.resolve(Paths.get("toga-err"));
         Path togaInputPath = prefixPath.resolve("toga_input.csv");
         Path togaMetadataPath = prefixPath.resolve("toga_metadata.csv");
         Path togaInfoPath = prefixPath.resolve("toga_info.json");
@@ -111,7 +441,7 @@ public class TogUtils {
         String className = FileUtils.getSimpleNameFromFQN(fullyQualifiedClassName);
         int classNameIdx = fullyQualifiedClassNamePath.getNameCount() - 1;
         Path fullyQualifiedTestClassNamePath = classNameIdx > 0 ?
-                fullyQualifiedClassNamePath.subpath(0, classNameIdx).resolve(className + "Test.java") :
+                fullyQualifiedClassNamePath.subpath(0, classNameIdx).resolve(className + "_ESTest.java") :
                 Paths.get(className);
         Path classFilePath = srcDirPath.resolve(fullyQualifiedClassNamePath);
         Path testClassFilePath = evosuiteTestsSimplePath.resolve(fullyQualifiedTestClassNamePath);
@@ -129,7 +459,7 @@ public class TogUtils {
         }
 
         try {
-            CompilationUnit cuClassFile = javaParser.parse(classFilePath).getResult().orElseThrow();
+            final CompilationUnit cuClassFile = javaParser.parse(classFilePath).getResult().orElseThrow();
             CompilationUnit cuTestClassFile = javaParser.parse(testClassFilePath).getResult().orElseThrow();
             CompilationUnit cuTestClassPrefixFile = javaParser.parse(testClassPrefixFilePath).getResult().orElseThrow();
             Map<String, Map<String,String>> togaInfo = new HashMap<>();
@@ -138,122 +468,140 @@ public class TogUtils {
             StringBuilder togaErrBuilder = new StringBuilder();
             togaInputBuilder.append("focal_method,test_prefix,docstring\n");
             togaMetadataBuilder.append("project,bug_num,test_name,exception_bug,assertion_bug,exception_lbl,assertion_lbl,assert_err\n");
+
             cuTestClassPrefixFile.findAll(MethodDeclaration.class).forEach(testPrefix -> {
-                CallableDeclaration mut = null;
+                // Define the focal method to find (the last method call in the test). Initially null.
+                // The focal method must be a method declaration or a constructor declaration.
+                CallableDeclaration focalMethod = null;
+                // The name of the focal method. Initially empty.
+                String methodName = "";
+                // The signature of the focal method. Initially empty.
+                String focalMethodSignature = "";
+                // The entire method body of the focal method. Initially empty.
+                String focalMethodBody = "";
+                // The Javadoc of the focal method. Initially empty.
+                String javadocString = "";
+                // Get the name of the test
                 String testName = testPrefix.getNameAsString();
+                // Map representing each row of the toga_info.json file. Each row is the input to the toga model.
+                // The key is the test name, and the value is string composed of the test prefix, the focal method, and
+                // the Javadoc, if present.
                 Map<String, String> togaRow = new HashMap<>();
+                // Assume the compilation unit of the last statement to be the one of the class under test.
+                // It will be updated if the last statement is a method call or a constructor call of another class.
+                CompilationUnit cuLastStatementClassFile = cuClassFile;
                 try {
-                    List<MethodCallExpr> methodCallExpressions = testPrefix.getBody().orElseThrow().findAll(MethodCallExpr.class);
-                    if (methodCallExpressions.size() > 0) {
-                        MethodCallExpr lastMethodCallExpression = methodCallExpressions.get(methodCallExpressions.size() - 1);
-
-                        try {
-                            mut = (MethodDeclaration) lastMethodCallExpression.resolve().toAst().orElse(null);
-                        } catch (UnsolvedSymbolException e) {
-                            mut = null;
-                        }
-
-                        if (mut == null) {
-                            List<MethodDeclaration> classMethodsList = cuClassFile.getPrimaryType().orElseThrow().getMethods();
-                            List<MethodDeclaration> candidatesMethods = new ArrayList<>();
-
-                            for (MethodDeclaration method : classMethodsList) {
-                                // Check if the method name is the same
-                                if (method.getNameAsString().equals(lastMethodCallExpression.getNameAsString())) {
-                                    // Check if the number of parameters is the same
-                                    if (method.getParameters().size() == lastMethodCallExpression.getArguments().size()) {
-                                        // Add method to candidates if the previous conditions are satisfied
-                                        candidatesMethods.add(method);
-                                    }
-                                }
+                    // Get the list of all the statements within the test
+                    NodeList<Statement> statements = testPrefix
+                            .getBody()
+                            .orElseThrow(() -> new IllegalStateException(String.format("Cannot retrieve block statements from test %s.", testName)))
+                            .getStatements();
+                    // Throw an exception if no statements are found (empty test)
+                    if (statements.size() <= 0) {
+                        throw new IllegalStateException(String.format("No statements found in test %s.", testName));
+                    }
+                    // Define the last expression statement in the test. Initially null.
+                    ExpressionStmt lastExpressionStmt = null;
+                    // Check if the last statement is an expression statement (a method call or a constructor call must
+                    // be an expression statement.
+                    for (int i = statements.size() - 1; i >= 0; i--) {
+                        Statement lastStatement = statements.get(i);
+                        if (lastStatement.isExpressionStmt()) {
+                            lastExpressionStmt = lastStatement.asExpressionStmt();
+                            if (i < (statements.size() - 1)) {
+                                // If the last statement is an expression statement, log a warning
+                                togaErrBuilder.append(generateLogTogaInputError(testPrefix, fullyQualifiedClassName, "WARNING", new IllegalStateException("[WARNING] - The last statement in the test is not the last statement in the block. Check if the focal method is correct")));
                             }
-
-                            if (candidatesMethods.size() == 0) {
-                                throw new NoSuchElementException();
-                            } else if (candidatesMethods.size() == 1) {
-                                mut = candidatesMethods.get(0);
-                            } else {
-                                int bestParamsTypesInCommon = -1;
-                                boolean multipleCandidates = false;
-                                MethodDeclaration mostSimilar = null;
-                                for (MethodDeclaration method : candidatesMethods) {
-                                    NodeList<com.github.javaparser.ast.body.Parameter> paramsList = method.getParameters();
-                                    int paramsTypesInCommon = 0;
-                                    for (int i = 0; i < paramsList.size(); i++) {
-                                        com.github.javaparser.ast.body.Parameter param = paramsList.get(i);
-                                        String lastMethodTypeName = lastMethodCallExpression.getArguments().get(i).calculateResolvedType().describe();
-                                        String paramTypeName = param.getTypeAsString();
-                                        if (lastMethodTypeName.endsWith(paramTypeName)) {
-                                            paramsTypesInCommon += 1;
-                                        }
-                                    }
-                                    if (paramsTypesInCommon >= bestParamsTypesInCommon) {
-                                        if (paramsTypesInCommon == bestParamsTypesInCommon) {
-                                            multipleCandidates = true;
-                                        } else {
-                                            bestParamsTypesInCommon = paramsTypesInCommon;
-                                            multipleCandidates = false;
-                                            mostSimilar = method;
-                                        }
-                                    }
-                                }
-                                if (!(multipleCandidates || mostSimilar == null)) {
-                                    mut = mostSimilar;
-                                } else {
-                                    // Multiple candidates, impossible to discern
-                                    throw new NoSuchElementException();
-                                }
-                            }
-                        }
-                    } else {
-                        List<ObjectCreationExpr> constructorCallExpressions = testPrefix.getBody().get().findAll(ObjectCreationExpr.class);
-                        if (constructorCallExpressions.size() > 0 ) {
-                            ObjectCreationExpr lastConstructorCallExpression = constructorCallExpressions.get(constructorCallExpressions.size() - 1);
-                            try {
-                                mut = (ConstructorDeclaration) lastConstructorCallExpression.resolve().toAst().orElse(null);
-                            } catch (UnsolvedSymbolException e) {
-                                mut = null;
-                            }
-                        } else {
-                            String testPrefixStr = testPrefix.toString().replace("\"", "\"\"");
-                            togaErrBuilder.append(generateLogTogaInputError(testPrefix, fullyQualifiedClassName, "NoMethodCallException"));
-                            String errMsg = String.format(
-                                    "Method call not found in test %s for class %s",
-                                    testPrefix.getNameAsString(),
-                                    fullyQualifiedClassName
-                            );
-                            System.err.println(errMsg);
+                            break;
                         }
                     }
+                    // If no expression statement is found, throw an exception (empty test)
+                    if (lastExpressionStmt == null) {
+                        throw new IllegalStateException(String.format("No expression statement found in test %s.", testName));
+                    }
+                    // Get the expression in the last expression statement
+                    Expression lastExpression = lastExpressionStmt.getExpression();
 
-                    if (mut != null) {
-                        MethodDeclaration test = cuTestClassFile
+                    try {
+                        String fullyQualifiedNameLastExpression = getClassFullyQualifiedNameFromExpression(parseExpression(lastExpression).a);
+
+                        if (!fullyQualifiedNameLastExpression.equals(fullyQualifiedClassName)) {
+                            Path fullyQualifiedClassNameLastExpressionPath = FileUtils.getFQNPath(fullyQualifiedNameLastExpression);
+                            Path classFileLastExpressionPath = srcDirPath.resolve(fullyQualifiedClassNameLastExpressionPath);
+                            cuLastStatementClassFile = javaParser.parse(classFileLastExpressionPath).getResult().orElseThrow(() -> new IllegalStateException(String.format("Cannot parse class file %s of last statement.", fullyQualifiedClassNameLastExpressionPath.toString())));
+                            togaErrBuilder.append(generateLogTogaInputError(testPrefix, fullyQualifiedClassName, "WARNING", new IllegalStateException("[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.")));
+                        }
+                    } catch (UnsolvedSymbolException | IllegalStateException e) {}
+
+                    // Get the focal method
+                    Pair<CallableDeclaration, List<Exception>> result = getCallableFocalMethod(cuLastStatementClassFile, lastExpression);
+                    focalMethod = result.a;
+                    togaErrBuilder.append(result.b.stream().map(e -> generateLogTogaInputError(testPrefix, fullyQualifiedClassName, "WARNING", e)).collect(Collectors.joining()));
+                    // If the focal method is still not found, search it within the inherited methods
+                    if (focalMethod == null) {
+                        Pair<MethodUsage,List<Exception>> resultMethodUsage = searchCandidateMethodUsage(cuLastStatementClassFile, lastExpression);
+                        MethodUsage focalMethodUsage = resultMethodUsage.a;
+                        togaErrBuilder.append(resultMethodUsage.b.stream().map(e -> generateLogTogaInputError(testPrefix, fullyQualifiedClassName, "WARNING", e)).collect(Collectors.joining()));
+                        getMethodSignature(focalMethodUsage);
+                        // If the focal method is found, get the information of the focal method
+                        methodName = focalMethodUsage.getName();
+                        focalMethodSignature = getMethodSignature(focalMethodUsage);
+                        Matcher matcher = FOCAL_METHOD.matcher(focalMethodUsage.toString());
+                        if (matcher.find()) {
+                            // Extract the Javadoc comment
+                            if (matcher.group(1) != null) {
+                                javadocString = matcher.group(1).replace("\"", "\"\"").trim();;
+                            }
+                            focalMethodBody = matcher.group(2).replace("\"", "\"\"").trim();
+                        }
+                    } else {
+                        methodName = focalMethod.getNameAsString();
+                        focalMethodSignature = getCallableSignature(focalMethod);
+                        Matcher matcher = FOCAL_METHOD.matcher(focalMethod.toString());
+                        if (matcher.find()) {
+                            // Extract the Javadoc comment
+                            if (matcher.group(1) != null) {
+                                javadocString = matcher.group(1).replace("\"", "\"\"").trim();;
+                            }
+                            focalMethodBody = matcher.group(2).replace("\"", "\"\"").trim();
+                        }
+                    }
+                    // If the focal method is found, get the test and the Javadoc of the focal method
+                    if (focalMethod != null) {
+                        List<MethodDeclaration> tests = cuTestClassFile
                                 .findAll(MethodDeclaration.class)
                                 .stream()
                                 .filter(t -> t.getNameAsString().equals(testName))
-                                .toList()
-                                .get(0);
-                        String methodName = mut.getNameAsString();
-                        String focalMethod = getCallableSignature(mut);
-                        String javadocString = getCallableJavadoc(mut).replace("\"", "\"\"");
-                        String testStr = test.toString().replace("\"", "\"\"");
-                        String testPrefixStr = testPrefix.toString();
-                        Matcher matcher = testPrefixPattern.matcher(testPrefix.toString());
-                        if (matcher.find()) {
-                            int startIdx = matcher.start();
-                            testStr = testStr.substring(startIdx);
+                                .toList();
+                        if (tests.size() > 0) {
+                            MethodDeclaration test = tests.get(0);
+                            String testStr = test.toString().replace("\"", "\"\"");
+                            String testPrefixStr = testPrefix.toString();
+                            Matcher matcher = testPrefixPattern.matcher(testPrefix.toString());
+                            if (matcher.find()) {
+                                int startIdx = matcher.start();
+                                testStr = testStr.substring(startIdx);
+                            }
+                            togaInputBuilder.append(String.format("\"%s\",\"%s\",\"%s\"\n", focalMethodBody, testStr, javadocString));
+                            togaMetadataBuilder.append(String.format("project,0,%s,0,0,False,\"\",\"\"\n", testName));
+                            togaRow.put("className", cuClassFile.getPrimaryType().orElseThrow().getFullyQualifiedName().orElseThrow());
+                            togaRow.put("methodName", methodName);
+                            togaRow.put("methodSignature", focalMethodSignature);
+                            togaRow.put("testPrefix", testPrefixStr);
+                            togaRow.put("testName", testName);
+                            togaInfo.put(testName, togaRow);
                         }
-                        togaInputBuilder.append(String.format("\"%s {}\",\"%s\",\"%s\"\n", focalMethod, testStr, javadocString));
-                        togaMetadataBuilder.append(String.format("project,0,%s,0,0,False,\"\",\"\"\n", testName));
-                        togaRow.put("className", cuClassFile.getPrimaryType().orElseThrow().getFullyQualifiedName().orElseThrow());
-                        togaRow.put("methodName", methodName);
-                        togaRow.put("methodSignature", focalMethod);
-                        togaRow.put("testPrefix", testPrefixStr);
-                        togaRow.put("testName", testName);
-                        togaInfo.put(testName, togaRow);
+                    } else {
+                        Pair<MethodUsage,List<Exception>> resultMethodUsage = searchCandidateMethodUsage(cuLastStatementClassFile, lastExpression);
+                        MethodUsage focalMethodUsage = resultMethodUsage.a;
+                        togaErrBuilder.append(resultMethodUsage.b.stream().map(e -> generateLogTogaInputError(testPrefix, fullyQualifiedClassName, "WARNING", e)).collect(Collectors.joining()));
+                        getMethodSignature(focalMethodUsage);
                     }
-                } catch (NoSuchElementException | UnsolvedSymbolException e) {
-                    togaErrBuilder.append(generateLogTogaInputError(testPrefix, fullyQualifiedClassName, e.getClass().getName()));
+                } catch (IllegalStateException e) {
+                    togaErrBuilder.append(generateLogTogaInputError(testPrefix, fullyQualifiedClassName, "ERROR", e));
+                    System.err.println(e.getMessage());
+                } catch (Exception e) {
+                    togaErrBuilder.append(generateLogTogaInputError(testPrefix, fullyQualifiedClassName, "ERROR",e));
                     String errMsg = String.format(
                             "Focal method not found in test %s for class %s",
                             testPrefix.getNameAsString(),
@@ -277,13 +625,14 @@ public class TogUtils {
      *
      * @param testPrefix the test prefix that triggers an error.
      * @param fullyQualifiedClassName the fully qualified name of the class under test
-     * @param errStr the error to log
+     * @param errorType the type of error
+     * @param e the Exception
      * @return A string in the forms of a csv row (separated by semicolons), containing the
      * test prefix, the fully qualified name, and the error.
      */
-    private static String generateLogTogaInputError(MethodDeclaration testPrefix, String fullyQualifiedClassName, String errStr) {
+    private static String generateLogTogaInputError(MethodDeclaration testPrefix, String fullyQualifiedClassName, String errorType, Exception e) {
         String testPrefixStr = testPrefix.toString().replace("\"", "\"\"");
-        return String.format("%s,%s,%s\n", fullyQualifiedClassName, testPrefixStr, errStr);
+        return String.format("%s,%s,%s,%s,%s\n", fullyQualifiedClassName, testPrefixStr, errorType, e.getClass().getName(), e.getMessage());
     }
 
     /**
@@ -323,6 +672,32 @@ public class TogUtils {
             }
         }
         return "";
+    }
+
+    public static void countTestMethods(Path srcDirPath, String projectName, String projectBugID, String fullyQualifiedClassName) {
+        javaParser = getJavaParser(srcDirPath);
+        Path filePath = output.resolve(Paths.get("test_method_count.json"));
+        List<TestMethodsCount> testMethodsCountList = new ArrayList<>();
+        try {
+            testMethodsCountList = FileUtils.readJSONList(filePath, TestMethodsCount.class);
+        } catch (Error e) {}
+
+        Path fullyQualifiedClassNamePath = FileUtils.getFQNPath(fullyQualifiedClassName);
+        String className = FileUtils.getSimpleNameFromFQN(fullyQualifiedClassName);
+        int classNameIdx = fullyQualifiedClassNamePath.getNameCount() - 1;
+        Path fullyQualifiedTestClassNamePath = classNameIdx > 0 ?
+                fullyQualifiedClassNamePath.subpath(0, classNameIdx).resolve(className + "_ESTest.java") :
+                Paths.get(className);
+        Path testClassFilePath = evosuitePrefixPath.resolve(fullyQualifiedTestClassNamePath);
+        try {
+            CompilationUnit cuTestClassFile = javaParser.parse(testClassFilePath).getResult().orElseThrow();
+            int methodsNum = cuTestClassFile.findAll(MethodDeclaration.class).size();
+            testMethodsCountList.add(new TestMethodsCount(fullyQualifiedClassName, projectName, projectBugID, methodsNum));
+            FileUtils.writeJSON(filePath, testMethodsCountList);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new Error(e.getMessage());
+        }
     }
 
     /**
@@ -407,24 +782,250 @@ public class TogUtils {
     }
 
     /**
+     * Gets the method signature from a JavaParser MethodUsage. Unfortunately,
+     * depending on the implementation of the ResolvedMethodDeclaration, it is
+     * not possible to recover specific features, such as:
+     * <ul>
+     *     <li>Modifiers</li>
+     *     <li>Annotations</li>
+     *     <li>Parameter names</li>
+     * </ul>
+     * This method considers three implementations of
+     * ResolvedMethodDeclaration: JavaParserMethodDeclaration,
+     * ReflectionMethodDeclaration, and JavassistMethodDeclaration. A
+     * signature follows the format:
+     *     "[modifiers] [typeParameters] [type] [methodName]([parameters]) throws [exceptions]"
+     * All type names do not use package names for compatibility with the
+     * XText grammar.
+     */
+    public static String getMethodSignature(
+            MethodUsage methodUsage
+    ) {
+        ResolvedMethodDeclaration methodDeclaration = methodUsage.getDeclaration();
+        // Consider JavaParserMethodDeclaration.
+        if (methodDeclaration instanceof JavaParserMethodDeclaration jpMethodDeclaration) {
+            MethodDeclaration jpMethod = jpMethodDeclaration.getWrappedNode();
+            return getMethodSignature(jpMethod);
+        }
+        String methodModifiers = getMethodModifiers(methodDeclaration);
+        List<String> typeParameterList = getTypeParameters(methodUsage);
+        List<String> formalParameterList = getParameters(methodUsage);
+        List<String> exceptionList = getExceptions(methodUsage);
+        return (methodModifiers + " " + (typeParameterList.isEmpty() ? "" : "<" + String.join(", ", typeParameterList) + ">") +
+                " " + getTypeWithoutPackages(methodDeclaration.getReturnType()) +
+                " " + methodDeclaration.getName() +
+                "(" + String.join(", ", formalParameterList) + ")" +
+                (exceptionList.isEmpty() ? "" : " throws " + String.join(", ", exceptionList)))
+                .replaceAll(" +", " ").trim();
+    }
+
+    /**
+     * Gets all type parameters of a given method as declared in source code.
+     */
+    private static List<String> getTypeParameters(MethodUsage methodUsage) {
+        return methodUsage.getDeclaration().getTypeParameters()
+                .stream()
+                .map(ResolvedTypeParameterDeclaration::getName)
+                .toList();
+    }
+
+    /**
+     * Gets all formal parameters in the method definition. This method
+     * returns the type of each parameter, followed by an artificial name. For
+     * example,
+     *     "MethodUsage[get(int i)]"    &rarr;    "List.of("int arg1")"
+     */
+    private static List<String> getParameters(MethodUsage methodUsage) {
+        ResolvedMethodDeclaration methodDeclaration = methodUsage.getDeclaration();
+        // iterate through each parameter in the method declaration.
+        List<String> methodParameters = new ArrayList<>();
+        for (int i = 0; i < methodDeclaration.getNumberOfParams(); i++) {
+            methodParameters.add(getTypeWithoutPackages(methodDeclaration.getParam(i).getType()) + " arg" + i);
+        }
+        return methodParameters;
+    }
+
+    /**
+     * Gets the simple names of all exceptions that can be thrown by a given
+     * method.
+     */
+    private static List<String> getExceptions(MethodUsage methodUsage) {
+        List<ResolvedType> exceptions = methodUsage.getDeclaration().getSpecifiedExceptions();
+        return mapList(TogUtils::getTypeWithoutPackages, exceptions);
+    }
+
+    /**
+     * A resolved type may be void, primitive, an array, a reference type, etc.
+     * (including arrays of reference types). If the type involves a reference
+     * type, this method returns the fully qualified name without packages.
+     *
+     * @param resolvedType JavaParser resolved type
+     * @return the name of a type without packages. If the resolved type is an
+     * array of reference types, then this method removes the packages from
+     * the fully qualified name of the element types.
+     */
+    public static String getTypeWithoutPackages(ResolvedType resolvedType) {
+        String typeName = resolvedType.describe();
+        ResolvedType elementType = getElementType(resolvedType);
+        if (elementType.isReferenceType()) {
+            // use the original type name to avoid removing array brackets
+            return getTypeWithoutPackages(typeName);
+        } else {
+            return typeName;
+        }
+    }
+
+    /**
+     * Returns the element of a resolved type. Recursively strips all array
+     * variables. For example:
+     *     Object[][] => Object
+     *
+     * @param resolvedType a type
+     * @return the element type
+     */
+    public static ResolvedType getElementType(ResolvedType resolvedType) {
+        while (resolvedType.isArray()) {
+            resolvedType = resolvedType.asArrayType().getComponentType();
+        }
+        return resolvedType;
+    }
+
+    /**
+     * Removes the package name from a fully qualified name of a type for
+     * compatibility with the XText grammar. Also removes package from type
+     * parameters.
+     *
+     * @param fullyQualifiedName a fully qualified name of a type
+     * @return the type name without packages. Includes outer classes, e.g.,
+     *     package.Outer.Inner    =>    Outer.Inner
+     */
+    public static String getTypeWithoutPackages(String fullyQualifiedName) {
+        // regex is used instead of String.lastIndexOf to avoid removing outer classes
+        Matcher matcher = PACKAGE_CLASS.matcher(fullyQualifiedName);
+        // continuously remove packages until none remain
+        while (matcher.find()) {
+            if (matcher.group().contains(".")) {
+                // gets the class name using a JavaParser ResolvedReferenceTypeDeclaration
+                String classNameWithoutPackages = getResolvedReferenceTypeDeclaration(matcher.group())
+                        .getClassName();
+                // replaces all instances of the fully qualified name with the JavaParser type name
+                fullyQualifiedName = fullyQualifiedName.replaceAll(
+                        matcher.group(),
+                        classNameWithoutPackages
+                );
+            }
+        }
+        return fullyQualifiedName;
+    }
+
+    /**
+     * Returns the {@link ResolvedReferenceTypeDeclaration} of a given fully
+     * qualified type name.
+     *
+     * @param fqName fully qualified type name, e.g., {@code java.util.List}
+     * @return the corresponding JavaParser ResolvedReferenceTypeDeclaration
+     * @throws UnsolvedSymbolException if the type cannot be resolved
+     * @throws UnsupportedOperationException if the type is an array or
+     * primitive type
+     */
+    public static ResolvedReferenceTypeDeclaration getResolvedReferenceTypeDeclaration(String fqName) throws UnsolvedSymbolException, UnsupportedOperationException {
+        return getResolvedType(fqName).asReferenceType().getTypeDeclaration().get();
+    }
+
+    public static TypeDeclaration<?> getClassOrInterface(CompilationUnit cu, String name) {
+        try {
+            List<ClassOrInterfaceDeclaration> classOrInterfaceList = cu.getLocalDeclarationFromClassname(name);
+            if (!classOrInterfaceList.isEmpty()) {
+                return classOrInterfaceList.get(0);
+            }
+        } catch (NoSuchElementException ignored) {
+            // There are other alternatives to retrieve class, interface, etc., as below
+        }
+        Optional<ClassOrInterfaceDeclaration> classOrInterface = cu.getClassByName(name);
+        if (classOrInterface.isPresent()) {
+            return classOrInterface.get();
+        }
+        Optional<ClassOrInterfaceDeclaration> interface0 = cu.getInterfaceByName(name);
+        if (interface0.isPresent()) {
+            return interface0.get();
+        }
+        Optional<EnumDeclaration> enum0 = cu.getEnumByName(name);
+        if (enum0.isPresent()) {
+            return enum0.get();
+        }
+        Optional<AnnotationDeclaration> annotation = cu.getAnnotationDeclarationByName(name);
+        if (annotation.isPresent()) {
+            return annotation.get();
+        }
+        throw new RuntimeException("Could not find class, interface, enum or annotation '" + name + "' in compilation unit.");
+    }
+
+    // TODO: Check that this method is not called with binary names as argument
+    /**
+     * @param fqName fully qualified name, e.g., {@code java.util.List}
+     */
+    public static ResolvedType getResolvedType(String fqName) throws UnsupportedOperationException {
+        CompilationUnit cu = javaParser.parse(SYNTHETIC_CLASS_SOURCE).getResult().get();
+        BlockStmt syntheticMethodBody = getClassOrInterface(cu, SYNTHETIC_CLASS_NAME).addMethod(SYNTHETIC_METHOD_NAME).getBody().get();
+        syntheticMethodBody.addStatement(fqName + " type1Var;");
+        return getClassOrInterface(cu, SYNTHETIC_CLASS_NAME)
+                .getMethodsByName(SYNTHETIC_METHOD_NAME).get(0)
+                .getBody().get()
+                .getStatements().getLast().get()
+                .asExpressionStmt().getExpression()
+                .asVariableDeclarationExpr().getVariables().get(0)
+                .resolve().getType();
+    }
+
+    /**
+     * Gets the modifiers of a JavaParser MethodUsage. Unfortunately, the
+     * implementations of ResolvedMethodDeclaration have different approaches
+     * for storing modifier information. This method uses regexes to handle
+     * retrieving this information from {@link ReflectionMethodDeclaration} or
+     * {@link JavassistMethodDeclaration} implementations of
+     * ResolvedMethodDeclaration.
+     *
+     * @param methodDeclaration a resolved method declaration. Must be either
+     *                          {@link ReflectionMethodDeclaration} or
+     *                          {@link JavassistMethodDeclaration}.
+     * @return the modifiers of the method
+     */
+    private static String getMethodModifiers(ResolvedMethodDeclaration methodDeclaration) {
+        Matcher reflectionMatcher = REFLECTION_METHOD_DECLARATION.matcher(methodDeclaration.toString());
+        Matcher javassistMatcher = JAVASSIST_METHOD_DECLARATION.matcher(methodDeclaration.toString());
+        if (!reflectionMatcher.find() && !javassistMatcher.find()) {
+            throw new IllegalStateException("Could not parse method signature: " + methodDeclaration);
+        }
+        String methodModifiers;
+        if (methodDeclaration instanceof ReflectionMethodDeclaration) {
+            methodModifiers = reflectionMatcher.group(1);
+        } else {
+            methodModifiers = javassistMatcher.group(1);
+        }
+        if (methodModifiers == null) {
+            methodModifiers = "";
+        }
+        return methodModifiers;
+    }
+
+    /**
      * Transforms the output from the TOGA script (a .csv file where each row contains the
      * assertion for a given focal method and test prefix) into a json file containing a
-     * corresponding list of {@code OracleOutput} objects.
-     * Saves the output file in output/toga/oracle.
+     * corresponding list of {@link OracleOutput} records.
+     * Saves the output file to "output/toga-oracles/package-name/MyClass_Oracle.json".
      * @see OracleOutput
-     * @param srcDirPath the path to the source code of the project under test
+     * @param togaPath the output JSON file generated by JDoctor
      */
-    public static void togaToOracleOutput(Path srcDirPath) {
-        javaParser = getJavaParser(srcDirPath);
-        Path prefixPath = output.resolve(Paths.get("toga", "oracle"));
-        Path inputPath = output.resolve(Paths.get("toga", "input"));
-        Path outputPath = output.resolve(Paths.get("toga", "output"));
+    public static void togaToOracleOutput(Path togaPath) {
+        String className = getClassNameFromJDoctorOutput(togaPath);
+        Path oraclePath = togaPath.resolveSibling(className + "_Oracle.json");
+        Path inputPath = output.resolve("toga-input");
         TypeReference<Map<String, Map<String, String>>> typeReference = new TypeReference<>(){};
         Map<String, Map<String, String>> togaInfo = (Map<String, Map<String, String>>) FileUtils.readJSON(
                 inputPath.resolve("toga_info.json"),
                 typeReference
         );
-        CSVParser csvParser = FileUtils.readCSV(outputPath.resolve("oracle_preds.csv"));
+        CSVParser csvParser = FileUtils.readCSV(togaPath);
         Map<String, Integer> columnIndexMap = new HashMap<>();
         CSVRecord header = csvParser.iterator().next();
         // Populate the columnIndexMap with column names and their indexes
@@ -448,7 +1049,7 @@ public class TogUtils {
             );
             oracleOutputs.add(oracleOutput);
         }
-        FileUtils.writeJSON(prefixPath.resolve("oracle_output.json"), oracleOutputs);
+        FileUtils.writeJSON(oraclePath, oracleOutputs);
     }
 
     /**
@@ -628,14 +1229,15 @@ public class TogUtils {
      * corresponding list of {@code OracleOutput} objects.
      * Saves the output file in output/tratto/experiment.
      * @see OracleOutput
+     * @param trattoPath the output JSON file generated by Tratto
      * @param srcDirPath the path to the source code of the project under test
      */
-    public static void trattoToOracleOutput(Path srcDirPath) {
+    public static void trattoToOracleOutput(Path trattoPath, Path srcDirPath) {
         javaParser = getJavaParser(srcDirPath);
-        Path prefixPath = output.resolve(Paths.get("tratto", "oracle"));
-        Path outputPath = output.resolve(Paths.get("tratto", "output"));
+        String className = getClassNameFromJDoctorOutput(trattoPath);
+        Path oraclePath = trattoPath.resolveSibling(className + "_Oracle.json");
         List<TrattoOutput> trattoOutputs = FileUtils.readJSONList(
-                outputPath.resolve("oracle_datapoints.json"),
+                trattoPath,
                 TrattoOutput.class
         );
         List<OracleOutput> oracleOutputs = new ArrayList<>();
@@ -654,7 +1256,7 @@ public class TogUtils {
             );
             oracleOutputs.add(oracleOutput);
         }
-        FileUtils.writeJSON(prefixPath.resolve("oracle_output.json"), oracleOutputs);
+        FileUtils.writeJSON(oraclePath, oracleOutputs);
     }
 
     /**
@@ -702,7 +1304,7 @@ public class TogUtils {
      */
     private static List<String> getFailingTestsFromLog(Path logPath) {
         return Arrays.stream(FileUtils.readString(logPath)
-                .split("\n"))
+                        .split("\n"))
                 .toList()
                 .stream()
                 .filter(l -> l.startsWith("---"))

@@ -44,7 +44,7 @@ _, classificator_converter_in_label = utils.import_json(
 classificator_converter_out_category = {k: i for i, k in classificator_converter_in_category.items()}
 classificator_converter_out_label = {k: i for i, k in classificator_converter_in_label.items()}
 
-SINGLE_PUNCTUATION_SEMICOLON = "single_punctuation_semiColon"
+SINGLE_PUNCTUATION_SEMICOLON = "Semicolon"
 
 def predict_generate_oracle(
         device,
@@ -156,36 +156,10 @@ def predict_next(
             sorted_true_predictions = sorted(true_predictions, key=lambda p: p[1], reverse=True)
             first_choice = sorted_true_predictions[0][0]
 
-            if classification_type == ClassificationType.CATEGORY_PREDICTION:
-                # Heuristics to mitigate knowns prediction errors
-                if tratto_model_type == TrattoModelType.TOKEN_CLASSES:
-                    if first_choice not in list(value_mappings.values()):
-                        subwordSplit = first_choice.split("_")
-                        # Iterate over the list of possible token classes
-                        for eligible in value_mappings.values():
-                            # Check if last subword of predicted token matches the end of the current eligible token class
-                            if eligible.endswith(subwordSplit[-1]):
-                                return eligible
-                        # Iterate over the list of the other alternatives in the beam-search model
-                        for alternative_choice in predicted_generate[1:]:
-                            for eligible in value_mappings.values():
-                                # Check if current alternative choice matches eligible token class
-                                if eligible == alternative_choice:
-                                    return eligible
-                        # Analyze subwords of the last camel-cased subword
-                        camelCaseSplit = re.split(r"(?=[A-Z])", subwordSplit[-1])
-                        # Iterate over the list of possible token classes
-                        for eligible in value_mappings.values():
-                            # Check if last subword of predicted token matches the end of the current eligible token class
-                            if eligible.endswith(camelCaseSplit[-1]):
-                                return eligible
-                    else:
-                        return first_choice
-                else:
-                    return first_choice
-            elif classification_type == ClassificationType.LABEL_PREDICTION:
-                if first_choice in value_mappings.values():
-                    return first_choice
+            if tratto_model_type == TrattoModelType.TOKEN_CLASSES and first_choice in value_mappings.keys():
+                return first_choice
+            elif tratto_model_type == TrattoModelType.TOKEN_VALUES and first_choice in eligible_tokens:
+                return first_choice
             # If no token has been found, compute the Levenshtein distance among the eligible token classes
             best_distance = float('inf')
             most_probable_token = None
@@ -197,27 +171,12 @@ def predict_next(
             return most_probable_token
         else:
             sorted_false_predictions = sorted(false_predictions, key=lambda p: p[1])
-            found = any('single_punctuation_semiColon' in tup for tup in sorted_false_predictions)
-            assert 'single_punctuation_semiColon' in value_mappings.values()
+            found = any(SINGLE_PUNCTUATION_SEMICOLON in tup for tup in sorted_false_predictions)
+            assert SINGLE_PUNCTUATION_SEMICOLON in value_mappings.keys()
             if found:
-                return 'single_punctuation_semiColon'
+                return SINGLE_PUNCTUATION_SEMICOLON
             first_choice = sorted_false_predictions[0][0]
             return first_choice
-
-
-
-def update_tokenizer_vocab(
-        tokenizer,
-        value_mappings
-):
-    # Get tokenizer vocabulary
-    vocab = tokenizer.get_vocab()
-    # Add new tokens to vocabulary
-    for new_word in value_mappings.values():
-        for new_sub_word in new_word.split("_"):
-            if not new_sub_word in vocab.keys():
-                tokenizer.add_tokens([new_sub_word])
-
 
 def pre_process_dataset(
         df_dataset,
@@ -245,14 +204,10 @@ def pre_process_dataset(
         'tokenInfo': 'string'
     })
 
-    update_tokenizer_vocab(tokenizer, value_mappings)
-
     # Remove method source code
     #df_dataset['methodSourceCode'] = df_dataset['methodSourceCode'].str.split('{').str[0]
-    # Replace the values in the DataFrame column
-    df_dataset['tokenClass'] = df_dataset['tokenClass'].replace(value_mappings)
     # Map token classes so far to new values and transform it from array to string
-    df_dataset['tokenClassesSoFar'] = df_dataset['tokenClassesSoFar'].apply(lambda x: "[ " + " ".join([value_mappings[y] for y in x]) + " ]")
+    df_dataset['tokenClassesSoFar'] = df_dataset['tokenClassesSoFar'].apply(lambda x: "[ " + " ".join(x) + " ]")
     # Delete spurious columns for predicting the next token class
     df_dataset = df_dataset.drop(['projectName', 'classJavadoc', 'classSourceCode', 'label'], axis=1)
     # Return pre-processed dataset
@@ -359,6 +314,8 @@ def get_input_model_values(
     df_dataset['eligibleTokens'] = df_dataset['eligibleTokens'].astype('string')
     # Add inputIdentifier column
     df_dataset['inputIdentifier'] = "token_values"
+    # Extract eligible token classes as list
+    eligible_token_values = df_dataset['eligibleTokens'][0].strip("[]").split()
 
     # Define the new order of columns
     new_columns_order = [
@@ -387,10 +344,8 @@ def get_input_model_values(
     df_src_concat = df_dataset.apply(lambda row: tokenizer.sep_token.join(row.values), axis=1)
     # The pandas dataframe is transformed in a list of strings: each string is an input to the model
     src = df_src_concat.to_numpy().tolist()
-    # Extract eligible token classes as list
-    #eligible_token_values = df_dataset['eligibleTokens'][0].strip("[]").split()
     # Return source input and token classes dictionary
-    return src, tgt, None, None
+    return src, tgt, eligible_token_values, None
 
 
 def tokenize_input(
@@ -431,9 +386,7 @@ def next_token(
         classification_type_oracles: Type[ClassificationType],
         classification_type_token_classes: Type[ClassificationType],
         classification_type_token_values: Type[ClassificationType],
-        transformer_type_oracles: Type[TransformerType],
-        transformer_type_token_classes: Type[TransformerType],
-        transformer_type_token_values: Type[TransformerType],
+        transformer_type: Type[TransformerType],
         model: Type[PreTrainedModel],
         tokenizer: PreTrainedTokenizer
 ):
@@ -444,7 +397,7 @@ def next_token(
         print("Predict if oracle must be generated")
         # Get model token classes input
         print("Get model oracles input")
-        src_oracles, tgt_oracles = get_input_model_oracles(df_dataset, tokenizer, transformer_type_oracles)
+        src_oracles, tgt_oracles = get_input_model_oracles(df_dataset, tokenizer, transformer_type)
         # Tokenize input
         print("Tokenize model oracles input")
         t_src_oracles = tokenize_input(
@@ -465,7 +418,7 @@ def next_token(
             model,
             dl_src_oracles,
             tokenizer,
-            transformer_type_oracles
+            transformer_type
         )
         if not generate_oracle:
             return ';' + "\n" + SINGLE_PUNCTUATION_SEMICOLON
@@ -479,7 +432,7 @@ def next_token(
 
     # If there is a single row, there is no need to make predictions. The unique possible value is returned
     if len(df_dataset) == 1:
-        return df_dataset['token'][0] + "\n" + next((key for key, val in value_mappings.items() if val == df_dataset['tokenClass'][0]), None)
+        return df_dataset['token'][0] + "\n" + df_dataset['tokenClass'][0]
 
     # Get model token classes input
     print("Get model token classes input")
@@ -487,7 +440,7 @@ def next_token(
         df_dataset,
         tokenizer,
         classification_type_token_classes,
-        transformer_type_token_classes
+        transformer_type
     )
     # Tokenize input
     print("Tokenize model token classes input")
@@ -512,7 +465,7 @@ def next_token(
         tokenizer,
         eligible_token_classes,
         classification_type_token_classes,
-        transformer_type_token_classes,
+        transformer_type,
         TrattoModelType.TOKEN_CLASSES
     )
     # Get model token values input
@@ -522,12 +475,11 @@ def next_token(
         next_token_class,
         tokenizer,
         classification_type_token_values,
-        transformer_type_token_values
+        transformer_type
     )
 
     if not next_token_value is None:
-        original_next_token_class = next((key for key, val in value_mappings.items() if val == next_token_class), None)
-        return next_token_value + "\n" + original_next_token_class
+        return next_token_value + "\n" + next_token_class
 
     # Tokenize input
     print("Tokenize model token values input")
@@ -552,9 +504,8 @@ def next_token(
         tokenizer,
         eligible_token_values,
         classification_type_token_values,
-        transformer_type_token_values,
+        transformer_type,
         TrattoModelType.TOKEN_VALUES
     )
     # Return next token
-    original_next_token_class = next((key for key, val in value_mappings.items() if val == next_token_class), None)
-    return next_token_value + "\n" + original_next_token_class
+    return next_token_value + "\n" + next_token_class
