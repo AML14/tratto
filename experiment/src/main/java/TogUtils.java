@@ -1418,6 +1418,7 @@ public class TogUtils {
         int numFalsePositive = 0;
         int numTrueNegative = 0;
         int numFalseNegative = 0;
+        int numInvalid = 0;
         for (String bugKey : allTests.keySet()) {
             boolean bugFound = false;
             List<String> tests = allTests.get(bugKey);
@@ -1430,6 +1431,7 @@ public class TogUtils {
                     case "FP" -> numFalsePositive += 1;
                     case "TN" -> numTrueNegative += 1;
                     case "FN" -> numFalseNegative += 1;
+                    case "INV" -> numInvalid += 1;
                 }
                 if (testClassification.equals("TP")) {
                     bugFound = true;
@@ -1445,7 +1447,8 @@ public class TogUtils {
                 numTruePositive,
                 numFalsePositive,
                 numTrueNegative,
-                numFalseNegative
+                numFalseNegative,
+                numInvalid
         );
     }
 
