@@ -1467,6 +1467,10 @@ public class TogUtils {
         int numInvalid = 0;
         for (String bugKey : allTests.keySet()) {
             boolean bugFound = false;
+            if (!allBuggyFailingTests.containsKey(bugKey)) {
+                // during prototyping, it is possible that not every test has been generated
+                continue;
+            }
             List<String> tests = allTests.get(bugKey);
             List<String> buggyFailingTests = allBuggyFailingTests.get(bugKey);
             List<String> fixedFailingTests = allFixedFailingTests.get(bugKey);
