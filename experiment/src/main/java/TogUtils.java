@@ -1413,16 +1413,14 @@ public class TogUtils {
                     .filter(p -> !Files.isDirectory(p) && !FileUtils.isScaffolding(p))
                     .forEach(p -> {
                         String bugKey = getBugKeyFromTestPath(p);
+                        if (!allTests.containsKey(bugKey)) {
+                            allTests.put(bugKey, new ArrayList<>());
+                        }
                         String bugNumber = getSubstringBetweenWords(bugKey, "_", null);
                         List<String> bugTests = getAllTestsFromFile(p, bugNumber);
-                        if (allTests.containsKey(bugKey)) {
-                            // group tests from all modified classes of a bug
-                            List<String> otherTests = allTests.get(bugKey);
-                            otherTests.addAll(bugTests);
-                            allTests.put(bugKey, otherTests);
-                        } else {
-                            allTests.put(bugKey, bugTests);
-                        }
+                        List<String> otherTests = allTests.get(bugKey);
+                        otherTests.addAll(bugTests);
+                        allTests.put(bugKey, otherTests);
                     });
         } catch (IOException e) {
             throw new Error("Unable to traverse directory " + testDir, e);
