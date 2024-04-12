@@ -1335,6 +1335,49 @@ public class TogUtils {
         return allFailingTests;
     }
 
+    private static List<String> getInvalidTestsFromLog(Path logPath) {
+        List<String> logLines = Arrays.stream(FileUtils.readString(logPath).split("\n")).toList();
+        List<Integer> invalidTestIdxs = logLines
+                .stream()
+                .filter(l -> l.equals("java.lang.Error: TrattoError: Precondition failed, invalid test."))
+                .map(l -> logLines.indexOf(l) - 1)
+                .toList();
+        return logLines
+                .stream()
+                .filter(l -> invalidTestIdxs.contains(logLines.indexOf(l)))
+                .map(l -> getSubstringBetweenWords(l, "--- ", null))
+                .collect(Collectors.toList());
+    }
+
+    private static String getBugNumber(String fileName) {
+        int endIdx = 0;
+        for (int i = 0; i < fileName.length(); i++) {
+            if (!Character.isDigit(fileName.charAt(i))) {
+                endIdx = i;
+                break;
+            }
+        }
+        return fileName.substring(0, endIdx);
+    }
+
+    private static Map<String, List<String>> getInvalidTests(Path resultsDir) {
+        Map<String, List<String>> allInvalidTests = new HashMap<>();
+        try (Stream<Path> walk = Files.walk(resultsDir)) {
+            walk
+                    .filter(p -> p.toString().endsWith("1.trigger.log"))
+                    .forEach(p -> {
+                        String projectName = getSubstringBetweenWords(p.toString(), "bug_detection_log/", "/evosuite");
+                        String bugNumber = getBugNumber(p.getFileName().toString());
+                        String bugKey = projectName + "_" + bugNumber;
+                        List<String> invalidTests = getInvalidTestsFromLog(p);
+                        allInvalidTests.put(bugKey, invalidTests);
+                    });
+        } catch (IOException e) {
+            throw new Error("Unable to traverse directory " + resultsDir, e);
+        }
+        return allInvalidTests;
+    }
+
     private static String getBugKeyFromTestPath(Path p) {
         List<String> pathSegments = Arrays.stream(p.toString().split("/")).collect(Collectors.toList());
         List<String> outputPathSegments = pathSegments.subList(pathSegments.indexOf("output"), pathSegments.size());
@@ -1390,10 +1433,14 @@ public class TogUtils {
     private static String classifyTest(
             String test,
             List<String> buggyFailingTests,
-            List<String> fixedFailingTests
+            List<String> fixedFailingTests,
+            List<String> invalidTests
     ) {
         String trueFalse;
         String positiveNegative;
+        if (invalidTests.contains(test)) {
+            return "INV";
+        }
         if (buggyFailingTests.contains(test)) {
             positiveNegative = "P";
         } else {
@@ -1411,7 +1458,8 @@ public class TogUtils {
             TogType tog,
             Map<String, List<String>> allTests,
             Map<String, List<String>> allBuggyFailingTests,
-            Map<String, List<String>> allFixedFailingTests
+            Map<String, List<String>> allFixedFailingTests,
+            Map<String, List<String>> allInvalidTests
     ) {
         int numBugsFound = 0;
         int numTruePositive = 0;
@@ -1424,8 +1472,9 @@ public class TogUtils {
             List<String> tests = allTests.get(bugKey);
             List<String> buggyFailingTests = allBuggyFailingTests.get(bugKey);
             List<String> fixedFailingTests = allFixedFailingTests.get(bugKey);
+            List<String> invalidTests = allInvalidTests.get(bugKey);
             for (String test : tests) {
-                String testClassification = classifyTest(test, buggyFailingTests, fixedFailingTests);
+                String testClassification = classifyTest(test, buggyFailingTests, fixedFailingTests, invalidTests);
                 switch (testClassification) {
                     case "TP" -> numTruePositive += 1;
                     case "FP" -> numFalsePositive += 1;
@@ -1468,7 +1517,14 @@ public class TogUtils {
         Map<String, List<String>> allTests = getAllTests(testDir);
         Map<String, List<String>> buggyFailingTests = getFailingTests(resultsDir, true);
         Map<String, List<String>> fixedFailingTests = getFailingTests(resultsDir, false);
-        Defects4JOutput defects4JOutput = getDefects4JOutput(tog, allTests, buggyFailingTests, fixedFailingTests);
+        Map<String, List<String>> invalidTests = getInvalidTests(resultsDir);
+        Defects4JOutput defects4JOutput = getDefects4JOutput(
+                tog,
+                allTests,
+                buggyFailingTests,
+                fixedFailingTests,
+                invalidTests
+        );
         Path defects4JOutputPath = testDir.resolveSibling(tog.toString().toLowerCase() + "_defects4joutput.json");
         FileUtils.writeJSON(defects4JOutputPath, defects4JOutput);
     }
