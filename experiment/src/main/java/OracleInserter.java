@@ -968,8 +968,13 @@ public class OracleInserter {
         List<String> originalNames = getParameterNames(oracleOutput.methodSignature());
         List<String> contextNames = getAllMethodCallsOfStatement(testStmt).get(0).getArguments()
                 .stream()
-                .map(Expression::toString)
-                .toList();
+                .map(expr -> {
+                    if (expr.isLiteralExpr() || (expr.isCastExpr() && expr.asCastExpr().getExpression().isLiteralExpr())) {
+                        return "(" + expr + ")";
+                    } else {
+                        return expr.toString();
+                    }
+                }).toList();
         String contextOracle = replaceNames(originalNames, contextNames, oracleOutput.oracle());
         return new OracleOutput(
                 oracleOutput.className(),
