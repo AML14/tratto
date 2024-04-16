@@ -109,11 +109,15 @@ public class OracleInserterTest {
                 @Test(timeout = 4000)
                 public void test1() throws Throwable {
                     Stack<Object> stack0 = new Stack<Object>();
-                    if (!(((Object) null == null) == false)) {
+                    try {
+                        if (!((((Object) null) == null) == false)) {
+                            throw new Error("TrattoError: Precondition failed, invalid test.");
+                        } else {
+                        }
+                    } catch (java.lang.Exception e) {
                         throw new Error("TrattoError: Precondition failed, invalid test.");
-                    } else {
                     }
-                    if ((Object) null == null) {
+                    if (((Object) null) == null) {
                         try {
                             stack0.push((Object) null);
                             fail();

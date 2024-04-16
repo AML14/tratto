@@ -1119,7 +1119,13 @@ public class OracleInserter {
             currentIfStmt.setElseStmt(nextIfStmt);
             currentIfStmt = nextIfStmt;
         }
-        return ifStmt;
+        // wrap preconditions in a try/catch block
+        Type exceptionType = StaticJavaParser.parseType("java.lang.Exception");
+        Parameter exceptionParameter = new Parameter(exceptionType, "e");
+        CatchClause catchClause = new CatchClause(exceptionParameter, preConditionFailStmt);
+        return new TryStmt()
+                .setTryBlock(new BlockStmt(new NodeList<>(ifStmt)))
+                .setCatchClauses(new NodeList<>(catchClause));
     }
 
     /**
