@@ -1,9 +1,0 @@
-com.google.javascript.jscomp.InlineVariables,@Test(timeout = 4000)
-public void test11() throws Throwable {
-    Compiler compiler0 = new Compiler();
-    InlineVariables.Mode inlineVariables_Mode0 = InlineVariables.Mode.LOCALS_ONLY;
-    InlineVariables inlineVariables0 = new InlineVariables(compiler0, inlineVariables_Mode0, false);
-    Node node0 = Normalize.parseAndNormalizeTestCode(compiler0, ""function JSCompiler_get(JSCompiler_get_name) {  return function() {return this[JSCompiler_get_name]}}"", ""function JSCompiler_get(JSCompiler_get_name) {  return function() {return this[JSCompiler_get_name]}}"");
-    inlineVariables0.process(node0, node0);
-    node0.isOnlyModifiesThisCall();
-},WARNING,java.lang.IllegalStateException,[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.
