@@ -47,4 +47,4 @@ fi
 
 mv "${tratto_project_dir}/src/main/resources/oracle_datapoints.json" "${tratto_output_file}"
 
-java -jar "$EXPERIMENT_JAR" "generate_oracle_output" "tratto" "${tratto_output_file}" "${src_path}"
+java -jar "$EXPERIMENT_JAR" "generate_oracle_output" "tratto" "${tratto_output_file}" "${project_jar_path}"

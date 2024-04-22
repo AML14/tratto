@@ -85,7 +85,7 @@ fi
 if [ "${tog}" == "jdoctor" ]; then
   bash ./generator/jdoctor.sh "${target_class}" "${src_dir}" "${classpath_or_jar}"
 elif [ "${tog}" == "toga" ]; then
-  bash ./generator/toga.sh "${target_class}" "${src_dir}" "${project_id}" "${bug_id}"
+  bash ./generator/toga.sh "${target_class}" "${src_dir}" "${classpath_or_jar}" "${project_id}" "${bug_id}"
 elif [ "${tog}" == "tratto" ]; then
   bash ./generator/tratto.sh "${target_class}" "${src_dir}" "${classpath_or_jar}"
 fi

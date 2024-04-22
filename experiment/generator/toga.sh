@@ -9,7 +9,7 @@ current_dir=$(realpath "$(dirname "${BASH_SOURCE}")")
 source "${current_dir}/utils/global_variables.sh"
 
 # argument and setup check
-if [ ! ${#} -eq 4 ]; then
+if [ ! ${#} -eq 5 ]; then
   echo -e "toga.sh: Incorrect number of arguments. Expected 4 arguments, but got ${#}".
   exit 1
 fi
@@ -18,8 +18,9 @@ fi
 fully_qualified_name="${1}"
 fqn_path=$(echo "$fully_qualified_name" | sed 's/\./\//g')
 src_path="${2}"
-project_id=${3}
-bug_id=${4}
+project_jar_path="${3}"
+project_id=${4}
+bug_id=${5}
 buggy_project_bug_dir="${DEFECTS4J_DIR}/temp/${project_id}_${bug_id}b"
 evosuite_tests_fqn_file_path="${DEFECTS4J_DIR}/defects4jprefix/src/main/evosuite-simple-tests/${project_id}/${bug_id}/${fqn_path}_ESTest.java"
 toga_project_dir="${ROOT_DIR}/generator/resources/toga"
@@ -40,7 +41,7 @@ sdk use java "$JAVA17"
 bash "${UTILS_DIR}/experiment_setup.sh"
 
 echo "toga.sh: Generate TOGA input files."
-java -jar "generator/resources/experiment.jar" "generate_tog_input" "toga" "${fully_qualified_name}" "${src_path}"
+java -jar "generator/resources/experiment.jar" "generate_tog_input" "toga" "${fully_qualified_name}" "${src_path}" ${project_jar_path}
 # python3 "$TOGA_INPUT_GENERATOR" "$DEFECTS4J_HOME" "$project_id" "$bug_id" "$fully_qualified_name" "$buggy_project_bug_dir" "$evosuite_tests_fqn_file_path" "$toga_input_dir"
 
 echo "toga.sh: Generate oracles with TOGA."

@@ -10,13 +10,15 @@ source "${current_dir}/generator/utils/global_variables.sh"
 source "${UTILS_DIR}/init_sdkman.sh"
 
 # Arguments and setup check
-if [ ! $# -eq 1 ]; then
-  echo -e "defects4j.sh: Incorrect number of arguments. Expected 1 argument, but got ${#}".
+if [ ! $# -eq 2 ]; then
+  echo -e "defects4j.sh: Incorrect number of arguments. Expected 2 argument, but got ${#}".
   exit 1
 fi
 
 # Tog name
 tog="${1}"
+# Round number
+round="${2}"
 
 # Clone defects4jprefix project
 if [ ! -d "$DEFECTS4J_DIR/defects4jprefix" ]; then
@@ -70,10 +72,10 @@ while IFS=, read -r project_id bug_id modified_classes; do
     # Iterate over the modified classes and generate test cases for each class
     for modified_class in "${modified_classes_list[@]}"; do
         fqn_path=$(echo "$modified_class" | sed 's/\./\//g')
-        evosuite_prefix_fqn_file_path="${DEFECTS4J_DIR}/defects4jprefix/src/main/evosuite-prefixes/${project_id}/${bug_id}/${fqn_path}_ESTest.java"
-        evosuite_prefix_scaffolding_fqn_file_path="${DEFECTS4J_DIR}/defects4jprefix/src/main/evosuite-prefixes/${project_id}/${bug_id}/${fqn_path}_ESTest_scaffolding.java"
-        evosuite_simple_test_fqn_file_path="${DEFECTS4J_DIR}/defects4jprefix/src/main/evosuite-simple-tests/${project_id}/${bug_id}/${fqn_path}_ESTest.java"
-        evosuite_tests_fqn_file_path="${DEFECTS4J_DIR}/defects4jprefix/src/main/evosuite-tests/${project_id}/${bug_id}/${fqn_path}_ESTest.java"
+        evosuite_prefix_fqn_file_path="${DEFECTS4J_DIR}/defects4jprefix/src/main/${round}/evosuite-prefixes/${project_id}/${bug_id}/${fqn_path}_ESTest.java"
+        evosuite_prefix_scaffolding_fqn_file_path="${DEFECTS4J_DIR}/defects4jprefix/src/main/${round}/evosuite-prefixes/${project_id}/${bug_id}/${fqn_path}_ESTest_scaffolding.java"
+        evosuite_simple_test_fqn_file_path="${DEFECTS4J_DIR}/defects4jprefix/src/main/${round}/evosuite-simple-tests/${project_id}/${bug_id}/${fqn_path}_ESTest.java"
+        evosuite_tests_fqn_file_path="${DEFECTS4J_DIR}/defects4jprefix/src/main/${round}/evosuite-tests/${project_id}/${bug_id}/${fqn_path}_ESTest.java"
         jars_path="${DEFECTS4J_DIR}/defects4jprefix/src/main/project-jars/${project_id}/${bug_id}"
         output_evosuite_prefix_path="${OUTPUT_DIR}/evosuite-prefixes"
         output_evosuite_prefix_fqn_path="${OUTPUT_DIR}/evosuite-prefixes/$(dirname "$fqn_path")"

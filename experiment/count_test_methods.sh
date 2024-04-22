@@ -52,8 +52,9 @@ while IFS=, read -r project_id bug_id modified_classes; do
       defects4j compile -w "$buggy_project_bug_dir"
       echo "Compilation complete."
     fi
-    # Get source, binary, and test directories
-    src_path=$(defects4j export -p "dir.src.classes" -w "$buggy_project_bug_dir")
+    # Get source and jars directories
+    #src_path=$(defects4j export -p "dir.src.classes" -w "$buggy_project_bug_dir")
+    jars_path="${DEFECTS4J_DIR}/defects4jprefix/src/main/project-jars/${project_id}/${bug_id}"
     # Move to the root directory
     cd "$ROOT_DIR"
     # Iterate over the modified classes and count the tests for each class
@@ -73,7 +74,7 @@ while IFS=, read -r project_id bug_id modified_classes; do
         # Count EvoSuite test methods
         echo "Counting EvoSuite test methods for class ${modified_class} - ${project_id}_${bug_id}."
         # Run the count
-        java -jar "${EXPERIMENT_JAR}" "count_test_methods" ${src_path} ${project_id} ${bug_id} ${modified_class}
+        java -jar "${EXPERIMENT_JAR}" "count_test_methods" ${jars_path} ${project_id} ${bug_id} ${modified_class}
         # Cleanup
         rm -r "${output_evosuite_prefix_path}"
     done

@@ -39,10 +39,11 @@ public class Tog {
     private static void generateTogInput(
             TogType togType,
             String fullyQualifiedName,
-            Path srcDir
+            Path srcDir,
+            Path jarDir
     ) {
         if (togType == TogType.TOGA) {
-            TogUtils.generateTOGAInput(srcDir, fullyQualifiedName);
+            TogUtils.generateTOGAInput(srcDir, jarDir, fullyQualifiedName);
         }
     }
 
@@ -51,19 +52,19 @@ public class Tog {
      *
      * @param togType a TOG
      * @param path a path to a file or directory for generating OracleOutputs
-     * @param srcPath the source directory of the project under test (can be null)
+     * @param jarPath the directory to the jars of the project under test and its dependencies (can be null)
      */
     private static void generateOracleOutput(
             TogType togType,
             Path path,
-            Path srcPath
+            Path jarPath
     ) {
         if (togType == TogType.JDOCTOR) {
             TogUtils.jDoctorToOracleOutput(path);
         } else if (togType == TogType.TOGA) {
             TogUtils.togaToOracleOutput(path);
         } else if (togType == TogType.TRATTO) {
-            TogUtils.trattoToOracleOutput(path, srcPath);
+            TogUtils.trattoToOracleOutput(path, jarPath);
         }
     }
 
@@ -84,7 +85,8 @@ public class Tog {
             case GENERATE_TOG_INPUT -> generateTogInput(
                     TogType.valueOf(args[1].toUpperCase()),
                     args[2],
-                    Paths.get(args[3])
+                    Paths.get(args[3]),
+                    Paths.get(args[4])
             );
             case GENERATE_ORACLE_OUTPUT -> generateOracleOutput(
                     TogType.valueOf(args[1].toUpperCase()),
