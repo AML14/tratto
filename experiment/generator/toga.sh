@@ -9,8 +9,8 @@ current_dir=$(realpath "$(dirname "${BASH_SOURCE}")")
 source "${current_dir}/utils/global_variables.sh"
 
 # argument and setup check
-if [ ! ${#} -eq 5 ]; then
-  echo -e "toga.sh: Incorrect number of arguments. Expected 4 arguments, but got ${#}".
+if [ ! ${#} -eq 6 ]; then
+  echo -e "toga.sh: Incorrect number of arguments. Expected 6 arguments, but got ${#}".
   exit 1
 fi
 

@@ -12,8 +12,8 @@ root_dir=$(dirname "${current_dir}")
 source "${current_dir}/utils/init_sdkman.sh"
 sdk use java "$JAVA8"
 # check arguments
-if [ ! $# -eq 3 ]; then
-  echo -e "jdoctor.sh: Expected 3 arguments (target_class, src_dir, classpath), but got $#"
+if [ ! $# -eq 4 ]; then
+  echo -e "jdoctor.sh: Expected 4 arguments (target_class, src_dir, classpath, and output directory), but got $#"
   exit 1
 fi
 target_class="${1}"
