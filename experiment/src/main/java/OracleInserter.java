@@ -982,7 +982,8 @@ public class OracleInserter {
                 oracleOutput.oracleType(),
                 contextOracle,
                 oracleOutput.exception(),
-                oracleOutput.testName()
+                oracleOutput.testName(),
+                oracleOutput.statementIndex()
         );
     }
 
@@ -1018,7 +1019,8 @@ public class OracleInserter {
                 oracleOutput.oracleType(),
                 contextOracle,
                 oracleOutput.exception(),
-                oracleOutput.testName()
+                oracleOutput.testName(),
+                oracleOutput.statementIndex()
         );
     }
 
@@ -1059,7 +1061,8 @@ public class OracleInserter {
                 oracleOutput.oracleType(),
                 contextOracle,
                 oracleOutput.exception(),
-                oracleOutput.testName()
+                oracleOutput.testName(),
+                oracleOutput.statementIndex()
         );
     }
 
@@ -1339,13 +1342,10 @@ public class OracleInserter {
      * @param testCase a test case
      * @param assertion the assertion to add
      */
-    private static void insertNonAxiomaticAssertion(MethodDeclaration testCase, String assertion) {
+    private static void insertNonAxiomaticAssertion(MethodDeclaration testCase, String assertion, int stmtIndex) {
         if (!assertion.isEmpty()) {
-            testCase
-                    .getBody()
-                    .orElseThrow()
-                    .getStatements()
-                    .add(StaticJavaParser.parseStatement(assertion + ";"));
+            NodeList<Statement> statements = testCase.getBody().orElseThrow().getStatements();
+            statements.addAfter(StaticJavaParser.parseStatement(assertion + ";"), statements.get(stmtIndex));
         }
     }
 
@@ -1415,7 +1415,7 @@ public class OracleInserter {
                         if (oracle.isExceptional()) {
                             insertNonAxiomaticException(testCase, oracle.exception());
                         } else {
-                            insertNonAxiomaticAssertion(testCase, oracle.oracle());
+                            insertNonAxiomaticAssertion(testCase, oracle.oracle(), Integer.parseInt(oracle.statementIndex()));
                         }
                     }
                 });

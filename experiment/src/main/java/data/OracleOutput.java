@@ -17,6 +17,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * @param testName the name of the test corresponding to a non-axiomatic
  *                 oracle. This field is an empty String if the oracle is
  *                 axiomatic.
+ * @param statementIndex the index of the statement of the test prefix after which to add the assertion
  */
 public record OracleOutput(
         String className,
@@ -24,7 +25,8 @@ public record OracleOutput(
         OracleType oracleType,
         String oracle,
         String exception,
-        String testName
+        String testName,
+        String statementIndex
 ) {
     /**
      * Checks if an OracleOutput corresponds to an exceptional oracle.

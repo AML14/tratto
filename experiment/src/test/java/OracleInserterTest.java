@@ -26,6 +26,7 @@ public class OracleInserterTest {
                         OracleType.PRE,
                         "(o == null) == false",
                         "",
+                        "",
                         ""
                 ),
                 new OracleOutput(
@@ -34,6 +35,7 @@ public class OracleInserterTest {
                         OracleType.EXCEPT_POST,
                         "o == null",
                         "java.lang.IllegalArgumentException",
+                        "",
                         ""
                 )
         );
@@ -47,7 +49,8 @@ public class OracleInserterTest {
                         OracleType.NON_AXIOMATIC,
                         "assertTrue(stack0.isEmpty())",
                         "",
-                        "test0"
+                        "test0",
+                        "0"
                 ),
                 new OracleOutput(
                         "tutorial.Stack",
@@ -55,7 +58,8 @@ public class OracleInserterTest {
                         OracleType.NON_AXIOMATIC,
                         "",
                         "IllegalArgumentException",
-                        "test1"
+                        "test1",
+                        "1"
                 )
         );
     }

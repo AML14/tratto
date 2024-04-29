@@ -1,5 +1,6 @@
 import data.OperationType;
 import data.TogType;
+import data.TogaInputType;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -43,7 +44,7 @@ public class Tog {
             Path jarDir
     ) {
         if (togType == TogType.TOGA) {
-            TogUtils.generateTOGAInput(srcDir, jarDir, fullyQualifiedName);
+            TogUtils.generateTOGAInput(srcDir, jarDir, fullyQualifiedName, TogaInputType.ANY_OCCURRENCE);
         }
     }
 

@@ -33,6 +33,7 @@ import com.github.javaparser.symbolsolver.resolution.typesolvers.CombinedTypeSol
 import com.github.javaparser.symbolsolver.resolution.typesolvers.ReflectionTypeSolver;
 import com.github.javaparser.symbolsolver.utils.SymbolSolverCollectionStrategy;
 import com.github.javaparser.utils.Pair;
+import org.javatuples.Triplet;
 import data.*;
 import data.JDoctorOutput.Parameter;
 import data.JDoctorOutput.ParamTag;
@@ -41,12 +42,9 @@ import data.JDoctorOutput.ThrowsTag;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
-import javax.swing.text.html.Option;
-import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -72,7 +70,7 @@ public class TogUtils {
     /** The path of the output directory. */
     private static final Path output = Paths.get("output");
     /** The path of the EvoSuite prefixes directory. */
-    private static final Path evosuitePrefixPath = output.resolve("evosuite-prefixes");
+    private static final Path evosuitePrefixes = output.resolve("evosuite-prefixes");
     /** The path of the EvoSuite simple tests directory (tests with one assertion).  */
     private static final Path evosuiteTestsSimplePath = output.resolve("evosuite-simple-tests");
     /** A regex pattern to extract a text prefix (removes comments and decorators). */
@@ -522,8 +520,8 @@ public class TogUtils {
      *     <li>the test prefix of the method under test</li>
      *     <li>the docstring of the method under test</li>
      * </ol>
-     * Extracts each method under test from the test prefixes and generate triples of
-     * (focalMethod, testPrefix, docstring). The focal method is considered the last statement in the test method.
+     * Extracts each method under test from the test prefixes and generate triples of (focalMethod, testPrefix, docstring).
+     * The focal method is considered the last statement in the test method that belongs to the fullyQualifiedClassName.
      * Saves the output file in output/toga/input.
      *
      * @param srcDirPath the path to the source code of the project under test
@@ -531,7 +529,7 @@ public class TogUtils {
      * @param fullyQualifiedClassName the fully qualified name of the class under test
      *
      */
-    public static void generateTOGAInputLastStatement(Path srcDirPath, Path jarDirPath, String fullyQualifiedClassName) {
+    public static void generateTOGAInput(Path srcDirPath, Path jarDirPath, String fullyQualifiedClassName, TogaInputType togaInputType) {
         javaParser = getJavaParser(jarDirPath);
         Path prefixPath = output.resolve(Paths.get("toga-input"));
         Path errorPath = output.resolve(Paths.get("toga-err"));
@@ -546,8 +544,7 @@ public class TogUtils {
                 fullyQualifiedClassNamePath.subpath(0, classNameIdx).resolve(className + "_ESTest.java") :
                 Paths.get(className);
         Path classFilePath = srcDirPath.resolve(fullyQualifiedClassNamePath);
-        Path testClassFilePath = evosuiteTestsSimplePath.resolve(fullyQualifiedTestClassNamePath);
-        Path testClassPrefixFilePath = evosuitePrefixPath.resolve(fullyQualifiedTestClassNamePath);
+        Path testClassPrefixFilePath = evosuitePrefixes.resolve(fullyQualifiedTestClassNamePath);
 
         if (!Files.exists(classFilePath)){
             Path commonPatternPath = Paths.get(srcDirPath.toString(), "main", "java");
@@ -562,9 +559,8 @@ public class TogUtils {
 
         try {
             final CompilationUnit cuClassFile = javaParser.parse(classFilePath).getResult().orElseThrow();
-            CompilationUnit cuTestClassFile = javaParser.parse(testClassFilePath).getResult().orElseThrow();
             CompilationUnit cuTestClassPrefixFile = javaParser.parse(testClassPrefixFilePath).getResult().orElseThrow();
-            Map<String, Map<String,String>> togaInfo = new HashMap<>();
+            Map<String, List<Map<String,String>>> togaInfo = new HashMap<>();
             StringBuilder togaInputBuilder = new StringBuilder();
             StringBuilder togaMetadataBuilder = new StringBuilder();
             StringBuilder togaErrBuilder = new StringBuilder();
@@ -572,26 +568,10 @@ public class TogUtils {
             togaMetadataBuilder.append("project,bug_num,test_name,exception_bug,assertion_bug,exception_lbl,assertion_lbl,assert_err\n");
 
             cuTestClassPrefixFile.findAll(MethodDeclaration.class).forEach(testPrefix -> {
-                // Define the focal method to find (the last method call in the test). Initially null.
-                // The focal method must be a method declaration or a constructor declaration.
-                CallableDeclaration focalMethod = null;
-                // The name of the focal method. Initially empty.
-                String methodName = "";
-                // The signature of the focal method. Initially empty.
-                String focalMethodSignature = "";
-                // The entire method body of the focal method. Initially empty.
-                String focalMethodBody = "";
-                // The Javadoc of the focal method. Initially empty.
-                String javadocString = "";
                 // Get the name of the test
                 String testName = testPrefix.getNameAsString();
-                // Map representing each row of the toga_info.json file. Each row is the input to the toga model.
-                // The key is the test name, and the value is string composed of the test prefix, the focal method, and
-                // the Javadoc, if present.
-                Map<String, String> togaRow = new HashMap<>();
-                // Assume the compilation unit of the last statement to be the one of the class under test.
-                // It will be updated if the last statement is a method call or a constructor call of another class.
-                CompilationUnit cuLastStatementClassFile = cuClassFile;
+                // Retrieve the last method call of the class under test (defined by the fullyQualifiedClassName)
+                // considered as the focal method
                 try {
                     // Get the list of all the statements within the test
                     NodeList<Statement> statements = testPrefix
@@ -602,133 +582,103 @@ public class TogUtils {
                     if (statements.size() <= 0) {
                         throw new IllegalStateException(String.format("No statements found in test %s.", testName));
                     }
-                    // Define the last expression statement in the test. Initially null.
-                    ExpressionStmt lastExpressionStmt = null;
-                    // Check if the last statement is an expression statement (a method call or a constructor call must
-                    // be an expression statement.
-                    for (int i = statements.size() - 1; i >= 0; i--) {
-                        Statement lastStatement = statements.get(i);
-                        if (lastStatement.isExpressionStmt()) {
-                            lastExpressionStmt = lastStatement.asExpressionStmt();
-                            if (i < (statements.size() - 1)) {
-                                // If the last statement is an expression statement, log a warning
-                                togaErrBuilder.append(generateLogTogaInputError(testPrefix, fullyQualifiedClassName, "WARNING", new IllegalStateException("[WARNING] - The last statement in the test is not the last statement in the block. Check if the focal method is correct")));
+
+                    if (togaInputType == TogaInputType.LAST_OCCURRENCE ) {
+                        // Define the last expression statement in the test. Initially null.
+                        Expression lastExpression = null;
+                        // Define list of focal methods (given that only the last occurrence is considered, the
+                        // list will contain a single element of toga row info)
+                        List<Map<String,String>> togaRowInfoList = new ArrayList<>();
+                        // Get statement index
+                        int stmtIndex = statements.size() - 1;
+
+                        // Iterate over the statements of the test from the bottom until a call to a method of the
+                        // class under test is found
+                        for (int i = statements.size() - 1; i >= 0 && lastExpression == null; i--) {
+                            // Save current index
+                            stmtIndex = i;
+                            // Get current statement
+                            Statement stmt = statements.get(i);
+                            // A method call or constructor invocation must be an instance of ExpressionStmt
+                            if (!stmt.isExpressionStmt()) {
+                                continue;
                             }
-                            break;
-                        }
-                    }
-                    // If no expression statement is found, throw an exception (empty test)
-                    if (lastExpressionStmt == null) {
-                        throw new IllegalStateException(String.format("No expression statement found in test %s.", testName));
-                    }
-                    // Get the expression in the last expression statement
-                    Expression lastExpression = lastExpressionStmt.getExpression();
-
-                    try {
-                        String fullyQualifiedNameLastExpression = getClassFullyQualifiedNameFromExpression(parseExpression(lastExpression).a);
-
-                        if (!fullyQualifiedNameLastExpression.equals(fullyQualifiedClassName)) {
-                            Path fullyQualifiedClassNameLastExpressionPath = FileUtils.getFQNPath(fullyQualifiedNameLastExpression);
-                            Path classFileLastExpressionPath = srcDirPath.resolve(fullyQualifiedClassNameLastExpressionPath);
-
-                            File classFileLastExpression = new File(classFileLastExpressionPath.toString());
-                            if (classFileLastExpression.exists()) {
-                                cuLastStatementClassFile = javaParser.parse(classFileLastExpressionPath).getResult().orElseThrow(() -> new IllegalStateException(String.format("Cannot parse class file %s of last statement.", fullyQualifiedClassNameLastExpressionPath)));
-                                togaErrBuilder.append(generateLogTogaInputError(testPrefix, fullyQualifiedClassName, "WARNING", new IllegalStateException("[WARNING] - The last statement of the test is part of another class with respect to the class under test. Check if the focal method is correct.")));
-                            } else {
-                                Path pathToJDK = Paths.get(pathToJAVA8Src.toString());
-                                Path pathToJDKClass = pathToJDK.resolve(fullyQualifiedClassNameLastExpressionPath);
-                                classFileLastExpression = new File(pathToJDKClass.toString());
-                                if (classFileLastExpression.exists()) {
-                                    cuLastStatementClassFile = javaParser.parse(pathToJDKClass).getResult().orElseThrow(() -> new IllegalStateException(String.format("Cannot parse class file %s of last statement.", fullyQualifiedClassNameLastExpressionPath.toString())));
-                                    togaErrBuilder.append(generateLogTogaInputError(testPrefix, fullyQualifiedClassName, "WARNING", new IllegalStateException("[WARNING] - The last statement of the test is part of a JDK class. Check if the focal method is correct.")));
-                                } else {
-                                    boolean found = false;
-                                    // Iterate through the types declared in the compilation unit
-                                    List<BodyDeclaration<?>> members = cuClassFile.getPrimaryType().get().getMembers();
-                                    for (BodyDeclaration<?> member : members) {
-                                        if (member instanceof ClassOrInterfaceDeclaration) {
-                                            ClassOrInterfaceDeclaration nestedClass = (ClassOrInterfaceDeclaration) member;
-                                            // Check if the type is a ClassOrInterfaceDeclaration (class or interface)
-                                            if (nestedClass.getFullyQualifiedName().get().equals(fullyQualifiedNameLastExpression)) {
-                                                // Update compilation unit of the last statement to the class file of the last statement
-                                                cuLastStatementClassFile = javaParser.parse(nestedClass.toString()).getResult().orElseThrow();
-                                                found = true;
-                                                break;
-                                            }
-                                        }
-                                    }
-                                    if (!found) {
-                                        throw new NoSuchElementException("[ERROR] - The last statement of the test is part of another class with respect to the class under test, but the research of the class failed.");
-                                    }
+                            // Get the expression in the current expression statement
+                            Expression candidateExpression = stmt.asExpressionStmt().getExpression();
+                            try {
+                                String fullyQualifiedNameLastExpression = getClassFullyQualifiedNameFromExpression(parseExpression(candidateExpression).a);
+                                if (fullyQualifiedNameLastExpression.equals(fullyQualifiedClassName)) {
+                                    lastExpression = candidateExpression;
                                 }
+                            } catch (UnsolvedSymbolException | IllegalStateException e) {
+                                continue;
                             }
                         }
-                    } catch (UnsolvedSymbolException | IllegalStateException e) {}
-
-                    // Get the focal method
-                    Pair<CallableDeclaration, List<Exception>> result = getCallableFocalMethod(cuLastStatementClassFile, lastExpression);
-                    focalMethod = result.a;
-                    togaErrBuilder.append(result.b.stream().map(e -> generateLogTogaInputError(testPrefix, fullyQualifiedClassName, "WARNING", e)).collect(Collectors.joining()));
-                    // If the focal method is still not found, search it within the inherited methods
-                    if (focalMethod == null) {
-                        Pair<MethodUsage,List<Exception>> resultMethodUsage = searchCandidateMethodUsage(cuLastStatementClassFile, lastExpression);
-                        MethodUsage focalMethodUsage = resultMethodUsage.a;
-                        togaErrBuilder.append(resultMethodUsage.b.stream().map(e -> generateLogTogaInputError(testPrefix, fullyQualifiedClassName, "WARNING", e)).collect(Collectors.joining()));
-                        getMethodSignature(focalMethodUsage);
-                        // If the focal method is found, get the information of the focal method
-                        methodName = focalMethodUsage.getName();
-                        focalMethodSignature = getMethodSignature(focalMethodUsage);
-                        Matcher matcher = FOCAL_METHOD.matcher(focalMethodUsage.toString());
-                        if (matcher.find()) {
-                            // Extract the Javadoc comment
-                            if (matcher.group(1) != null) {
-                                javadocString = matcher.group(1).replace("\"", "\"\"").trim();;
-                            }
-                            focalMethodBody = matcher.group(2).replace("\"", "\"\"").trim();
+                        // If no expression statement is found as focal method, throws an exception (empty test)
+                        if (lastExpression == null) {
+                            throw new IllegalStateException(String.format("No expression statement referring to the class under test has been found in test %s.", testName));
                         }
-                    } else {
-                        methodName = focalMethod.getNameAsString();
-                        focalMethodSignature = getCallableSignature(focalMethod);
-                        Matcher matcher = FOCAL_METHOD.matcher(focalMethod.toString());
-                        if (matcher.find()) {
-                            // Extract the Javadoc comment
-                            if (matcher.group(1) != null) {
-                                javadocString = matcher.group(1).replace("\"", "\"\"").trim();;
+                        // Generate a toga input row as a triplet where the first element is the toga input to feed the
+                        // model, the second element represent the corresponding metadata, and the third element is a Map
+                        // representing the toga row.
+                        Triplet<String,String,Map<String,String>> togaRow = generateTogaRow(fullyQualifiedClassName, cuClassFile, cuTestClassPrefixFile, lastExpression, testPrefix, stmtIndex);
+                        String togaInput = togaRow.getValue0();
+                        String togaMetadata = togaRow.getValue1();
+                        Map<String,String> togaRowInfo = togaRow.getValue2();
+                        togaInputBuilder.append(togaInput);
+                        togaMetadataBuilder.append(togaMetadata);
+                        togaRowInfoList.add(togaRowInfo);
+                        togaInfo.put(testName, togaRowInfoList);
+                    } else if (togaInputType == TogaInputType.ANY_OCCURRENCE ) {
+                        // Define list of toga rows info collected within the test prefix (one toga row info for each
+                        // focal method matched).
+                        List<Map<String,String>> togaRowInfoList = new ArrayList<>();
+                        // Get statement index
+                        int stmtIndex = statements.size() - 1;
+                        // Iterate over the statements of the test from the bottom until a call to a method of the
+                        // class under test is found
+                        for (int i = statements.size() - 1; i >= 0; i--) {
+                            stmtIndex = i;
+                            // Define the expression statement in the test. Initially null.
+                            Expression expr = null;
+                            // Get current statement
+                            Statement stmt = statements.get(i);
+                            // A method call or constructor invocation must be an instance of ExpressionStmt
+                            if (!stmt.isExpressionStmt()) {
+                                continue;
                             }
-                            focalMethodBody = matcher.group(2).replace("\"", "\"\"").trim();
-                        }
-                    }
-                    // If the focal method is found, get the test and the Javadoc of the focal method
-                    if (focalMethod != null) {
-                        List<MethodDeclaration> tests = cuTestClassFile
-                                .findAll(MethodDeclaration.class)
-                                .stream()
-                                .filter(t -> t.getNameAsString().equals(testName))
-                                .toList();
-                        if (tests.size() > 0) {
-                            MethodDeclaration test = tests.get(0);
-                            String testStr = test.toString().replace("\"", "\"\"");
-                            String testPrefixStr = testPrefix.toString();
-                            Matcher matcher = testPrefixPattern.matcher(testPrefix.toString());
-                            if (matcher.find()) {
-                                int startIdx = matcher.start();
-                                testStr = testStr.substring(startIdx);
+                            // Get the expression in the current expression statement
+                            Expression candidateExpression = stmt.asExpressionStmt().getExpression();
+                            try {
+                                String fullyQualifiedNameCurrentExpression = getClassFullyQualifiedNameFromExpression(parseExpression(candidateExpression).a);
+                                if (fullyQualifiedNameCurrentExpression.equals(fullyQualifiedClassName)) {
+                                    expr = candidateExpression;
+                                } else {
+                                    continue;
+                                }
+                            } catch (UnsolvedSymbolException | IllegalStateException e) {
+                                String exceptionName = e instanceof UnsolvedSymbolException ? "UnsolvedSymbolException" : "IllegalStateException";
+                                Exception error = new Exception(String.format("%s while parsing expression %s of test %s", exceptionName, candidateExpression.toString(), testName));
+                                togaErrBuilder.append(generateLogTogaInputError(testPrefix, fullyQualifiedClassName, "ERROR", error));
+                                continue;
                             }
-                            togaInputBuilder.append(String.format("\"%s\",\"%s\",\"%s\"\n", focalMethodBody, testStr, javadocString));
-                            togaMetadataBuilder.append(String.format("project,0,%s,0,0,False,\"\",\"\"\n", testName));
-                            togaRow.put("className", cuClassFile.getPrimaryType().orElseThrow().getFullyQualifiedName().orElseThrow());
-                            togaRow.put("methodName", methodName);
-                            togaRow.put("methodSignature", focalMethodSignature);
-                            togaRow.put("testPrefix", testPrefixStr);
-                            togaRow.put("testName", testName);
-                            togaInfo.put(testName, togaRow);
+                            // Generate a toga input row as a triplet where the first element is the toga input to feed the
+                            // model, the second element represent the corresponding metadata, and the third element is a Map
+                            // representing the toga row.
+                            Triplet<String,String,Map<String,String>> togaRow = generateTogaRow(fullyQualifiedClassName, cuClassFile, cuTestClassPrefixFile, expr, testPrefix, stmtIndex);
+                            String togaInput = togaRow.getValue0();
+                            String togaMetadata = togaRow.getValue1();
+                            Map<String,String> togaRowInfo = togaRow.getValue2();
+                            togaInputBuilder.append(togaInput);
+                            togaMetadataBuilder.append(togaMetadata);
+                            togaRowInfoList.add(togaRowInfo);
                         }
-                    } else {
-                        Pair<MethodUsage,List<Exception>> resultMethodUsage = searchCandidateMethodUsage(cuLastStatementClassFile, lastExpression);
-                        MethodUsage focalMethodUsage = resultMethodUsage.a;
-                        togaErrBuilder.append(resultMethodUsage.b.stream().map(e -> generateLogTogaInputError(testPrefix, fullyQualifiedClassName, "WARNING", e)).collect(Collectors.joining()));
-                        getMethodSignature(focalMethodUsage);
+                        // If no expression statement is found as focal method, throws an exception (empty test)
+                        if (togaRowInfoList == null) {
+                            throw new IllegalStateException(String.format("No expression statement referring to the class under test has been found in test %s.", testName));
+                        }
+                        // Add focal methods found to the toga info dictionary
+                        togaInfo.put(testName, togaRowInfoList);
                     }
                 } catch (IllegalStateException e) {
                     togaErrBuilder.append(generateLogTogaInputError(testPrefix, fullyQualifiedClassName, "ERROR", e));
@@ -754,204 +704,103 @@ public class TogUtils {
     }
 
     /**
-     * Generates the input file for the TOGA tog. As required by TOGA, the input is a .csv file
-     * composed of three columns:
+     * Generate a Toga input row, given an expression statement. The toga input row contains the information (code and javadoc) about the
+     * focal method of the class under test called within a statement of a test method.
+     * If the expression does not refer to a method call or a constructor invocation of the class under test,
+     * the method raise an Exception.
+     *
+     * The method returns a triplet where:
      * <ol>
-     *     <li>the focal method (i.e. the signature of the method for which
-     *     TOGA has to generate oracles)</li>
-     *     <li>the test prefix of the method under test</li>
-     *     <li>the docstring of the method under test</li>
+     *     <li>the first element is a {@code String} representing the toga input to feed the model</li>
+     *     <li>the second element is a {@code String} containing the toga metadata of the given row</li>
+     *     <li>the third element is a {@code Map} representing the toga row</li>
      * </ol>
-     * Extracts each method under test from the test prefixes and generate triples of
-     * (focalMethod, testPrefix, docstring).
-     * The focal method is considered the last statement in the test method that belongs to the fullyQualifiedClassName.
-     * Saves the output file in output/toga/input.
      *
-     * @param srcDirPath the path to the source code of the project under test
-     * @param jarDirPath the path to the jars of the project under test and its dependencies
      * @param fullyQualifiedClassName the fully qualified name of the class under test
-     *
+     * @param cuClassFile the compilation unit of the class under test
+     * @param cuTestClassPrefixFile the compilation unit of the test class
+     * @param expr the expression from which to extract the focal method and generate a toga input row
+     * @param testPrefix the test prefix to which the expression belongs.
+     * @param stmtIndex the index of the statement within the test prefix
+     * @return a triplet, containing the toga input to feed the model, the corresponding metadata and the info about
+     * the generated toga input row.
+     * @throws UnsolvedSymbolException if the statement cannot be resolved by Java Parser because a symbol cannot be recognized.
+     * @throws NoSuchElementException if the corresponding focal method has not been found.
+     * @throws IllegalStateException if the statement does not correspond to a method call or a constructor invocation
      */
-    public static void generateTOGAInput(Path srcDirPath, Path jarDirPath, String fullyQualifiedClassName) {
-        javaParser = getJavaParser(jarDirPath);
-        Path prefixPath = output.resolve(Paths.get("toga-input"));
-        Path errorPath = output.resolve(Paths.get("toga-err"));
-        Path togaInputPath = prefixPath.resolve("toga_input.csv");
-        Path togaMetadataPath = prefixPath.resolve("toga_metadata.csv");
-        Path togaInfoPath = prefixPath.resolve("toga_info.json");
-        Path fullyQualifiedClassNamePath = FileUtils.getFQNPath(fullyQualifiedClassName);
-        Path togaErrorPath = errorPath.resolve(fullyQualifiedClassNamePath.resolve("err.csv"));
-        String className = FileUtils.getSimpleNameFromFQN(fullyQualifiedClassName);
-        int classNameIdx = fullyQualifiedClassNamePath.getNameCount() - 1;
-        Path fullyQualifiedTestClassNamePath = classNameIdx > 0 ?
-                fullyQualifiedClassNamePath.subpath(0, classNameIdx).resolve(className + "_ESTest.java") :
-                Paths.get(className);
-        Path classFilePath = srcDirPath.resolve(fullyQualifiedClassNamePath);
-        Path testClassPrefixFilePath = evosuitePrefixPath.resolve(fullyQualifiedTestClassNamePath);
-
-        if (!Files.exists(classFilePath)){
-            Path commonPatternPath = Paths.get(srcDirPath.toString(), "main", "java");
-            classFilePath = commonPatternPath.resolve(fullyQualifiedClassNamePath);
-            if (!Files.exists(classFilePath)) {
-                classFilePath = FileUtils.findClassPath(srcDirPath, fullyQualifiedClassNamePath);
-                if (classFilePath == null) {
-                    throw new RuntimeException("The full path to the class file has not been found.");
+    public static Triplet<String,String,Map<String,String>> generateTogaRow(String fullyQualifiedClassName, CompilationUnit cuClassFile, CompilationUnit cuTestClassPrefixFile, Expression expr, MethodDeclaration testPrefix, int stmtIndex)  throws NoSuchElementException, IllegalStateException, UnsolvedSymbolException{
+        // Define the focal method to find (the last method call in the test). Initially null.
+        // The focal method must be a method declaration or a constructor declaration.
+        CallableDeclaration focalMethod = null;
+        // Define string builder to collect errors while resolving types
+        StringBuilder togaErrBuilder = new StringBuilder();
+        // The name of the focal method. Initially empty.
+        String methodName = "";
+        // The signature of the focal method. Initially empty.
+        String focalMethodSignature = "";
+        // The entire method body of the focal method. Initially empty.
+        String focalMethodBody = "";
+        // The Javadoc of the focal method. Initially empty.
+        String javadocString = "";
+        // Get the name of the test
+        String testName = testPrefix.getNameAsString();
+        // Map representing a row of the toga_info.json file. Each row is the input to the toga model.
+        // The key is the test name, and the value is string composed of the test prefix, the focal method, and
+        // the Javadoc, if present.
+        Map<String, String> togaRow = new HashMap<>();
+        // Get the focal method
+        Pair<CallableDeclaration, List<Exception>> result = getCallableFocalMethod(cuClassFile, expr);
+        focalMethod = result.a;
+        togaErrBuilder.append(result.b.stream().map(e -> generateLogTogaInputError(testPrefix, fullyQualifiedClassName, "WARNING", e)).collect(Collectors.joining()));
+        // If the focal method is still not found, search it within the inherited methods
+        if (focalMethod == null) {
+            Pair<MethodUsage,List<Exception>> resultMethodUsage = searchCandidateMethodUsage(cuClassFile, expr);
+            MethodUsage focalMethodUsage = resultMethodUsage.a;
+            togaErrBuilder.append(resultMethodUsage.b.stream().map(e -> generateLogTogaInputError(testPrefix, fullyQualifiedClassName, "WARNING", e)).collect(Collectors.joining()));
+            // If the focal method is still not found, raise an exception
+            if (focalMethodUsage == null) {
+                throw new NoSuchElementException("Focal method not found in test " + testPrefix.getNameAsString());
+            }
+            // If the focal method is found, get the information of the focal method
+            methodName = focalMethodUsage.getName();
+            focalMethodSignature = getMethodSignature(focalMethodUsage);
+            Matcher matcher = FOCAL_METHOD.matcher(focalMethodUsage.toString());
+            if (matcher.find()) {
+                // Extract the Javadoc comment
+                if (matcher.group(1) != null) {
+                    javadocString = matcher.group(1).replace("\"", "\"\"").trim();;
                 }
+                focalMethodBody = matcher.group(2).replace("\"", "\"\"").trim();
+            }
+        } else {
+            methodName = focalMethod.getNameAsString();
+            focalMethodSignature = getCallableSignature(focalMethod);
+            Matcher matcher = FOCAL_METHOD.matcher(focalMethod.toString());
+            if (matcher.find()) {
+                // Extract the Javadoc comment
+                if (matcher.group(1) != null) {
+                    javadocString = matcher.group(1).replace("\"", "\"\"").trim();;
+                }
+                focalMethodBody = matcher.group(2).replace("\"", "\"\"").trim();
             }
         }
-
-        try {
-            final CompilationUnit cuClassFile = javaParser.parse(classFilePath).getResult().orElseThrow();
-            CompilationUnit cuTestClassPrefixFile = javaParser.parse(testClassPrefixFilePath).getResult().orElseThrow();
-            Map<String, Map<String,String>> togaInfo = new HashMap<>();
-            StringBuilder togaInputBuilder = new StringBuilder();
-            StringBuilder togaMetadataBuilder = new StringBuilder();
-            StringBuilder togaErrBuilder = new StringBuilder();
-            togaInputBuilder.append("focal_method,test_prefix,docstring\n");
-            togaMetadataBuilder.append("project,bug_num,test_name,exception_bug,assertion_bug,exception_lbl,assertion_lbl,assert_err\n");
-
-            cuTestClassPrefixFile.findAll(MethodDeclaration.class).forEach(testPrefix -> {
-                // Define the focal method to find (the last method call in the test). Initially null.
-                // The focal method must be a method declaration or a constructor declaration.
-                CallableDeclaration focalMethod = null;
-                // The name of the focal method. Initially empty.
-                String methodName = "";
-                // The signature of the focal method. Initially empty.
-                String focalMethodSignature = "";
-                // The entire method body of the focal method. Initially empty.
-                String focalMethodBody = "";
-                // The Javadoc of the focal method. Initially empty.
-                String javadocString = "";
-                // Get the name of the test
-                String testName = testPrefix.getNameAsString();
-                // Map representing each row of the toga_info.json file. Each row is the input to the toga model.
-                // The key is the test name, and the value is string composed of the test prefix, the focal method, and
-                // the Javadoc, if present.
-                Map<String, String> togaRow = new HashMap<>();
-                // Retrieve the last method call of the class under test (defined by the fullyQualifiedClassName)
-                // considered as the focal method
-                try {
-                    // Get the list of all the statements within the test
-                    NodeList<Statement> statements = testPrefix
-                            .getBody()
-                            .orElseThrow(() -> new IllegalStateException(String.format("Cannot retrieve block statements from test %s.", testName)))
-                            .getStatements();
-                    // Throw an exception if no statements are found (empty test)
-                    if (statements.size() <= 0) {
-                        throw new IllegalStateException(String.format("No statements found in test %s.", testName));
-                    }
-                    // Define the last expression statement in the test. Initially null.
-                    Expression lastExpression = null;
-                    // Iterate over the statements of the test from the bottom until a call to a method of the
-                    // class under test is found
-                    for (int i = statements.size() - 1; i >= 0 && lastExpression == null; i--) {
-                        // Get current statement
-                        Statement stmt = statements.get(i);
-                        // A method call or constructor invocation must be an instance of ExpressionStmt
-                        if (!stmt.isExpressionStmt()) {
-                            continue;
-                        }
-                        // Get the expression in the current expression statement
-                        Expression candidateExpression = stmt.asExpressionStmt().getExpression();
-                        try {
-                            String fullyQualifiedNameLastExpression = getClassFullyQualifiedNameFromExpression(parseExpression(candidateExpression).a);
-                            if (fullyQualifiedNameLastExpression.equals(fullyQualifiedClassName)) {
-                                lastExpression = candidateExpression;
-
-                            }
-                        } catch (UnsolvedSymbolException | IllegalStateException e) {
-                            continue;
-                        }
-                    }
-                    // If no expression statement is found, throws an exception (empty test)
-                    if (lastExpression == null) {
-                        throw new IllegalStateException(String.format("No expression statement referring to the class under test has been found in test %s.", testName));
-                    }
-                    // Get the focal method
-                    Pair<CallableDeclaration, List<Exception>> result = getCallableFocalMethod(cuClassFile, lastExpression);
-                    focalMethod = result.a;
-                    togaErrBuilder.append(result.b.stream().map(e -> generateLogTogaInputError(testPrefix, fullyQualifiedClassName, "WARNING", e)).collect(Collectors.joining()));
-                    // If the focal method is still not found, search it within the inherited methods
-                    if (focalMethod == null) {
-                        Pair<MethodUsage,List<Exception>> resultMethodUsage = searchCandidateMethodUsage(cuClassFile, lastExpression);
-                        MethodUsage focalMethodUsage = resultMethodUsage.a;
-                        togaErrBuilder.append(resultMethodUsage.b.stream().map(e -> generateLogTogaInputError(testPrefix, fullyQualifiedClassName, "WARNING", e)).collect(Collectors.joining()));
-                        getMethodSignature(focalMethodUsage);
-                        // If the focal method is found, get the information of the focal method
-                        methodName = focalMethodUsage.getName();
-                        focalMethodSignature = getMethodSignature(focalMethodUsage);
-                        Matcher matcher = FOCAL_METHOD.matcher(focalMethodUsage.toString());
-                        if (matcher.find()) {
-                            // Extract the Javadoc comment
-                            if (matcher.group(1) != null) {
-                                javadocString = matcher.group(1).replace("\"", "\"\"").trim();;
-                            }
-                            focalMethodBody = matcher.group(2).replace("\"", "\"\"").trim();
-                        }
-                    } else {
-                        methodName = focalMethod.getNameAsString();
-                        focalMethodSignature = getCallableSignature(focalMethod);
-                        Matcher matcher = FOCAL_METHOD.matcher(focalMethod.toString());
-                        if (matcher.find()) {
-                            // Extract the Javadoc comment
-                            if (matcher.group(1) != null) {
-                                javadocString = matcher.group(1).replace("\"", "\"\"").trim();;
-                            }
-                            focalMethodBody = matcher.group(2).replace("\"", "\"\"").trim();
-                        }
-                    }
-                    // If the focal method is found, get the test and the Javadoc of the focal method
-                    if (focalMethod != null) {
-                        List<MethodDeclaration> tests = cuTestClassPrefixFile
-                                .findAll(MethodDeclaration.class)
-                                .stream()
-                                .filter(t -> t.getNameAsString().equals(testName))
-                                .toList();
-                        if (tests.size() > 0) {
-                            MethodDeclaration test = tests.get(0);
-                            String testStr = test.toString().replace("\"", "\"\"");
-                            String testPrefixStr = testPrefix.toString();
-                            Matcher matcher = testPrefixPattern.matcher(testPrefix.toString());
-                            if (matcher.find()) {
-                                int startIdx = matcher.start();
-                                testStr = testStr.substring(startIdx);
-                            }
-                            togaInputBuilder.append(String.format("\"%s\",\"%s\",\"%s\"\n", focalMethodBody, testStr, javadocString));
-                            togaMetadataBuilder.append(String.format("project,0,%s,0,0,False,\"\",\"\"\n", testName));
-                            togaRow.put("className", cuClassFile.getPrimaryType().orElseThrow().getFullyQualifiedName().orElseThrow());
-                            togaRow.put("methodName", methodName);
-                            togaRow.put("methodSignature", focalMethodSignature);
-                            togaRow.put("testPrefix", testPrefixStr);
-                            togaRow.put("testName", testName);
-                            togaInfo.put(testName, togaRow);
-                        }
-                    } else {
-                        Pair<MethodUsage,List<Exception>> resultMethodUsage = searchCandidateMethodUsage(cuClassFile, lastExpression);
-                        MethodUsage focalMethodUsage = resultMethodUsage.a;
-                        togaErrBuilder.append(resultMethodUsage.b.stream().map(e -> generateLogTogaInputError(testPrefix, fullyQualifiedClassName, "WARNING", e)).collect(Collectors.joining()));
-                        getMethodSignature(focalMethodUsage);
-                    }
-                } catch (IllegalStateException e) {
-                    togaErrBuilder.append(generateLogTogaInputError(testPrefix, fullyQualifiedClassName, "ERROR", e));
-                    System.err.println(e.getMessage());
-                } catch (Exception e) {
-                    togaErrBuilder.append(generateLogTogaInputError(testPrefix, fullyQualifiedClassName, "ERROR",e));
-                    String errMsg = String.format(
-                            "Focal method not found in test %s for class %s",
-                            testPrefix.getNameAsString(),
-                            fullyQualifiedClassName
-                    );
-                    System.err.println(errMsg);
-                }
-            });
-            FileUtils.writeJSON(togaInfoPath, togaInfo);
-            FileUtils.writeString(togaInputPath, togaInputBuilder.toString());
-            FileUtils.writeString(togaMetadataPath, togaMetadataBuilder.toString());
-            FileUtils.writeString(togaErrorPath, togaErrBuilder.toString());
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new Error(e.getMessage());
+        // Generate the toga input, metadata e info row and return them as a triplet
+        String testStr = testPrefix.toString().replace("\"", "\"\"");
+        String testPrefixStr = testPrefix.toString();
+        Matcher matcher = testPrefixPattern.matcher(testPrefix.toString());
+        if (matcher.find()) {
+            int startIdx = matcher.start();
+            testStr = testStr.substring(startIdx);
         }
+        String togaInput = String.format("\"%s\",\"%s\",\"%s\"\n", focalMethodBody, testStr, javadocString);
+        String togaMetadata = String.format("project,0,%s,0,0,False,\"\",\"\"\n", testName);
+        togaRow.put("className", cuClassFile.getPrimaryType().orElseThrow().getFullyQualifiedName().orElseThrow());
+        togaRow.put("methodName", methodName);
+        togaRow.put("methodSignature", focalMethodSignature);
+        togaRow.put("testPrefix", testPrefixStr);
+        togaRow.put("testName", testName);
+        togaRow.put("statementIndex", Integer.toString(stmtIndex));
+        return new Triplet<>(togaInput, togaMetadata, togaRow);
     }
 
     /**
@@ -1008,6 +857,16 @@ public class TogUtils {
         return "";
     }
 
+    /**
+     * Reads an Evosuite test class and counts how many test cases are defined within it.
+     * The method saves the result in a json file named *test_method_count.json*, as a list
+     * composed of a single object of type {@code TestMethodsCount}.
+     *
+     * @param jarDirPath the directory to the jars of the project under test and its dependencies
+     * @param projectName the name of the project under test
+     * @param projectBugID the identifier of the bug in defects4j projects (can be empty for other projects)
+     * @param fullyQualifiedClassName the fully qualified name of the class under test
+     */
     public static void countTestMethods(Path jarDirPath, String projectName, String projectBugID, String fullyQualifiedClassName) {
         javaParser = getJavaParser(jarDirPath);
         Path filePath = output.resolve(Paths.get("test_method_count.json"));
@@ -1022,7 +881,7 @@ public class TogUtils {
         Path fullyQualifiedTestClassNamePath = classNameIdx > 0 ?
                 fullyQualifiedClassNamePath.subpath(0, classNameIdx).resolve(className + "_ESTest.java") :
                 Paths.get(className);
-        Path testClassFilePath = evosuitePrefixPath.resolve(fullyQualifiedTestClassNamePath);
+        Path testClassFilePath = evosuitePrefixes.resolve(fullyQualifiedTestClassNamePath);
         try {
             CompilationUnit cuTestClassFile = javaParser.parse(testClassFilePath).getResult().orElseThrow();
             int methodsNum = cuTestClassFile.findAll(MethodDeclaration.class).size();
@@ -1354,8 +1213,8 @@ public class TogUtils {
         String className = getClassNameFromJDoctorOutput(togaPath);
         Path oraclePath = togaPath.resolveSibling(className + "_Oracle.json");
         Path inputPath = output.resolve("toga-input");
-        TypeReference<Map<String, Map<String, String>>> typeReference = new TypeReference<>(){};
-        Map<String, Map<String, String>> togaInfo = (Map<String, Map<String, String>>) FileUtils.readJSON(
+        TypeReference<Map<String, List<Map<String, String>>>> typeReference = new TypeReference<>(){};
+        Map<String, List<Map<String, String>>> togaInfo = (Map<String, List<Map<String, String>>>) FileUtils.readJSON(
                 inputPath.resolve("toga_info.json"),
                 typeReference
         );
@@ -1371,17 +1230,21 @@ public class TogUtils {
             String testName = record.get(columnIndexMap.get("test_name"));
             String exceptPred = record.get(columnIndexMap.get("except_pred"));
             String assertPred = record.get(columnIndexMap.get("assert_pred"));
-            Map<String,String> togaTest = togaInfo.get(testName);
+            List<Map<String,String>> togaRowList = togaInfo.get(testName);
             boolean isException = Boolean.parseBoolean(exceptPred);
-            OracleOutput oracleOutput = new OracleOutput(
-                    togaTest.get("className"),
-                    togaTest.get("methodSignature"),
+
+            for (Map<String,String> togaRow : togaRowList) {
+                OracleOutput oracleOutput = new OracleOutput(
+                    togaRow.get("className"),
+                    togaRow.get("methodSignature"),
                     OracleType.NON_AXIOMATIC,
                     assertPred,
                     isException ? "java.lang.Exception" : "",
-                    testName
-            );
-            oracleOutputs.add(oracleOutput);
+                    testName,
+                    togaRow.get("statementIndex")
+                );
+                oracleOutputs.add(oracleOutput);
+            }
         }
         FileUtils.writeJSON(oraclePath, oracleOutputs);
     }
@@ -1443,6 +1306,7 @@ public class TogUtils {
                 OracleType.PRE,
                 oracle,
                 "",
+                "",
                 ""
         );
     }
@@ -1468,6 +1332,7 @@ public class TogUtils {
                 jDoctorOutput.signature(),
                 OracleType.NORMAL_POST,
                 oracle,
+                "",
                 "",
                 ""
         );
@@ -1495,6 +1360,7 @@ public class TogUtils {
                 OracleType.EXCEPT_POST,
                 oracle,
                 throwsTag.exceptionType().fullyQualifiedName(),
+                "",
                 ""
         );
     }
@@ -1586,6 +1452,7 @@ public class TogUtils {
                     trattoOutput.oracleType(),
                     trattoOutput.oracleType() != OracleType.EXCEPT_POST ? trattoOutput.oracle() : "",
                     trattoOutput.oracleType() == OracleType.EXCEPT_POST ? trattoOutput.oracle() : "",
+                    "",
                     ""
             );
             oracleOutputs.add(oracleOutput);
