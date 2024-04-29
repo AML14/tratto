@@ -19,10 +19,11 @@ fi
 target_class="${1}"
 src_dir="${2}"
 classpath="${3}"
+output_dir=${4-${OUTPUT_DIR}}
 qualifiers=$(echo "${target_class}" | sed 's/\./\//g')
 
 # generate OracleOutput with JDoctor
-jdoctor_output_file="${root_dir}/output/jdoctor-oracles/${qualifiers}_jdoctor_output.json"
+jdoctor_output_file="${output_dir}/jdoctor-oracles/${qualifiers}_jdoctor_output.json"
 if [ ! -d "$(dirname "${jdoctor_output_file}")" ]; then
   mkdir -p "$(dirname "${jdoctor_output_file}")"
 fi

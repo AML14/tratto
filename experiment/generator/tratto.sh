@@ -21,11 +21,11 @@ fully_qualified_name="${1}"
 fqn_path=$(echo "$fully_qualified_name" | sed 's/\./\//g')
 src_path="${2}"
 project_jar_path="${3}"
+output_dir=${4-${OUTPUT_DIR}}
 resources_dir="${ROOT_DIR}/generator/resources"
 utils_dir="${ROOT_DIR}/generator/utils"
 tratto_project_dir="${ROOT_DIR}/../tratto"
-tratto_output_dir="${ROOT_DIR}/output/tratto-oracles"
-tratto_output_file="${tratto_output_dir}/${fqn_path}_tratto_output.json"
+tratto_output_file="${output_dir}/tratto-oracles/${fqn_path}_tratto_output.json"
 tratto_output_fqn_dir="$(dirname "${tratto_output_file}")"
 
 # Setup sdkman

@@ -6,11 +6,19 @@ current_dir=$(realpath "$(dirname "${BASH_SOURCE[@]}")")
 # Setup global variables
 source "${current_dir}/generator/utils/global_variables.sh"
 
+# argument and setup check
+if [ ! ${#} -gt 0 ]; then
+  echo -e "count_test_methods.sh: Incorrect number of arguments. Expected at least 1 arguments (round), but got ${#}".
+  exit 1
+fi
+
+# Round number
+round="${1}"
+
 # Perform checkout
 checkout=false
 
-# Check if any parameter is provided
-if [ $# -gt 0 ]; then
+if [ $# -gt 1 ]; then
     # Check if the first parameter is "checkout"
     if [ "$1" = "checkout" ]; then
       echo "Checkout parameter provided."
@@ -26,6 +34,10 @@ if [ "$checkout" = true ]; then
   if [ ! -d "$DEFECTS4J_DIR/defects4jprefix" ]; then
       git clone "$D4J_EVOSUITE_PREFIX_GITHUB_REPO" "$DEFECTS4J_DIR/defects4jprefix"
   fi
+fi
+
+if [ ! -d "$OUTPUT_DIR" ]; then
+  mkdir -p "$OUTPUT_DIR"
 fi
 
 # Read the CSV file line by line and split into project_id, bug_id, and modified_classes fields
@@ -60,9 +72,9 @@ while IFS=, read -r project_id bug_id modified_classes; do
     # Iterate over the modified classes and count the tests for each class
     for modified_class in "${modified_classes_list[@]}"; do
         fqn_path=$(echo "$modified_class" | sed 's/\./\//g')
-        evosuite_prefix_fqn_file_path="${DEFECTS4J_DIR}/defects4jprefix/src/main/evosuite-prefixes/${project_id}/${bug_id}/${fqn_path}_ESTest.java"
+        evosuite_prefix_fqn_file_path="${DEFECTS4J_DIR}/defects4jprefix/src/main/${round}/evosuite-prefixes/${project_id}/${bug_id}/${fqn_path}_ESTest.java"
         output_evosuite_prefix_path="${OUTPUT_DIR}/evosuite-prefixes"
-        output_evosuite_prefix_fqn_path="${OUTPUT_DIR}/evosuite-prefixes/$(dirname "$fqn_path")"
+        output_evosuite_prefix_fqn_path="${output_evosuite_prefix_patht}/$(dirname "$fqn_path")"
         if [ ! -d "$output_evosuite_prefix_fqn_path" ]; then
           mkdir -p "$output_evosuite_prefix_fqn_path"
         fi
@@ -74,9 +86,8 @@ while IFS=, read -r project_id bug_id modified_classes; do
         # Count EvoSuite test methods
         echo "Counting EvoSuite test methods for class ${modified_class} - ${project_id}_${bug_id}."
         # Run the count
-        java -jar "${EXPERIMENT_JAR}" "count_test_methods" ${jars_path} ${project_id} ${bug_id} ${modified_class}
+        java -jar "${EXPERIMENT_JAR}" "count_test_methods" ${jars_path} ${OUTPUT_DIR} ${project_id} ${bug_id} ${modified_class}
         # Cleanup
         rm -r "${output_evosuite_prefix_path}"
     done
 done < "$D4J_PROJECTS_BUGS"
-

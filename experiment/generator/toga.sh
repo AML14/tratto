@@ -19,14 +19,14 @@ fully_qualified_name="${1}"
 fqn_path=$(echo "$fully_qualified_name" | sed 's/\./\//g')
 src_path="${2}"
 project_jar_path="${3}"
-project_id=${4}
-bug_id=${5}
+output_dir=${4-${OUTPUT_DIR}}
+project_id=${5}
+bug_id=${6}
 buggy_project_bug_dir="${DEFECTS4J_DIR}/temp/${project_id}_${bug_id}b"
-evosuite_tests_fqn_file_path="${DEFECTS4J_DIR}/defects4jprefix/src/main/evosuite-simple-tests/${project_id}/${bug_id}/${fqn_path}_ESTest.java"
+#evosuite_tests_fqn_file_path="${DEFECTS4J_DIR}/defects4jprefix/src/main/evosuite-simple-tests/${project_id}/${bug_id}/${fqn_path}_ESTest.java"
 toga_project_dir="${ROOT_DIR}/generator/resources/toga"
-toga_input_dir="${ROOT_DIR}/output/toga-input"
-toga_output_dir="${ROOT_DIR}/output/toga-oracles"
-toga_output_file="${toga_output_dir}/${fqn_path}_toga_output.csv"
+toga_input_dir="${output_dir}/toga-input"
+toga_output_file="${output_dir}/toga-oracles/${fqn_path}_toga_output.csv"
 toga_output_fqn_dir="$(dirname "${toga_output_file}")"
 
 echo "toga.sh: Setup TOGA project"
@@ -41,7 +41,7 @@ sdk use java "$JAVA17"
 bash "${UTILS_DIR}/experiment_setup.sh"
 
 echo "toga.sh: Generate TOGA input files."
-java -jar "generator/resources/experiment.jar" "generate_tog_input" "toga" "${fully_qualified_name}" "${src_path}" ${project_jar_path}
+java -jar "generator/resources/experiment.jar" "generate_tog_input" "toga" "${fully_qualified_name}" "${output_dir}" "${src_path}" ${project_jar_path}
 # python3 "$TOGA_INPUT_GENERATOR" "$DEFECTS4J_HOME" "$project_id" "$bug_id" "$fully_qualified_name" "$buggy_project_bug_dir" "$evosuite_tests_fqn_file_path" "$toga_input_dir"
 
 echo "toga.sh: Generate oracles with TOGA."
@@ -60,4 +60,4 @@ fi
 mv "${toga_project_dir}/oracle_preds.csv" "${toga_output_file}"
 
 echo "toga.sh: Map oracles generated with TOGA into OracleOutputs."
-java -jar "${EXPERIMENT_JAR}" "generate_oracle_output" "toga" "${toga_output_file}"
+java -jar "${EXPERIMENT_JAR}" "generate_oracle_output" "toga" "${toga_output_file}" "${output_dir}"

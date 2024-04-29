@@ -67,12 +67,6 @@ import static org.plumelib.util.CollectionsPlume.mapList;
  * TOG and converting its output into other {@link data} outputs.
  */
 public class TogUtils {
-    /** The path of the output directory. */
-    private static final Path output = Paths.get("output");
-    /** The path of the EvoSuite prefixes directory. */
-    private static final Path evosuitePrefixes = output.resolve("evosuite-prefixes");
-    /** The path of the EvoSuite simple tests directory (tests with one assertion).  */
-    private static final Path evosuiteTestsSimplePath = output.resolve("evosuite-simple-tests");
     /** A regex pattern to extract a text prefix (removes comments and decorators). */
     private static final Pattern testPrefixPattern = Pattern.compile("(public|protected|private)(.| )*");
     /** A JavaParser used to pre-process source code to be converted into TOGA input. */
@@ -526,13 +520,15 @@ public class TogUtils {
      *
      * @param srcDirPath the path to the source code of the project under test
      * @param jarDirPath the path to the jars of the project under test and its dependencies
+     * @param outputDirPath the path to the output folder
      * @param fullyQualifiedClassName the fully qualified name of the class under test
      *
      */
-    public static void generateTOGAInput(Path srcDirPath, Path jarDirPath, String fullyQualifiedClassName, TogaInputType togaInputType) {
+    public static void generateTOGAInput(Path srcDirPath, Path jarDirPath, Path outputDirPath, String fullyQualifiedClassName, TogaInputType togaInputType) {
         javaParser = getJavaParser(jarDirPath);
-        Path prefixPath = output.resolve(Paths.get("toga-input"));
-        Path errorPath = output.resolve(Paths.get("toga-err"));
+        Path prefixPath = outputDirPath.resolve(Paths.get("toga-input"));
+        Path errorPath = outputDirPath.resolve(Paths.get("toga-err"));
+        Path evosuitePrefixesPath = outputDirPath.resolve(Paths.get("evosuite-prefixes"));
         Path togaInputPath = prefixPath.resolve("toga_input.csv");
         Path togaMetadataPath = prefixPath.resolve("toga_metadata.csv");
         Path togaInfoPath = prefixPath.resolve("toga_info.json");
@@ -544,7 +540,7 @@ public class TogUtils {
                 fullyQualifiedClassNamePath.subpath(0, classNameIdx).resolve(className + "_ESTest.java") :
                 Paths.get(className);
         Path classFilePath = srcDirPath.resolve(fullyQualifiedClassNamePath);
-        Path testClassPrefixFilePath = evosuitePrefixes.resolve(fullyQualifiedTestClassNamePath);
+        Path testClassPrefixFilePath = evosuitePrefixesPath.resolve(fullyQualifiedTestClassNamePath);
 
         if (!Files.exists(classFilePath)){
             Path commonPatternPath = Paths.get(srcDirPath.toString(), "main", "java");
@@ -863,13 +859,15 @@ public class TogUtils {
      * composed of a single object of type {@code TestMethodsCount}.
      *
      * @param jarDirPath the directory to the jars of the project under test and its dependencies
+     * @param outputDirPath the path to the output folder
      * @param projectName the name of the project under test
      * @param projectBugID the identifier of the bug in defects4j projects (can be empty for other projects)
      * @param fullyQualifiedClassName the fully qualified name of the class under test
      */
-    public static void countTestMethods(Path jarDirPath, String projectName, String projectBugID, String fullyQualifiedClassName) {
+    public static void countTestMethods(Path jarDirPath, Path outputDirPath, String projectName, String projectBugID, String fullyQualifiedClassName) {
         javaParser = getJavaParser(jarDirPath);
-        Path filePath = output.resolve(Paths.get("test_method_count.json"));
+        Path filePath = outputDirPath.resolve(Paths.get("test_method_count.json"));
+        Path evosuitePrefixesPath = outputDirPath.resolve(Paths.get("evosuite-prefixes"));
         List<TestMethodsCount> testMethodsCountList = new ArrayList<>();
         try {
             testMethodsCountList = FileUtils.readJSONList(filePath, TestMethodsCount.class);
@@ -881,7 +879,7 @@ public class TogUtils {
         Path fullyQualifiedTestClassNamePath = classNameIdx > 0 ?
                 fullyQualifiedClassNamePath.subpath(0, classNameIdx).resolve(className + "_ESTest.java") :
                 Paths.get(className);
-        Path testClassFilePath = evosuitePrefixes.resolve(fullyQualifiedTestClassNamePath);
+        Path testClassFilePath = evosuitePrefixesPath.resolve(fullyQualifiedTestClassNamePath);
         try {
             CompilationUnit cuTestClassFile = javaParser.parse(testClassFilePath).getResult().orElseThrow();
             int methodsNum = cuTestClassFile.findAll(MethodDeclaration.class).size();
@@ -1208,11 +1206,12 @@ public class TogUtils {
      * Saves the output file to "output/toga-oracles/package-name/MyClass_Oracle.json".
      * @see OracleOutput
      * @param togaPath the output JSON file generated by JDoctor
+     * @param outputDirPath the path to the output folder
      */
-    public static void togaToOracleOutput(Path togaPath) {
-        String className = getClassNameFromJDoctorOutput(togaPath);
+    public static void togaToOracleOutput(Path togaPath, Path outputDirPath) {
+        String className = getClassNameFromTogOutput(togaPath);
         Path oraclePath = togaPath.resolveSibling(className + "_Oracle.json");
-        Path inputPath = output.resolve("toga-input");
+        Path inputPath = outputDirPath.resolve("toga-input");
         TypeReference<Map<String, List<Map<String, String>>>> typeReference = new TypeReference<>(){};
         Map<String, List<Map<String, String>>> togaInfo = (Map<String, List<Map<String, String>>>) FileUtils.readJSON(
                 inputPath.resolve("toga_info.json"),
@@ -1392,15 +1391,15 @@ public class TogUtils {
     }
 
     /**
-     * Gets the simple class name from the path to a JDoctor output. The
+     * Gets the simple class name from the path to a TOG output. The
      * output path is presumed to follow the format:
-     * "output/jdoctor-oracles/package-name/MyClass_jdoctor_output.json"
+     * "output/[tog]-oracles/package-name/MyClass_[tog]_output.json"
      *
-     * @param jDoctorPath a path to JDoctor output
+     * @param togPath a path to JDoctor output
      * @return the simple clas name
      */
-    private static String getClassNameFromJDoctorOutput(Path jDoctorPath) {
-        String fileName = jDoctorPath.getFileName().toString();
+    private static String getClassNameFromTogOutput(Path togPath) {
+        String fileName = togPath.getFileName().toString();
         String[] fileSegments = fileName.split("_");
         return fileSegments[0];
     }
@@ -1413,7 +1412,7 @@ public class TogUtils {
      * @param jDoctorPath the output JSON file generated by JDoctor
      */
     public static void jDoctorToOracleOutput(Path jDoctorPath) {
-        String className = getClassNameFromJDoctorOutput(jDoctorPath);
+        String className = getClassNameFromTogOutput(jDoctorPath);
         Path oraclePath = jDoctorPath.resolveSibling(className + "_Oracle.json");
         List<JDoctorOutput> jDoctorOutputs = FileUtils.readJSONList(jDoctorPath, JDoctorOutput.class);
         List<OracleOutput> oracleOutputs = jDoctorOutputs
@@ -1434,7 +1433,7 @@ public class TogUtils {
      */
     public static void trattoToOracleOutput(Path trattoPath, Path jarDirPath) {
         javaParser = getJavaParser(jarDirPath);
-        String className = getClassNameFromJDoctorOutput(trattoPath);
+        String className = getClassNameFromTogOutput(trattoPath);
         Path oraclePath = trattoPath.resolveSibling(className + "_Oracle.json");
         List<TrattoOutput> trattoOutputs = FileUtils.readJSONList(
                 trattoPath,
