@@ -10,7 +10,8 @@ source "${root_dir}/generator/utils/init_sdkman.sh"
 tog=${1}
 project_id=${2}
 bug_id=${3}
-output_test_suite_path=${4-"${root_dir}/test-suite"}
+output_dir=${4-$OUTPUT_DIR}
+output_test_suite_path=${5-"${root_dir}/test-suite"}
 
 if [ ! -d "$output_test_suite_path" ]; then
   mkdir "$output_test_suite_path"
@@ -18,7 +19,7 @@ fi
 
 sdk use java "$JAVA8"
 # compress test suite
-cd "${OUTPUT_DIR}/${tog}-tests" || exit 1
+cd "${output_dir}/${tog}-tests" || exit 1
 tar -cvjSf "$output_test_suite_path/${project_id}-${bug_id}b-evosuite.tar.bz2" .
 cd - || exit 1
 # run bug detection

@@ -97,7 +97,7 @@ fi
 # Run tests and generate output
 if [ "$project_id" != "none" ]; then
   echo "Running tests and generating test output"
-  bash ./runner_d4j.sh "$tog" "$project_id" "$bug_id" "${tog_output_dir}/${tog}-test-suite"
+  bash ./runner_d4j.sh "$tog" "$project_id" "$bug_id" "${tog_output_dir}" "${tog_output_dir}/${tog}-test-suite"
   if [ ! -d "${tog_output_dir}/${tog}-tests/${project_id}/${bug_id}" ]; then
     mkdir -p "${tog_output_dir}/${tog}-tests/${project_id}/${bug_id}"
   fi
