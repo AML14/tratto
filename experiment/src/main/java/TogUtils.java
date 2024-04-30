@@ -574,21 +574,23 @@ public class TogUtils {
                     // class under test is found
                     for (int i = stmtIndex; i >= 0; i--) {
                         stmtIndex = i;
-                        // Define the expression statement in the test. Initially null.
-                        Expression expr = null;
                         // Get current statement
                         Statement stmt = statements.get(i);
                         // A method call or constructor invocation must be an instance of ExpressionStmt
                         if (!stmt.isExpressionStmt()) {
                             continue;
                         }
-                        // Get the expression from the current statement
-                        expr = stmt.asExpressionStmt().getExpression();
                         try {
+                            // Get the expression from the current statement
+                            Expression unparsedExpr = stmt.asExpressionStmt().getExpression();
+                            // Parse the expression to understand if it refers to a method call or construction invocation
+                            Pair<Expression,ExpressionType> expressionAnalysisResult = parseExpression(unparsedExpr);
+                            Expression expr = expressionAnalysisResult.a;
+                            ExpressionType exprType = expressionAnalysisResult.b;
                             // Generate a toga input row as a triplet where the first element is the toga input to feed the
                             // model, the second element represent the corresponding metadata, and the third element is a Map
                             // representing the toga row.
-                            Triplet<String, String, Map<String, String>> togaRow = generateTogaRow(cuClassFile, expr, testPrefix, stmtIndex);
+                            Triplet<String, String, Map<String, String>> togaRow = generateTogaRow(cuClassFile, expr, exprType, testPrefix, stmtIndex);
                             // Update the input, metadata, and info objects
                             addTogaRow(togaRow, testName, togaInputBuilder, togaMetadataBuilder, togaInfo);
 
@@ -640,7 +642,7 @@ public class TogUtils {
      * </ol>
      *
      * @param cuClassFile the compilation unit of the class under test
-     * @param unparsedExpr the expression from which to extract the focal method and generate a toga input row
+     * @param expr the expression from which to extract the focal method and generate a toga input row
      * @param testPrefix the test prefix to which the expression belongs.
      * @param stmtIndex the index of the statement within the test prefix
      * @return a triplet, containing the toga input to feed the model, the corresponding metadata and the info about
@@ -648,11 +650,7 @@ public class TogUtils {
      * @throws NoFocalMethodException if the corresponding focal method has not been found.
      * @throws IllegalStateException if the statement does not correspond to a method call or a constructor invocation
      */
-    public static Triplet<String,String,Map<String,String>> generateTogaRow(CompilationUnit cuClassFile, Expression unparsedExpr, MethodDeclaration testPrefix, int stmtIndex) throws NoFocalMethodException, NoPrimaryTypeException, IllegalStateException, CandidateCallableMethodUsageNotFoundException, CandidateCallableDeclarationNotFoundException, MultipleCandidatesException, UnrecognizedExprException {
-        // Parse the expression to understand if it refers to a method call or construction invocation
-        Pair<Expression,ExpressionType> expressionAnalysisResult = parseExpression(unparsedExpr);
-        Expression expr = expressionAnalysisResult.a;
-        ExpressionType exprType = expressionAnalysisResult.b;
+    public static Triplet<String,String,Map<String,String>> generateTogaRow(CompilationUnit cuClassFile, Expression expr, ExpressionType exprType, MethodDeclaration testPrefix, int stmtIndex) throws NoFocalMethodException, NoPrimaryTypeException, IllegalStateException, CandidateCallableMethodUsageNotFoundException, CandidateCallableDeclarationNotFoundException, MultipleCandidatesException {
         // Define the focal method to find (the last method call in the test). Initially null.
         // The focal method must be a method declaration or a constructor declaration.
         CallableDeclaration focalMethod = null;
