@@ -125,7 +125,7 @@ while IFS=, read -r project_id bug_id modified_classes; do
         fi
         if [ "$tog" == "toga" ]; then
           cp -r "${tog_project_bug_output}/${tog}-input" "$output_fqn_path"
-          cp -r "${tog_project_bug_output}/${tog}-err" "$output_fqn_path"
+          cp -r "${tog_project_bug_output}/${tog}-log" "$output_fqn_path"
         fi
         cp -r "${tog_project_bug_output}/${tog}-tests" "$output_fqn_path"
         cp -r "${tog_project_bug_output}/${tog}-test-suite" "$output_fqn_path"
