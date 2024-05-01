@@ -488,10 +488,10 @@ public class TogUtils {
             } else if (expr.isObjectCreationExpr()) {
                 return expr.asObjectCreationExpr().getType().resolve().describe();
             } else {
-                throw new IllegalStateException("[ERROR] - Unable to get the fully qualified name from the expression.");
+                throw new IllegalStateException(String.format("[ERROR] - Unable to get the fully qualified name from the expression %s.", expr));
             }
         } catch (UnsolvedSymbolException e) {
-            throw new UnsolvedSymbolException("[ERROR] - Unable to resolve the expression and get the fully qualified name of the corresponding class.");
+            throw new UnsolvedSymbolException(String.format("[ERROR] - Unable to resolve the expression %s and get the fully qualified name of the corresponding class.", expr));
         }
     }
 
@@ -616,11 +616,12 @@ public class TogUtils {
                                         System.err.println(errMsg);
                                     }
                                 } catch (UnknownFocalMethodOrigin unknownFocalMethodOriginException) {
-                                    UnknownFocalMethodOrigin unknownFocalMethodException = new UnknownFocalMethodOrigin(String.format("[ERROR] - The statement %s of the test %s is part of another class with respect to the class under test, but the research of the class failed.", expr, testName));
-                                    togaLogBuilder.append(generateLogTogaInputError(testPrefix, fullyQualifiedClassName, "ERROR", unknownFocalMethodException));
+                                    //System.err.println(unknownFocalMethodOriginException.getMessage());
+                                    UnknownFocalMethodOrigin unknownFocalMethodException = new UnknownFocalMethodOrigin(String.format("[WARNING] - The statement %s of the test %s is part of another class with respect to the class under test, but the research of the class failed.", expr, testName));
+                                    togaLogBuilder.append(generateLogTogaInputError(testPrefix, fullyQualifiedClassName, "WARNING", unknownFocalMethodException));
                                 } catch (Exception unexpectedException) {
-                                    System.err.println(unexpectedException.getMessage());
-                                    togaLogBuilder.append(generateLogTogaInputError(testPrefix, fullyQualifiedClassName, "ERROR", unexpectedException));
+                                    //System.err.println(unexpectedException.getMessage());
+                                    togaLogBuilder.append(generateLogTogaInputError(testPrefix, fullyQualifiedClassName, "WARNING", unexpectedException));
                                 }
                             }
                         }
@@ -695,7 +696,7 @@ public class TogUtils {
                     }
                 }
             }
-            throw new UnknownFocalMethodOrigin(String.format("[ERROR] - The statement %s of the test is part of another class with respect to the class under test, but the research of the class failed.", expr));
+            throw new UnknownFocalMethodOrigin(String.format("[WARNING] - The statement %s of the test is part of another class with respect to the class under test, but the research of the class failed.", expr));
         }
         return false;
     }
