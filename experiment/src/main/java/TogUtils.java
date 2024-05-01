@@ -12,7 +12,6 @@ import com.github.javaparser.ast.comments.JavadocComment;
 import com.github.javaparser.ast.expr.*;
 import com.github.javaparser.ast.nodeTypes.NodeWithSimpleName;
 import com.github.javaparser.ast.stmt.BlockStmt;
-import com.github.javaparser.ast.stmt.ExpressionStmt;
 import com.github.javaparser.ast.stmt.Statement;
 import com.github.javaparser.ast.type.ReferenceType;
 import com.github.javaparser.ast.type.TypeParameter;
@@ -29,8 +28,8 @@ import com.github.javaparser.symbolsolver.resolution.typesolvers.ClassLoaderType
 import com.github.javaparser.symbolsolver.resolution.typesolvers.CombinedTypeSolver;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.ReflectionTypeSolver;
 import com.github.javaparser.symbolsolver.utils.SymbolSolverCollectionStrategy;
-import com.github.javaparser.utils.Pair;
 import org.javatuples.Triplet;
+import org.javatuples.Pair;
 import data.*;
 import data.JDoctorOutput.Parameter;
 import data.JDoctorOutput.ParamTag;
@@ -39,11 +38,13 @@ import data.JDoctorOutput.ThrowsTag;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.rmi.UnexpectedException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -442,26 +443,13 @@ public class TogUtils {
         return focalMethod;
     }
 
-    private static Pair<Expression,ExpressionType> parseExpression(Expression expr) throws UnrecognizedExprException {
-        Expression parsedExpr = expr;
-        if (expr.isAssignExpr()) {
-            // Get the value of the assignment expression
-            parsedExpr = expr.asAssignExpr().getValue();
-        } else if (expr.isVariableDeclarationExpr()) {
-            parsedExpr = expr.asVariableDeclarationExpr().getVariable(0).getInitializer().orElseThrow(() -> new IllegalStateException(String.format("[ERROR] - Last statement in test is a variable declaration, but the inizializer cannot be resolved.")));
-        }
-        if (parsedExpr.isCastExpr()) {
-            // Get the expression of the cast expression
-            parsedExpr = parsedExpr.asCastExpr().getExpression();
-        }
-        // Check if the last expression is a method call or a constructor call
-        if (parsedExpr.isMethodCallExpr()) {
-            return new Pair<>(parsedExpr, ExpressionType.METHOD_CALL);
-        } else if (parsedExpr.isObjectCreationExpr()) {
-            return new Pair<>(parsedExpr, ExpressionType.CONSTRUCTOR_CALL);
-        } else {
-            throw new UnrecognizedExprException(String.format("[WARNING] - Unable to parse statement as a MethodCallExpr or an ObjectCreationExpr statement."));
-        }
+    private static List<Pair<Expression,ExpressionType>> parseExpression(Expression expr) throws UnrecognizedExprException {
+        List<Pair<Expression,ExpressionType>> methodCallsAndObjectCreationsList = new ArrayList<>();
+
+        methodCallsAndObjectCreationsList.addAll(expr.findAll(MethodCallExpr.class).stream().map(e -> new Pair<>((Expression) e, ExpressionType.METHOD_CALL)).toList());
+        methodCallsAndObjectCreationsList.addAll(expr.findAll(ObjectCreationExpr.class).stream().map(e -> new Pair<>((Expression) e, ExpressionType.CONSTRUCTOR_CALL)).toList());
+
+        return methodCallsAndObjectCreationsList;
     }
 
     /**
@@ -489,6 +477,21 @@ public class TogUtils {
             List<Map<String, String>> togaRowInfoList = new ArrayList<>();
             togaRowInfoList.add(togaRowInfo);
             togaInfo.put(testName, togaRowInfoList);
+        }
+    }
+
+    private static String getClassFullyQualifiedNameFromExpression(Expression expr) {
+        try {
+            if (expr.isMethodCallExpr()) {
+                String methodFQN = expr.asMethodCallExpr().resolve().getQualifiedName();
+                return methodFQN.substring(0, methodFQN.lastIndexOf("."));
+            } else if (expr.isObjectCreationExpr()) {
+                return expr.asObjectCreationExpr().getType().resolve().describe();
+            } else {
+                throw new IllegalStateException("[ERROR] - Unable to get the fully qualified name from the expression.");
+            }
+        } catch (UnsolvedSymbolException e) {
+            throw new UnsolvedSymbolException("[ERROR] - Unable to resolve the expression and get the fully qualified name of the corresponding class.");
         }
     }
 
@@ -576,43 +579,67 @@ public class TogUtils {
                         stmtIndex = i;
                         // Get current statement
                         Statement stmt = statements.get(i);
+                        Expression expr = null;
+                        ExpressionType exprType = null;
                         // A method call or constructor invocation must be an instance of ExpressionStmt
                         if (!stmt.isExpressionStmt()) {
                             continue;
                         }
-                        try {
-                            // Get the expression from the current statement
-                            Expression unparsedExpr = stmt.asExpressionStmt().getExpression();
-                            // Parse the expression to understand if it refers to a method call or construction invocation
-                            Pair<Expression,ExpressionType> expressionAnalysisResult = parseExpression(unparsedExpr);
-                            Expression expr = expressionAnalysisResult.a;
-                            ExpressionType exprType = expressionAnalysisResult.b;
-                            // Generate a toga input row as a triplet where the first element is the toga input to feed the
-                            // model, the second element represent the corresponding metadata, and the third element is a Map
-                            // representing the toga row.
-                            Triplet<String, String, Map<String, String>> togaRow = generateTogaRow(cuClassFile, expr, exprType, testPrefix, stmtIndex);
-                            // Update the input, metadata, and info objects
-                            addTogaRow(togaRow, testName, togaInputBuilder, togaMetadataBuilder, togaInfo);
+                        // Get the expression from the current statement
+                        Expression unparsedExpr = stmt.asExpressionStmt().getExpression();
+                        // Parse the expression to understand if it refers to a method call or construction invocation
+                        List<Pair<Expression,ExpressionType>> expressionAnalysisResult = parseExpression(unparsedExpr);
 
-                            if (togaInputType == TogaInputType.LAST_OCCURRENCE) {
-                                break;
+                        for (Pair<Expression,ExpressionType> exprPair : expressionAnalysisResult) {
+                            try {
+                                expr = exprPair.getValue0();
+                                exprType = exprPair.getValue1();
+                                // Generate a toga input row as a triplet where the first element is the toga input to feed the
+                                // model, the second element represent the corresponding metadata, and the third element is a Map
+                                // representing the toga row.
+                                Triplet<String, String, Map<String, String>> togaRow = generateTogaRow(cuClassFile, expr, exprType, testPrefix, stmtIndex);
+                                // Update the input, metadata, and info objects
+                                addTogaRow(togaRow, testName, togaInputBuilder, togaMetadataBuilder, togaInfo);
+                            } catch (NoFocalMethodMatchingException | NoPrimaryTypeException | UnrecognizedExprException | CandidateCallableDeclarationNotFoundException | CandidateCallableMethodUsageNotFoundException | MultipleCandidatesException e) {
+                                try {
+                                    boolean isFromAnotherClass = isExpressionFromAnotherCompilationUnit(expr, cuClassFile, fullyQualifiedClassName, srcDirPath);
+                                    if (!isFromAnotherClass) {
+                                        String errMsg = String.format(
+                                                "[ERROR] - Unexpected error while matching focal method of class %s for test %s (%s). The expression %s should contains a focal method from the class under test but it has not been found.",
+                                                fullyQualifiedClassName,
+                                                testPrefix.getNameAsString(),
+                                                e.getClass().getName(),
+                                                expr
+                                        );
+                                        UnexpectedException unexpectedException =  new UnexpectedException(errMsg);
+                                        togaLogBuilder.append(generateLogTogaInputError(testPrefix, fullyQualifiedClassName, "ERROR", unexpectedException));
+                                        System.err.println(errMsg);
+                                    }
+                                } catch (UnknownFocalMethodOrigin unknownFocalMethodOriginException) {
+                                    UnknownFocalMethodOrigin unknownFocalMethodException = new UnknownFocalMethodOrigin(String.format("[ERROR] - The statement %s of the test %s is part of another class with respect to the class under test, but the research of the class failed.", expr, testName));
+                                    togaLogBuilder.append(generateLogTogaInputError(testPrefix, fullyQualifiedClassName, "ERROR", unknownFocalMethodException));
+                                } catch (Exception unexpectedException) {
+                                    System.err.println(unexpectedException.getMessage());
+                                    togaLogBuilder.append(generateLogTogaInputError(testPrefix, fullyQualifiedClassName, "ERROR", unexpectedException));
+                                }
                             }
-                        } catch (NoFocalMethodException | NoPrimaryTypeException | UnrecognizedExprException | CandidateCallableDeclarationNotFoundException | CandidateCallableMethodUsageNotFoundException | MultipleCandidatesException e) {
-                            togaLogBuilder.append(generateLogTogaInputError(testPrefix, fullyQualifiedClassName, "WARNING", e));
+                        }
+                        if (togaInputType == TogaInputType.LAST_OCCURRENCE && togaInfo.containsKey(testName) && togaInfo.get(testName).size() > 0) {
+                            break;
                         }
                     }
                     // If no expression statement is found as focal method, throws an exception (empty test)
-                    if (togaRowInfoList == null) {
-                        throw new IllegalStateException(String.format("No expression statement referring to the class under test has been found in test %s.", testName));
+                    if (!togaInfo.containsKey(testName) || togaInfo.get(testName).size() == 0) {
+                        throw new NoFocalMethodInTestException(String.format("No expression statement referring to the class under test has been found in test %s.", testName));
                     }
-                    // Add focal methods found to the toga info dictionary
-                    togaInfo.put(testName, togaRowInfoList);
+                } catch (NoFocalMethodInTestException e) {
+                    togaLogBuilder.append(generateLogTogaInputError(testPrefix, fullyQualifiedClassName, "WARNING",e));
                 } catch (Exception e) {
                     togaLogBuilder.append(generateLogTogaInputError(testPrefix, fullyQualifiedClassName, "ERROR",e));
                     String errMsg = String.format(
-                            "[ERROR] - Unexpected error while matching focal method %s for class %s (%s)",
-                            testPrefix.getNameAsString(),
+                            "[ERROR] - Unexpected error while matching focal method of class %s for test %s (%s)",
                             fullyQualifiedClassName,
+                            testPrefix.getNameAsString(),
                             e.getClass().getName()
                     );
                     System.err.println(errMsg);
@@ -626,6 +653,51 @@ public class TogUtils {
             e.printStackTrace();
             throw new Error(e.getMessage());
         }
+    }
+
+    /**
+     *
+     */
+    private static boolean isExpressionFromAnotherCompilationUnit(final Expression expr, CompilationUnit cuClassFile, String fullyQualifiedClassName, Path srcDirPath) throws UnknownFocalMethodOrigin, UnsolvedSymbolException, IllegalStateException {
+        // Check the qualified name of the expression (if the expression cannot be solved, raise an exception and log it)
+        String fullyQualifiedNameCurrentExpr = getClassFullyQualifiedNameFromExpression(expr);
+        // Check if the qualified name refers to another class of the project or a java library or an inner class (and check the class exists)
+        if (!fullyQualifiedNameCurrentExpr.equals(fullyQualifiedClassName)) {
+            Path fullyQualifiedClassNameLastExpressionPath = FileUtils.getFQNPath(fullyQualifiedNameCurrentExpr);
+            Path classFileLastExpressionPath = srcDirPath.resolve(fullyQualifiedClassNameLastExpressionPath);
+            File classFileLastExpression = new File(classFileLastExpressionPath.toString());
+            if (classFileLastExpression.exists()) {
+                return true;
+            } else {
+                Path pathToJDK = Paths.get(pathToJAVA8Src.toString());
+                Path pathToJDKClass = pathToJDK.resolve(fullyQualifiedClassNameLastExpressionPath);
+                classFileLastExpression = new File(pathToJDKClass.toString());
+                if (classFileLastExpression.exists()) {
+                    return true;
+                } else {
+                    boolean found = false;
+                    // Iterate through the types declared in the compilation unit
+                    List<BodyDeclaration<?>> members = cuClassFile.getPrimaryType().get().getMembers();
+                    for (BodyDeclaration<?> member : members) {
+                        if (member instanceof ClassOrInterfaceDeclaration) {
+                            ClassOrInterfaceDeclaration nestedClass = (ClassOrInterfaceDeclaration) member;
+                            // Check if the type is a ClassOrInterfaceDeclaration (class or interface)
+                            if (nestedClass.getFullyQualifiedName().get().equals(fullyQualifiedNameCurrentExpr)) {
+                                // Update compilation unit of the last statement to the class file of the last statement
+                                CompilationUnit cuCurrentEexprClassFile = javaParser.parse(nestedClass.toString()).getResult().orElseThrow();
+                                found = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (found) {
+                        return true;
+                    }
+                }
+            }
+            throw new UnknownFocalMethodOrigin(String.format("[ERROR] - The statement %s of the test is part of another class with respect to the class under test, but the research of the class failed.", expr));
+        }
+        return false;
     }
 
     /**
@@ -647,10 +719,10 @@ public class TogUtils {
      * @param stmtIndex the index of the statement within the test prefix
      * @return a triplet, containing the toga input to feed the model, the corresponding metadata and the info about
      * the generated toga input row.
-     * @throws NoFocalMethodException if the corresponding focal method has not been found.
+     * @throws NoFocalMethodMatchingException if the corresponding focal method has not been found.
      * @throws IllegalStateException if the statement does not correspond to a method call or a constructor invocation
      */
-    public static Triplet<String,String,Map<String,String>> generateTogaRow(CompilationUnit cuClassFile, Expression expr, ExpressionType exprType, MethodDeclaration testPrefix, int stmtIndex) throws NoFocalMethodException, NoPrimaryTypeException, IllegalStateException, CandidateCallableMethodUsageNotFoundException, CandidateCallableDeclarationNotFoundException, MultipleCandidatesException {
+    public static Triplet<String,String,Map<String,String>> generateTogaRow(CompilationUnit cuClassFile, Expression expr, ExpressionType exprType, MethodDeclaration testPrefix, int stmtIndex) throws NoFocalMethodMatchingException, NoPrimaryTypeException, IllegalStateException, CandidateCallableMethodUsageNotFoundException, CandidateCallableDeclarationNotFoundException, MultipleCandidatesException {
         // Define the focal method to find (the last method call in the test). Initially null.
         // The focal method must be a method declaration or a constructor declaration.
         CallableDeclaration focalMethod = null;
@@ -673,12 +745,12 @@ public class TogUtils {
         // If the focal method is still not found, search it within the inherited methods
         if (focalMethod == null) {
             if (exprType == ExpressionType.CONSTRUCTOR_CALL) {
-                throw new NoFocalMethodException("The focal method do not belong to the class under test " + testPrefix.getNameAsString());
+                throw new NoFocalMethodMatchingException("The focal method do not belong to the class under test " + testPrefix.getNameAsString());
             }
             MethodUsage focalMethodUsage = searchCandidateMethodUsage(cuClassFile, expr);
             // If the focal method is still not found, raise an exception
             if (focalMethodUsage == null) {
-                throw new NoFocalMethodException("The focal method do not belong to the class under test " + testPrefix.getNameAsString());
+                throw new NoFocalMethodMatchingException("The focal method do not belong to the class under test " + testPrefix.getNameAsString());
             } else {
 
             }
