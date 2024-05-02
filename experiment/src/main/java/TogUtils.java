@@ -519,6 +519,7 @@ public class TogUtils {
         Path prefixPath = outputDirPath.resolve(Paths.get("toga-input"));
         Path errorPath = outputDirPath.resolve(Paths.get("toga-log"));
         Path evosuitePrefixesPath = outputDirPath.resolve(Paths.get("evosuite-prefixes"));
+        Path evosuiteSimpleTestsPath = outputDirPath.resolve(Paths.get("evosuite-simple-tests"));
         Path togaInputPath = prefixPath.resolve("toga_input.csv");
         Path togaMetadataPath = prefixPath.resolve("toga_metadata.csv");
         Path togaInfoPath = prefixPath.resolve("toga_info.json");
@@ -530,6 +531,7 @@ public class TogUtils {
                 fullyQualifiedClassNamePath.subpath(0, classNameIdx).resolve(className + "_ESTest.java") :
                 Paths.get(className);
         Path classFilePath = srcDirPath.resolve(fullyQualifiedClassNamePath);
+        Path testClassSimpleTestFilePath = evosuiteSimpleTestsPath.resolve(fullyQualifiedTestClassNamePath);
         Path testClassPrefixFilePath = evosuitePrefixesPath.resolve(fullyQualifiedTestClassNamePath);
 
         if (!Files.exists(classFilePath)){
@@ -545,7 +547,8 @@ public class TogUtils {
 
         try {
             final CompilationUnit cuClassFile = javaParser.parse(classFilePath).getResult().orElseThrow();
-            CompilationUnit cuTestClassPrefixFile = javaParser.parse(testClassPrefixFilePath).getResult().orElseThrow();
+            CompilationUnit cuTestClassPrefixesFile = javaParser.parse(testClassPrefixFilePath).getResult().orElseThrow();
+            CompilationUnit cuTestClassSimpleTestsFile = javaParser.parse(testClassSimpleTestFilePath).getResult().orElseThrow();
             Map<String, List<Map<String,String>>> togaInfo = new HashMap<>();
             StringBuilder togaInputBuilder = new StringBuilder();
             StringBuilder togaMetadataBuilder = new StringBuilder();
@@ -553,7 +556,7 @@ public class TogUtils {
             togaInputBuilder.append("focal_method,test_prefix,docstring\n");
             togaMetadataBuilder.append("project,bug_num,test_name,exception_bug,assertion_bug,exception_lbl,assertion_lbl,assert_err\n");
 
-            cuTestClassPrefixFile.findAll(MethodDeclaration.class).forEach(testPrefix -> {
+            cuTestClassPrefixesFile.findAll(MethodDeclaration.class).forEach(testPrefix -> {
                 // Get the name of the test
                 String testName = testPrefix.getNameAsString();
                 // Retrieve the last method call of the class under test (defined by the fullyQualifiedClassName)
@@ -597,7 +600,7 @@ public class TogUtils {
                                 // Generate a toga input row as a triplet where the first element is the toga input to feed the
                                 // model, the second element represent the corresponding metadata, and the third element is a Map
                                 // representing the toga row.
-                                Triplet<String, String, Map<String, String>> togaRow = generateTogaRow(cuClassFile, expr, exprType, testPrefix, stmtIndex);
+                                Triplet<String, String, Map<String, String>> togaRow = generateTogaRow(cuClassFile, cuTestClassSimpleTestsFile, expr, exprType, testPrefix, stmtIndex);
                                 // Update the input, metadata, and info objects
                                 addTogaRow(togaRow, testName, togaInputBuilder, togaMetadataBuilder, togaInfo);
                             } catch (NoFocalMethodMatchingException | NoPrimaryTypeException | UnrecognizedExprException | CandidateCallableDeclarationNotFoundException | CandidateCallableMethodUsageNotFoundException | MultipleCandidatesException e) {
@@ -715,6 +718,7 @@ public class TogUtils {
      * </ol>
      *
      * @param cuClassFile the compilation unit of the class under test
+     * @param cuClassSimpleTestFile the compilation unit of the test class with assertions
      * @param expr the expression from which to extract the focal method and generate a toga input row
      * @param testPrefix the test prefix to which the expression belongs.
      * @param stmtIndex the index of the statement within the test prefix
@@ -723,7 +727,7 @@ public class TogUtils {
      * @throws NoFocalMethodMatchingException if the corresponding focal method has not been found.
      * @throws IllegalStateException if the statement does not correspond to a method call or a constructor invocation
      */
-    public static Triplet<String,String,Map<String,String>> generateTogaRow(CompilationUnit cuClassFile, Expression expr, ExpressionType exprType, MethodDeclaration testPrefix, int stmtIndex) throws NoFocalMethodMatchingException, NoPrimaryTypeException, IllegalStateException, CandidateCallableMethodUsageNotFoundException, CandidateCallableDeclarationNotFoundException, MultipleCandidatesException {
+    public static Triplet<String,String,Map<String,String>> generateTogaRow(CompilationUnit cuClassFile, CompilationUnit cuClassSimpleTestFile, Expression expr, ExpressionType exprType, MethodDeclaration testPrefix, int stmtIndex) throws NoFocalMethodMatchingException, NoPrimaryTypeException, IllegalStateException, CandidateCallableMethodUsageNotFoundException, CandidateCallableDeclarationNotFoundException, MultipleCandidatesException {
         // Define the focal method to find (the last method call in the test). Initially null.
         // The focal method must be a method declaration or a constructor declaration.
         CallableDeclaration focalMethod = null;
@@ -778,8 +782,19 @@ public class TogUtils {
                 focalMethodBody = matcher.group(2).replace("\"", "\"\"").trim();
             }
         }
+
+        List<MethodDeclaration> tests = cuClassSimpleTestFile
+                .findAll(MethodDeclaration.class)
+                .stream()
+                .filter(t -> t.getNameAsString().equals(testName))
+                .toList();
+        if (tests.size() == 0 || tests.size() > 1) {
+            throw new IllegalStateException(String.format("[ERROR] - Multiple candidates simple tests found with the same test name %s", testName));
+        }
+
         // Generate the toga input, metadata e info row and return them as a triplet
-        String testStr = testPrefix.toString().replace("\"", "\"\"");
+        MethodDeclaration test = tests.get(0);
+        String testStr = test.toString().replace("\"", "\"\"");
         String testPrefixStr = testPrefix.toString();
         Matcher matcher = testPrefixPattern.matcher(testPrefix.toString());
         if (matcher.find()) {
