@@ -526,13 +526,9 @@ public class TogUtils {
         Path togaLogPath = logPath.resolve("log.csv");
         Path fullyQualifiedClassNamePath = FileUtils.getFQNPath(fullyQualifiedClassName);
         String className = FileUtils.getSimpleNameFromFQN(fullyQualifiedClassName);
-        int classNameIdx = fullyQualifiedClassNamePath.getNameCount() - 1;
-        Path fullyQualifiedTestClassNamePath = classNameIdx > 0 ?
-                fullyQualifiedClassNamePath.subpath(0, classNameIdx).resolve(className + "_ESTest.java") :
-                Paths.get(className);
         Path classFilePath = srcDirPath.resolve(fullyQualifiedClassNamePath);
-        Path testClassSimpleTestFilePath = evosuiteSimpleTestsPath.resolve(fullyQualifiedTestClassNamePath);
-        Path testClassPrefixFilePath = evosuitePrefixesPath.resolve(fullyQualifiedTestClassNamePath);
+        Path testClassSimpleTestFilePath = evosuiteSimpleTestsPath.resolve(className + "_ESTest.java");
+        Path testClassPrefixFilePath = evosuitePrefixesPath.resolve(className + "_ESTest.java");
 
         if (!Files.exists(classFilePath)){
             Path commonPatternPath = Paths.get(srcDirPath.toString(), "main", "java");
