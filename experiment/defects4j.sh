@@ -133,8 +133,6 @@ while IFS=, read -r project_id bug_id modified_classes; do
         #cp -r "${tog_fqn_output}/${tog}-test-suite" "$d4j_fqn_output"
         #cp -r "${tog_fqn_output}/${tog}_defects4joutput.json" "$d4j_fqn_output"
         cp -r "${tog_fqn_output}" "$(dirname ${d4j_fqn_output})"
-        # Cleanup
-        rm -r "${tog_fqn_output}"
     done
 done < "$D4J_PROJECTS_BUGS"
 

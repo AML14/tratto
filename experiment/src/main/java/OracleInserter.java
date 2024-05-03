@@ -1339,13 +1339,14 @@ public class OracleInserter {
      * Adds an assertion to the end of a given test prefix. This method does
      * nothing if the assertion is an empty string.
      *
-     * @param testCase a test case
+     * @param testBody the body of a test case
      * @param assertion the assertion to add
      */
-    private static void insertNonAxiomaticAssertion(MethodDeclaration testCase, String assertion, int stmtIndex) {
+    private static void insertNonAxiomaticAssertion(BlockStmt testBody, String assertion) {
         if (!assertion.isEmpty()) {
-            NodeList<Statement> statements = testCase.getBody().orElseThrow().getStatements();
-            statements.addAfter(StaticJavaParser.parseStatement(assertion + ";"), statements.get(stmtIndex));
+            testBody
+                    .getStatements()
+                    .add(StaticJavaParser.parseStatement(assertion + ";"));
         }
     }
 
@@ -1353,28 +1354,32 @@ public class OracleInserter {
      * Wraps a test prefix with a try/catch block, where the catch block
      * expects a given exception type.
      *
-     * @param testCase a test case
+     * @param testBody the body of a test case
      * @param exception the exception to catch
      */
-    private static void insertNonAxiomaticException(MethodDeclaration testCase, String exception) {
-        // create catch block
+    private static void insertNonAxiomaticException(BlockStmt testBody, String exception) {
+        // Create catch block
         Parameter exceptionType = new Parameter()
                 .setName("e")
                 .setType(StaticJavaParser.parseType(exception));
         CatchClause catchClause = new CatchClause()
                 .setParameter(exceptionType);
-        // create try block
-        BlockStmt testPrefix = testCase
-                .getBody().orElseThrow()
-                .clone();
-        ExpressionStmt failStatement = StaticJavaParser.parseStatement("fail();").asExpressionStmt();
-        TryStmt tryStatement = new TryStmt()
-                .setTryBlock(testPrefix.addStatement(failStatement));
-        tryStatement
+        List<TryStmt> tryStmts = testBody.findAll(TryStmt.class);
+
+        if (tryStmts.size() > 1) {
+            throw new IllegalStateException("Unexpected multiple try/catch within test prefix.");
+        }
+
+        TryStmt tryStmt = tryStmts.isEmpty() ? new TryStmt() : tryStmts.get(0);
+
+        if (tryStmts.isEmpty()) {
+            ExpressionStmt failStatement = StaticJavaParser.parseStatement("fail();").asExpressionStmt();
+            tryStmt.setTryBlock(testBody.addStatement(failStatement));
+        }
+
+        tryStmt
                 .getCatchClauses()
                 .add(catchClause);
-        // set new test body to wrapped try/catch block
-        testCase.setBody(new BlockStmt(NodeList.nodeList(tryStatement)));
     }
 
     /**
@@ -1386,16 +1391,12 @@ public class OracleInserter {
      * @return the oracle record with the given test name. Returns null if no
      * such oracle exists.
      */
-    private static OracleOutput getOracleWithTestName(String testName, List<OracleOutput> oracles) {
-        List<String> allTestNames = oracles
+    private static List<OracleOutput> getOraclesWithTestName(String testName, List<OracleOutput> oracles) {
+        List<OracleOutput> testOracles = oracles
                 .stream()
-                .map(OracleOutput::testName)
+                .filter(o -> o.testName().equals(testName) && !o.oracle().isEmpty())
                 .toList();
-        int oracleIdx = allTestNames.indexOf(testName);
-        if (oracleIdx == -1) {
-            return null;
-        }
-        return oracles.get(oracleIdx);
+        return testOracles;
     }
 
     /**
@@ -1410,14 +1411,33 @@ public class OracleInserter {
         testFile.findAll(MethodDeclaration.class)
                 .forEach(testCase -> {
                     String testName = testCase.getNameAsString();
-                    OracleOutput oracle = getOracleWithTestName(testName, oracles);
-                    if (oracle != null) {
-                        if (oracle.isExceptional()) {
-                            insertNonAxiomaticException(testCase, oracle.exception());
-                        } else {
-                            insertNonAxiomaticAssertion(testCase, oracle.oracle(), Integer.parseInt(oracle.statementIndex()));
+                    List<OracleOutput> testOracles = getOraclesWithTestName(testName, oracles);
+                    BlockStmt testBody = new BlockStmt();
+                    int stmtIdx = 0;
+                    for (Statement testStatement : testCase.getBody().orElseThrow().getStatements()) {
+                        final int currentStmtIdx = stmtIdx;
+                        testBody.addStatement(testStatement);
+                        List<OracleOutput> stmtOracles = testOracles
+                                .stream()
+                                .filter(o -> Integer.parseInt(o.statementIndex()) == currentStmtIdx)
+                                .toList();
+                        List<OracleOutput> exceptionOracles = stmtOracles
+                                .stream()
+                                .filter(o -> o.isExceptional())
+                                .toList();
+                        List<OracleOutput> assertionOracles = stmtOracles
+                                .stream()
+                                .filter(o -> !o.isExceptional())
+                                .toList();
+                        for (OracleOutput exceptionOracle : exceptionOracles) {
+                            insertNonAxiomaticException(testBody, exceptionOracle.exception());
                         }
+                        for (OracleOutput assertionOracle : assertionOracles) {
+                            insertNonAxiomaticAssertion(testBody, assertionOracle.oracle());
+                        }
+                        stmtIdx++;
                     }
+                    testCase.setBody(testBody);
                 });
     }
 
