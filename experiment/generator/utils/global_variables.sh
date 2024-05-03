@@ -9,9 +9,6 @@ ANT_VERSION="1.10.13"
 # Sdkman Gradle version
 GRADLE_VERSION="8.3"
 
-# Environment Paths
-DEFECTS4J_HOME="/Users/davidemolinelli/Documents/phd/repositories/defects4j"
-
 # Directories
 ROOT_DIR=$(dirname "$(dirname "$(realpath "$(dirname "$BASH_SOURCE")")")")
 GENERATOR_DIR="${ROOT_DIR}/generator"
