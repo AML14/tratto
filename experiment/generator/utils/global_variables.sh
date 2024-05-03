@@ -33,7 +33,6 @@ EXPERIMENT_JAR="${RESOURCES_DIR}/experiment.jar"
 EVOSUITE_JAR="${RESOURCES_DIR}/evosuite-1.0.6.jar"
 JDOCTOR_JAR="${RESOURCES_DIR}/jdoctor.jar"
 TRATTO_JAR="${RESOURCES_DIR}/tratto.jar"
-TOGA_INPUT_GENERATOR="${RESOURCES_DIR}/toga_input_generator.py"
 
 # Server
 SERVER_PORT=5000

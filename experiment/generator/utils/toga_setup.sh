@@ -1,5 +1,5 @@
 #!/bin/bash
-# This script setup the experiments woth toga
+# This script setup the experiments with toga
 
 # Get current directory
 current_dir=$(realpath "$(dirname "$BASH_SOURCE")")
@@ -38,11 +38,6 @@ if [ ! -e "${toga_assertions_dir}/pytorch_model.bin" ]; then
   echo "Assertion model not found."
   echo "Downloading toga assertions model..."
   if ! pip show "gdown" > /dev/null 2>&1; then
-    #CHOICE=$(bash "${UTILS_DIR}/y_n.sh" "To proceed it is necessary to install gdown python package to download the model from a google drive link. Proceed? (Y/n): ")
-    #if [ ! "$CHOICE" == "Y" ]; then
-    #  echo "ERROR - Impossible to proceed without authorization to install gdown package. Terminate program."
-    #  exit 1
-    #fi
     sudo pip install gdown
     # Check if a Conda environment is activated
     if [ -z "$CONDA_DEFAULT_ENV" ]; then
@@ -64,11 +59,6 @@ if [ ! -e "${toga_exceptions_dir}/pytorch_model.bin" ]; then
   echo "Exceptions model not found."
   echo "Downloading toga exceptions model..."
   if ! pip show "gdown" > /dev/null 2>&1; then
-    #CHOICE=$(bash "${UTILS_DIR}/y_n.sh" "To proceed it is necessary to install gdown python package to download the model from a google drive link. Proceed? (Y/n): ")
-    #if [ ! "$CHOICE" == "Y" ]; then
-    #  echo "ERROR - Impossible to proceed without authorization to install gdown package. Terminate program."
-    #  exit 1
-    #fi
     sudo pip install gdown
     # Check if a Conda environment is activated
     if [ -z "$CONDA_DEFAULT_ENV" ]; then
