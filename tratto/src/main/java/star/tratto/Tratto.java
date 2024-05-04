@@ -47,10 +47,16 @@ public class Tratto {
     public static String ORACLE_DATAPOINTS_PATH = "src/main/resources/oracle_datapoints.json";
 
     public static void main(String[] args) throws IOException {
+        String fullyQualifiedClassName = args[0];
+        String projectSourcePath = args[1];
+        String classPath = projectSourcePath + "/" + fullyQualifiedClassName.replace(".", "/") + ".java";
+        String projectJarPath = args[2];
+        String serverPort = args[3];
+        String mlModelAPIUrl = String.format("http://127.0.0.1:%s/api/next_token?filename=%s/src/main/resources/token_datapoints.json", serverPort, System.getProperty("user.dir"));
         logger.info("Starting Tratto...");
         logger.info("Starting up ML models local server...");
         // TODO: Start up ML models local server
-        logger.info("Generating oracles for: \n\tClass: {}\n\tProject source: {}\n\tProject JAR: {}", CLASS_PATH, PROJECT_SOURCE_PATH, PROJECT_JAR_PATH);
+        logger.info("Generating oracles for: \n\tClass: {}\n\tProject source: {}\n\tProject JAR: {}", classPath, projectSourcePath, projectJarPath);
 
         // Configure JavaParser to resolve symbols from project under test
         JavaParserUtils.updateSymbolSolver(PROJECT_JAR_PATH);
@@ -81,7 +87,7 @@ public class Tratto {
                     FileOutputStream tokenDatapointsOutputStream = new FileOutputStream(TOKEN_DATAPOINTS_PATH);
                     tokenDatapointsOutputStream.write(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsBytes(tokenDatapoint));
                     tokenDatapointsOutputStream.close();
-                    String nextToken = getNextToken();
+                    String nextToken = getNextToken(mlModelAPIUrl);
                     oracleDatapoint.setOracle(compactExpression(oracleDatapoint.getOracle() + " " + nextToken));
                     oracleSoFarTokens.add(nextToken);
                     logger.info("Oracle so far: {}", oracleDatapoint.getOracle());
@@ -105,8 +111,8 @@ public class Tratto {
         logger.info("Finished generating oracles for: \n\tClass: {}\n\tProject source: {}\n\tProject JAR: {}", CLASS_PATH, PROJECT_SOURCE_PATH, PROJECT_JAR_PATH);
     }
 
-    private static String getNextToken() throws IOException {
-        HttpURLConnection mlModelApiConn = (HttpURLConnection) new URL(ML_MODEL_API_URL).openConnection();
+    private static String getNextToken(String mlModelAPIUrl) throws IOException {
+        HttpURLConnection mlModelApiConn = (HttpURLConnection) new URL(mlModelAPIUrl).openConnection();
         mlModelApiConn.setRequestMethod("GET");
         mlModelApiConn.connect();
 
