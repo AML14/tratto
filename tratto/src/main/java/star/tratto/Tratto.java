@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -39,8 +40,9 @@ public class Tratto {
     private static final ClassAnalyzer classAnalyzer = ClassAnalyzer.getInstance();
     private static final JavaParser javaParser = JavaParserUtils.getJavaParser();
     private static final ObjectMapper objectMapper = new ObjectMapper();
-    public static String TOKEN_DATAPOINTS_PATH = "src/main/resources/token_datapoints.json";
-    public static String ORACLE_DATAPOINTS_PATH = "src/main/resources/oracle_datapoints.json";
+    public static final Path TRATTO_OUTPUT = Paths.get(System.getProperty("user.dir"), "tratto_output");
+    public static Path TOKEN_DATAPOINTS_PATH = TRATTO_OUTPUT.resolve("token_datapoints.json");
+    public static Path ORACLE_DATAPOINTS_PATH = TRATTO_OUTPUT.resolve("oracle_datapoints.json");
 
     public static void main(String[] args) throws IOException {
         String fullyQualifiedClassName = args[0];
@@ -49,6 +51,11 @@ public class Tratto {
         String projectJarPath = args[2];
         String serverPort = args[3];
         String mlModelAPIUrl = String.format("http://127.0.0.1:%s/api/next_token?filename=%s/src/main/resources/token_datapoints.json", serverPort, System.getProperty("user.dir"));
+
+        if (!Files.exists(TRATTO_OUTPUT)) {
+            Files.createDirectories(TRATTO_OUTPUT);
+        }
+
         logger.info("Starting Tratto...");
         logger.info("Starting up ML models local server...");
         // TODO: Start up ML models local server
@@ -80,7 +87,7 @@ public class Tratto {
                 // Generate token datapoints and save to file
                 try {
                     TokenDatapoint tokenDatapoint = oracleSoFarAndTokenToTokenDatapoint(oracleDatapoint, oracleSoFarTokens, "");
-                    FileOutputStream tokenDatapointsOutputStream = new FileOutputStream(TOKEN_DATAPOINTS_PATH);
+                    FileOutputStream tokenDatapointsOutputStream = new FileOutputStream(TOKEN_DATAPOINTS_PATH.toString());
                     tokenDatapointsOutputStream.write(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsBytes(tokenDatapoint));
                     tokenDatapointsOutputStream.close();
                     String nextToken = getNextToken(mlModelAPIUrl);
@@ -98,11 +105,11 @@ public class Tratto {
         }
 
         // Save final oracleDatapoints to file
-        File oracleDatapointsFile = new File(ORACLE_DATAPOINTS_PATH);
+        File oracleDatapointsFile = new File(ORACLE_DATAPOINTS_PATH.toString());
         FileOutputStream oracleDatapointsOutputStream = new FileOutputStream(oracleDatapointsFile);
         oracleDatapointsOutputStream.write(objectMapper.writeValueAsBytes(oracleDatapoints));
         oracleDatapointsOutputStream.close();
-        new File(TOKEN_DATAPOINTS_PATH).delete();
+        new File(TOKEN_DATAPOINTS_PATH.toString()).delete();
 
         logger.info("Finished generating oracles for: \n\tClass: {}\n\tProject source: {}\n\tProject JAR: {}", classPath, projectSourcePath, projectJarPath);
     }
