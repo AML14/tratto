@@ -7,23 +7,18 @@ import com.github.javaparser.ast.body.TypeDeclaration;
 import org.javatuples.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import star.tratto.data.OracleDatapoint;
-import star.tratto.data.OracleType;
-import star.tratto.data.TokenDPType;
-import star.tratto.data.TokenDatapoint;
+import star.tratto.data.*;
 import star.tratto.input.ClassAnalyzer;
 import star.tratto.util.javaparser.JavaParserUtils;
-import star.tratto.data.TokenNotFoundException;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,20 +32,23 @@ public class Tratto {
 
     private static final Logger logger = LoggerFactory.getLogger(Tratto.class);
 
-    private static final ClassAnalyzer classAnalyzer = ClassAnalyzer.getInstance();
     private static final JavaParser javaParser = JavaParserUtils.getJavaParser();
     private static final ObjectMapper objectMapper = new ObjectMapper();
+    public static final Path REPOS_DIR = Paths.get(System.getProperty("user.dir"), "src", "main", "resources", "repos");
     public static final Path TRATTO_OUTPUT = Paths.get(System.getProperty("user.dir"), "tratto_output");
     public static Path TOKEN_DATAPOINTS_PATH = TRATTO_OUTPUT.resolve("token_datapoints.json");
     public static Path ORACLE_DATAPOINTS_PATH = TRATTO_OUTPUT.resolve("oracle_datapoints.json");
 
     public static void main(String[] args) throws IOException {
+        generateRepos();
+
+        ClassAnalyzer classAnalyzer = ClassAnalyzer.getInstance();
         String fullyQualifiedClassName = args[0];
         String projectSourcePath = args[1];
         String classPath = projectSourcePath + "/" + fullyQualifiedClassName.replace(".", "/") + ".java";
         String projectJarPath = args[2];
         String serverPort = args[3];
-        String mlModelAPIUrl = String.format("http://127.0.0.1:%s/api/next_token?filename=%s/src/main/resources/token_datapoints.json", serverPort, System.getProperty("user.dir"));
+        String mlModelAPIUrl = String.format("http://127.0.0.1:%s/api/next_token?filename=%s/token_datapoints.json", serverPort, TRATTO_OUTPUT);
 
         if (!Files.exists(TRATTO_OUTPUT)) {
             Files.createDirectories(TRATTO_OUTPUT);
@@ -134,5 +132,37 @@ public class Tratto {
 
         mlModelApiConn.disconnect();
         return nextToken;
+    }
+
+    private static void generateRepos() throws IOException {
+        List<Path> reposFilesPaths = new ArrayList<>();
+        reposFilesPaths.add(TrattoPath.ARRAY_METHODS.getRelativePath());
+        reposFilesPaths.add(TrattoPath.INPUT_PROJECTS.getRelativePath());
+        reposFilesPaths.add(TrattoPath.NON_VARIABLE_TOKENS.getRelativePath());
+        reposFilesPaths.add(TrattoPath.TOKENS_GENERAL_VALUES.getRelativePath());
+        reposFilesPaths.add(TrattoPath.TOKENS_GRAMMAR.getRelativePath());
+
+        for (Path reposFilePath : reposFilesPaths) {
+            String reposFilePathString = Paths.get("/","repos", reposFilePath.getFileName().toString()).toString();
+            // Load the resource from the JAR file
+            InputStream inputStream = Tratto.class.getResourceAsStream(reposFilePathString);
+            if (inputStream == null) {
+                throw new FileNotFoundException("Resource not found: " + reposFilePathString);
+            }
+
+            // Prepare the target directory
+            if (!Files.exists(REPOS_DIR)) {
+                Files.createDirectories(REPOS_DIR);
+            }
+
+            // Define the target file path
+            Path targetFile = REPOS_DIR.resolve(reposFilePath.getFileName());
+
+            // Copy the contents of the resource to the target file
+            Files.copy(inputStream, targetFile, StandardCopyOption.REPLACE_EXISTING);
+
+            // Close the input stream
+            inputStream.close();
+        }
     }
 }

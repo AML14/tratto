@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import star.tratto.data.TrattoPath;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,7 +24,7 @@ public class Tokens {
 
     static {
         try {
-            GLOBAL_DICTIONARY = new ObjectMapper().readValue(new File("src/main/resources/global-dictionary.json"), new TypeReference<>() {});
+            GLOBAL_DICTIONARY = new ObjectMapper().readValue(new File(TrattoPath.GLOBAL_DICTIONARY.getPath().toString()), new TypeReference<>() {});
         } catch (IOException e) {
             logger.error("Error reading global dictionary: {}" + e.getMessage());
         }
