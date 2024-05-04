@@ -31,7 +31,7 @@ def setup_model(
         torch_dtype=torch.float16,
     )
     pt_model.resize_token_embeddings(len(tokenizer))
-    # pt_model.to(device)
+    pt_model.to(device)
     return pt_model, tokenizer
 
 
