@@ -12,6 +12,8 @@ package data;
  *                        and pass on the fixed version
  * @param numFalseNegative the number of tests that pass on the buggy version,
  *                         but fail on the fixed version
+ * @param numInvalid the number of tests that fail their pre-conditions, such
+ *                   that their test behavior is invalid
  */
 public record Defects4JOutput(
         String tog,
@@ -19,5 +21,6 @@ public record Defects4JOutput(
         int numTruePositive,
         int numFalsePositive,
         int numTrueNegative,
-        int numFalseNegative
+        int numFalseNegative,
+        int numInvalid
 ) {}

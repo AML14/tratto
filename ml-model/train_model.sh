@@ -6,7 +6,7 @@ model_name_or_path="Salesforce/codet5p-770m"
 tratto_model_type="oracles"
 transformer_type="decoder"
 task_name="oraclesModel_classifier_decoder"
-max_seq_length=512
+max_src_length=512
 batch_size=16
 learning_rate=1e-5
 num_epochs=5
@@ -29,7 +29,7 @@ if [ "$#" -eq 1 ] && [ "$1" == "--accelerate" ]; then
     --tratto_model_type "$tratto_model_type" \
     --transformer_type "$transformer_type" \
     --task_name "$task_name" \
-    --max_seq_length "$max_seq_length" \
+    --max_src_length "$max_src_length" \
     --batch_size "$batch_size" \
     --learning_rate "$learning_rate" \
     --num_epochs "$num_epochs" \
@@ -51,7 +51,7 @@ else
     --tratto_model_type "$tratto_model_type" \
     --transformer_type "$transformer_type" \
     --task_name "$task_name" \
-    --max_seq_length "$max_seq_length" \
+    --max_src_length "$max_src_length" \
     --batch_size "$batch_size" \
     --learning_rate "$learning_rate" \
     --num_epochs "$num_epochs" \

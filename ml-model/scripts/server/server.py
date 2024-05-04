@@ -42,9 +42,9 @@ def setup_model(
     config_class, model_class, tokenizer_class = ModelClasses.getModelClass(model_type)
     # Setup tokenizer
     tokenizer = tokenizer_class.from_pretrained(tokenizer_name)
-    if tratto_model_type in [TrattoModelType.TOKEN_CLASSES, TrattoModelType.TOKEN_VALUES]:
+    # if tratto_model_type in [TrattoModelType.TOKEN_CLASSES, TrattoModelType.TOKEN_VALUES]:
         # Enrich vocabulary
-        DataProcessor.enrich_vocabulary(tokenizer, tratto_model_type)
+        # DataProcessor.enrich_vocabulary(tokenizer, tratto_model_type)
     # Setup model
     config = config_class.from_pretrained(config_name if config_name else model_name_or_path)
     pt_model = model_class.from_pretrained(model_name_or_path, config=config)

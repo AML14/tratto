@@ -26,6 +26,7 @@ public class OracleInserterTest {
                         OracleType.PRE,
                         "(o == null) == false",
                         "",
+                        "",
                         ""
                 ),
                 new OracleOutput(
@@ -34,6 +35,7 @@ public class OracleInserterTest {
                         OracleType.EXCEPT_POST,
                         "o == null",
                         "java.lang.IllegalArgumentException",
+                        "",
                         ""
                 )
         );
@@ -47,7 +49,8 @@ public class OracleInserterTest {
                         OracleType.NON_AXIOMATIC,
                         "assertTrue(stack0.isEmpty())",
                         "",
-                        "test0"
+                        "test0",
+                        "0"
                 ),
                 new OracleOutput(
                         "tutorial.Stack",
@@ -55,7 +58,8 @@ public class OracleInserterTest {
                         OracleType.NON_AXIOMATIC,
                         "",
                         "IllegalArgumentException",
-                        "test1"
+                        "test1",
+                        "1"
                 )
         );
     }
@@ -109,8 +113,15 @@ public class OracleInserterTest {
                 @Test(timeout = 4000)
                 public void test1() throws Throwable {
                     Stack<Object> stack0 = new Stack<Object>();
-                    assertTrue(((Object) null == null) == false);
-                    if ((Object) null == null) {
+                    try {
+                        if (!((((Object) null) == null) == false)) {
+                            throw new Error("TrattoError: Precondition failed, invalid test.");
+                        } else {
+                        }
+                    } catch (java.lang.Exception e) {
+                        throw new Error("TrattoError: Precondition failed, invalid test.");
+                    }
+                    if (((Object) null) == null) {
                         try {
                             stack0.push((Object) null);
                             fail();

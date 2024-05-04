@@ -45,6 +45,7 @@ import com.github.javaparser.ast.stmt.EmptyStmt;
 import com.github.javaparser.ast.stmt.ExpressionStmt;
 import com.github.javaparser.ast.stmt.IfStmt;
 import com.github.javaparser.ast.stmt.Statement;
+import com.github.javaparser.ast.stmt.ThrowStmt;
 import com.github.javaparser.ast.stmt.TryStmt;
 import com.github.javaparser.ast.type.PrimitiveType;
 import com.github.javaparser.ast.type.Type;
@@ -92,6 +93,17 @@ public class OracleInserter {
             "long",
             "float",
             "double"
+    );
+    /** All primitive field descriptor type names. */
+    private static final List<String> allPrimitiveFieldDescriptors = List.of(
+            "Z",
+            "B",
+            "C",
+            "S",
+            "I",
+            "J",
+            "F",
+            "D"
     );
 
     /** Private constructor to avoid creating an instance of this class. */
@@ -145,8 +157,15 @@ public class OracleInserter {
         }
         return Stream.of(parameters.split(","))
                 .map(p -> {
-                    String paramTypeFQN = p.trim().split(" ")[0].trim();
-                    Class<?> paramClass = getClass(paramTypeFQN);
+                    String[] paramParts = p.trim().split(" ");
+                    StringBuilder paramTypeFqnBuilder = new StringBuilder();
+                    for (int i = 0; i < paramParts.length - 1; i++) {
+                        paramTypeFqnBuilder
+                                .append(paramParts[i].trim())
+                                .append(" ");
+                    }
+                    String paramTypeFqn = paramTypeFqnBuilder.toString().trim();
+                    Class<?> paramClass = getClass(paramTypeFqn);
                     return paramClass.getTypeName();
                 })
                 .toList();
@@ -224,6 +243,45 @@ public class OracleInserter {
     }
 
     /**
+     * Gets the fully qualified name of a given primitive field descriptor
+     * type name.
+     *
+     * @param primitiveFD a primitive field descriptor type name
+     * @return the fully qualified name corresponding to the primitive type
+     * @throws IllegalArgumentException if the given type name is not a
+     * recognized primitive type
+     */
+    private static String fieldDescriptorToFQN(String primitiveFD) {
+        switch (primitiveFD) {
+            case "Z" -> {
+                return "boolean";
+            }
+            case "B" -> {
+                return "byte";
+            }
+            case "C" -> {
+                return "char";
+            }
+            case "S" -> {
+                return "short";
+            }
+            case "I" -> {
+                return "int";
+            }
+            case "J" -> {
+                return "long";
+            }
+            case "F" -> {
+                return "float";
+            }
+            case "D" -> {
+                return "double";
+            }
+            default -> throw new IllegalArgumentException("Unrecognized primitive field descriptor " + primitiveFD);
+        }
+    }
+
+    /**
      * Converts a fully qualified name to the {@code Class.getName()} form of
      * a name. This method does not distinguish between package names and
      * inner classes, such that no "$" symbols are added.
@@ -295,6 +353,9 @@ public class OracleInserter {
      * @return the Class corresponding to the type name
      */
     private static Class<?> getClass(String className) {
+        if (className.endsWith("...")) {
+            className = className.substring(0, className.length() - 3) + "[]";
+        }
         if (primitiveTypes.contains(className)) {
             return getPrimitiveClass(className);
         } else {
@@ -339,7 +400,7 @@ public class OracleInserter {
         List<Class<?>> parameterTypes = getClasses(getParameterTypeNames(methodSignature));
         Class<?> receiverObjectID = getClass(className);
         try {
-            return receiverObjectID.getMethod(methodName, parameterTypes.toArray(Class[]::new));
+            return receiverObjectID.getDeclaredMethod(methodName, parameterTypes.toArray(Class[]::new));
         } catch (NoSuchMethodException e) {
             throw new Error("Unable to find method " + methodSignature + " in " + className);
         }
@@ -367,7 +428,19 @@ public class OracleInserter {
     private static Type getReturnType(String className, String methodSignature) {
         Method method = getMethod(className, methodSignature);
         Class<?> returnType = method.getReturnType();
-        return StaticJavaParser.parseType(returnType.getName());
+        String returnTypeName = returnType.getName();
+        if (returnTypeName.startsWith("[")) {
+            int arrayLevel = getArrayLevel(returnTypeName);
+            String elementGetName = returnTypeName.substring(arrayLevel);
+            String elementFqn;
+            if (allPrimitiveFieldDescriptors.contains(elementGetName)) {
+                elementFqn = fieldDescriptorToFQN(elementGetName);
+            } else {
+                elementFqn = elementGetName.substring(1, elementGetName.length() - 1);
+            }
+            return StaticJavaParser.parseType(elementFqn + "[]".repeat(arrayLevel));
+        }
+        return StaticJavaParser.parseType(returnTypeName);
     }
 
     /**
@@ -895,8 +968,13 @@ public class OracleInserter {
         List<String> originalNames = getParameterNames(oracleOutput.methodSignature());
         List<String> contextNames = getAllMethodCallsOfStatement(testStmt).get(0).getArguments()
                 .stream()
-                .map(Expression::toString)
-                .toList();
+                .map(expr -> {
+                    if (expr.isLiteralExpr() || (expr.isCastExpr() && expr.asCastExpr().getExpression().isLiteralExpr())) {
+                        return "(" + expr + ")";
+                    } else {
+                        return expr.toString();
+                    }
+                }).toList();
         String contextOracle = replaceNames(originalNames, contextNames, oracleOutput.oracle());
         return new OracleOutput(
                 oracleOutput.className(),
@@ -904,7 +982,8 @@ public class OracleInserter {
                 oracleOutput.oracleType(),
                 contextOracle,
                 oracleOutput.exception(),
-                oracleOutput.testName()
+                oracleOutput.testName(),
+                oracleOutput.statementIndex()
         );
     }
 
@@ -940,7 +1019,8 @@ public class OracleInserter {
                 oracleOutput.oracleType(),
                 contextOracle,
                 oracleOutput.exception(),
-                oracleOutput.testName()
+                oracleOutput.testName(),
+                oracleOutput.statementIndex()
         );
     }
 
@@ -981,7 +1061,8 @@ public class OracleInserter {
                 oracleOutput.oracleType(),
                 contextOracle,
                 oracleOutput.exception(),
-                oracleOutput.testName()
+                oracleOutput.testName(),
+                oracleOutput.statementIndex()
         );
     }
 
@@ -1010,6 +1091,13 @@ public class OracleInserter {
         return oracleOutput;
     }
 
+    /** The statement used to indicate that a pre-condition has been failed. */
+    private static final BlockStmt preConditionFailStmt = new BlockStmt(new NodeList<>(new ThrowStmt(
+            new ObjectCreationExpr()
+                    .setType(StaticJavaParser.parseClassOrInterfaceType("Error"))
+                    .addArgument(new StringLiteralExpr("TrattoError: Precondition failed, invalid test."))
+    )));
+
     /**
      * Gets all assertions corresponding to preconditions by wrapping oracles
      * as the condition of an {@code assertTrue} method call.
@@ -1017,13 +1105,30 @@ public class OracleInserter {
      * @param oracles all relevant precondition oracles
      * @return all Java statements of JUnit assertions for the given oracles
      */
-    private static NodeList<Statement> getPreConditions(
+    private static Statement getPreConditions(
             List<OracleOutput> oracles
     ) {
-        return new NodeList<>(oracles
+        if (oracles.size() == 0) {
+            return new EmptyStmt();
+        }
+        List<Expression> conditions = oracles
                 .stream()
-                .map(o -> StaticJavaParser.parseStatement("assertTrue(" + o.oracle() + ");"))
-                .toList());
+                .map(o -> (Expression) StaticJavaParser.parseExpression("!(" + o.oracle() + ")"))
+                .toList();
+        IfStmt ifStmt = new IfStmt(conditions.get(0), preConditionFailStmt, new BlockStmt());
+        IfStmt currentIfStmt = ifStmt;
+        for (int i = 1; i < conditions.size(); i++) {
+            IfStmt nextIfStmt = new IfStmt(conditions.get(i), preConditionFailStmt, new BlockStmt());
+            currentIfStmt.setElseStmt(nextIfStmt);
+            currentIfStmt = nextIfStmt;
+        }
+        // wrap preconditions in a try/catch block
+        Type exceptionType = StaticJavaParser.parseType("java.lang.Exception");
+        Parameter exceptionParameter = new Parameter(exceptionType, "e");
+        CatchClause catchClause = new CatchClause(exceptionParameter, preConditionFailStmt);
+        return new TryStmt()
+                .setTryBlock(new BlockStmt(new NodeList<>(ifStmt)))
+                .setCatchClauses(new NodeList<>(catchClause));
     }
 
     /**
@@ -1088,9 +1193,9 @@ public class OracleInserter {
         IfStmt ifStmt = new IfStmt(conditions.get(0), tryStmts.get(0), new BlockStmt());
         IfStmt currentIfStmt = ifStmt;
         for (int i = 1; i < conditions.size(); i++) {
-            IfStmt nextIfStmt = new IfStmt(conditions.get(i), tryStmts.get(1), new BlockStmt());
+            IfStmt nextIfStmt = new IfStmt(conditions.get(i), tryStmts.get(i), new BlockStmt());
             currentIfStmt.setElseStmt(nextIfStmt);
-            currentIfStmt = new IfStmt();
+            currentIfStmt = nextIfStmt;
         }
         return ifStmt;
     }
@@ -1185,10 +1290,10 @@ public class OracleInserter {
                 .stream()
                 .filter(o -> o.oracleType().equals(OracleType.NORMAL_POST))
                 .toList();
-        NodeList<Statement> preBlock = getPreConditions(preConditions);
+        Statement preBlock = getPreConditions(preConditions);
         IfStmt throwsBlock = getThrowsConditions(postStmt, throwsConditions);
         NodeList<Statement> postBlock = getPostConditions(throwsBlock, postStmt, postConditions);
-        oracleStatements.addAll(preBlock);
+        oracleStatements.add(preBlock);
         oracleStatements.add(initStmt);
         oracleStatements.addAll(postBlock);
         return new NodeList<>(oracleStatements
@@ -1234,14 +1339,12 @@ public class OracleInserter {
      * Adds an assertion to the end of a given test prefix. This method does
      * nothing if the assertion is an empty string.
      *
-     * @param testCase a test case
+     * @param testBody the body of a test case
      * @param assertion the assertion to add
      */
-    private static void insertNonAxiomaticAssertion(MethodDeclaration testCase, String assertion) {
+    private static void insertNonAxiomaticAssertion(BlockStmt testBody, String assertion) {
         if (!assertion.isEmpty()) {
-            testCase
-                    .getBody()
-                    .orElseThrow()
+            testBody
                     .getStatements()
                     .add(StaticJavaParser.parseStatement(assertion + ";"));
         }
@@ -1251,28 +1354,32 @@ public class OracleInserter {
      * Wraps a test prefix with a try/catch block, where the catch block
      * expects a given exception type.
      *
-     * @param testCase a test case
+     * @param testBody the body of a test case
      * @param exception the exception to catch
      */
-    private static void insertNonAxiomaticException(MethodDeclaration testCase, String exception) {
-        // create catch block
+    private static void insertNonAxiomaticException(BlockStmt testBody, String exception) {
+        // Create catch block
         Parameter exceptionType = new Parameter()
                 .setName("e")
                 .setType(StaticJavaParser.parseType(exception));
         CatchClause catchClause = new CatchClause()
                 .setParameter(exceptionType);
-        // create try block
-        BlockStmt testPrefix = testCase
-                .getBody().orElseThrow()
-                .clone();
-        ExpressionStmt failStatement = StaticJavaParser.parseStatement("fail();").asExpressionStmt();
-        TryStmt tryStatement = new TryStmt()
-                .setTryBlock(testPrefix.addStatement(failStatement));
-        tryStatement
+        List<TryStmt> tryStmts = testBody.findAll(TryStmt.class);
+
+        if (tryStmts.size() > 1) {
+            throw new IllegalStateException("Unexpected multiple try/catch within test prefix.");
+        }
+
+        TryStmt tryStmt = tryStmts.isEmpty() ? new TryStmt() : tryStmts.get(0);
+
+        if (tryStmts.isEmpty()) {
+            ExpressionStmt failStatement = StaticJavaParser.parseStatement("fail();").asExpressionStmt();
+            tryStmt.setTryBlock(testBody.addStatement(failStatement));
+        }
+
+        tryStmt
                 .getCatchClauses()
                 .add(catchClause);
-        // set new test body to wrapped try/catch block
-        testCase.setBody(new BlockStmt(NodeList.nodeList(tryStatement)));
     }
 
     /**
@@ -1284,16 +1391,12 @@ public class OracleInserter {
      * @return the oracle record with the given test name. Returns null if no
      * such oracle exists.
      */
-    private static OracleOutput getOracleWithTestName(String testName, List<OracleOutput> oracles) {
-        List<String> allTestNames = oracles
+    private static List<OracleOutput> getOraclesWithTestName(String testName, List<OracleOutput> oracles) {
+        List<OracleOutput> testOracles = oracles
                 .stream()
-                .map(OracleOutput::testName)
+                .filter(o -> o.testName().equals(testName) && !o.oracle().isEmpty())
                 .toList();
-        int oracleIdx = allTestNames.indexOf(testName);
-        if (oracleIdx == -1) {
-            return null;
-        }
-        return oracles.get(oracleIdx);
+        return testOracles;
     }
 
     /**
@@ -1308,14 +1411,33 @@ public class OracleInserter {
         testFile.findAll(MethodDeclaration.class)
                 .forEach(testCase -> {
                     String testName = testCase.getNameAsString();
-                    OracleOutput oracle = getOracleWithTestName(testName, oracles);
-                    if (oracle != null) {
-                        if (oracle.isExceptional()) {
-                            insertNonAxiomaticException(testCase, oracle.exception());
-                        } else {
-                            insertNonAxiomaticAssertion(testCase, oracle.oracle());
+                    List<OracleOutput> testOracles = getOraclesWithTestName(testName, oracles);
+                    BlockStmt testBody = new BlockStmt();
+                    int stmtIdx = 0;
+                    for (Statement testStatement : testCase.getBody().orElseThrow().getStatements()) {
+                        final int currentStmtIdx = stmtIdx;
+                        testBody.addStatement(testStatement);
+                        List<OracleOutput> stmtOracles = testOracles
+                                .stream()
+                                .filter(o -> Integer.parseInt(o.statementIndex()) == currentStmtIdx)
+                                .toList();
+                        List<OracleOutput> exceptionOracles = stmtOracles
+                                .stream()
+                                .filter(o -> o.isExceptional())
+                                .toList();
+                        List<OracleOutput> assertionOracles = stmtOracles
+                                .stream()
+                                .filter(o -> !o.isExceptional())
+                                .toList();
+                        for (OracleOutput exceptionOracle : exceptionOracles) {
+                            insertNonAxiomaticException(testBody, exceptionOracle.exception());
                         }
+                        for (OracleOutput assertionOracle : assertionOracles) {
+                            insertNonAxiomaticAssertion(testBody, assertionOracle.oracle());
+                        }
+                        stmtIdx++;
                     }
+                    testCase.setBody(testBody);
                 });
     }
 

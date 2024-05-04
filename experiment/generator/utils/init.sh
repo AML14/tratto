@@ -26,3 +26,5 @@ sdk install maven "$MAVEN_VERSION"
 sdk install ant "$ANT_VERSION"
 # Install gradle
 sdk install gradle "$GRADLE_VERSION"
+
+unzip "${SDKMAN_DIR}/candidates/java/${JAVA8}/src.zip" -d "${SDKMAN_DIR}/candidates/java/${JAVA8}/src"

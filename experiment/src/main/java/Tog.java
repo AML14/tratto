@@ -1,5 +1,6 @@
 import data.OperationType;
 import data.TogType;
+import data.TogaInputType;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -39,10 +40,12 @@ public class Tog {
     private static void generateTogInput(
             TogType togType,
             String fullyQualifiedName,
-            Path srcDir
+            Path outputDir,
+            Path srcDir,
+            Path jarDir
     ) {
         if (togType == TogType.TOGA) {
-            TogUtils.generateTOGAInput(srcDir, fullyQualifiedName);
+            TogUtils.generateTOGAInput(srcDir, jarDir, outputDir, fullyQualifiedName, TogaInputType.ANY_OCCURRENCE);
         }
     }
 
@@ -50,20 +53,23 @@ public class Tog {
      * Converts a TOG output to a list of OracleOutput records.
      *
      * @param togType a TOG
-     * @param path a path to a file or directory for generating OracleOutputs
-     * @param srcPath the source directory of the project under test (can be null)
+     * @param togOraclesPath a path to a file or directory for generating OracleOutputs
+     * @param outputDirPath the path to the output folder (must not be null if the tog type is Toga)
+     * @param jarDirPath the directory to the jars of the project under test and its dependencies (must not be null if
+     *                   the tog type is Tratto).
      */
     private static void generateOracleOutput(
             TogType togType,
-            Path path,
-            Path srcPath
+            Path togOraclesPath,
+            Path outputDirPath,
+            Path jarDirPath
     ) {
         if (togType == TogType.JDOCTOR) {
-            TogUtils.jDoctorToOracleOutput(path);
+            TogUtils.jDoctorToOracleOutput(togOraclesPath);
         } else if (togType == TogType.TOGA) {
-            TogUtils.togaToOracleOutput(path);
+            TogUtils.togaToOracleOutput(togOraclesPath, outputDirPath);
         } else if (togType == TogType.TRATTO) {
-            TogUtils.trattoToOracleOutput(path, srcPath);
+            TogUtils.trattoToOracleOutput(togOraclesPath, jarDirPath);
         }
     }
 
@@ -84,23 +90,30 @@ public class Tog {
             case GENERATE_TOG_INPUT -> generateTogInput(
                     TogType.valueOf(args[1].toUpperCase()),
                     args[2],
-                    Paths.get(args[3])
+                    Paths.get(args[3]),
+                    Paths.get(args[4]),
+                    Paths.get(args[5])
             );
             case GENERATE_ORACLE_OUTPUT -> generateOracleOutput(
                     TogType.valueOf(args[1].toUpperCase()),
                     Paths.get(args[2]),
-                    args.length > 3 ? Paths.get(args[3]) : null
+                    args.length > 3 && TogType.valueOf(args[1].toUpperCase()) == TogType.TOGA ? Paths.get(args[3]) : null,
+                    args.length > 3 && TogType.valueOf(args[1].toUpperCase()) == TogType.TRATTO ? Paths.get(args[3]) : null
             );
             case GENERATE_DEFECTS4J_OUTPUT -> TogUtils.generateDefects4JOutput(
                     TogType.valueOf(args[1].toUpperCase()),
-                    Paths.get(args[2]),
-                    Paths.get(args[3])
+                    args[2],
+                    args[3],
+                    args[4],
+                    Paths.get(args[5]),
+                    Paths.get(args[6])
             );
             case COUNT_TEST_METHODS -> TogUtils.countTestMethods(
                     Paths.get(args[1]),
-                    args[2],
+                    Paths.get(args[2]),
                     args[3],
-                    args[4]
+                    args[4],
+                    args[5]
             );
             default -> throw new IllegalArgumentException("Unknown operation " + operationType);
         }

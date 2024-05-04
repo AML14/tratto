@@ -1,4 +1,6 @@
 import ast
+import re
+from functools import partial
 from src.utils import utils
 if utils.is_rapids_available():
     import cudf.pandas
@@ -8,7 +10,7 @@ else:
     import pandas as pd
 import numba as nb
 import os
-from typing import Type, Dict, List, Tuple
+from typing import Type, Dict, List, Tuple, Callable
 from pandas import DataFrame
 import numpy as np
 import torch
@@ -21,6 +23,8 @@ from src.types.DatasetType import DatasetType
 from src.types.TransformerType import TransformerType
 from src.types.TrattoModelType import TrattoModelType
 import gc
+import xml.etree.ElementTree as ET
+import xml.dom.minidom
 
 class DataProcessor:
     """
@@ -42,6 +46,8 @@ class DataProcessor:
         Category predictions or label predictions.
     tratto_model_type: Type[TrattoModelType]
         TokenClasses or tokenValues model.
+    is_multitask: bool
+        True if the model is a multitask model, False otherwise.
     pre_processing: bool
         True if the dataset must be pre-processed, False otherwise.
 
@@ -64,6 +70,8 @@ class DataProcessor:
         The name of the target column of the dataset
     _cache: Dict[str, Dict[str, List[str]]]
         The cache contains values computed while processing the dataset, to avoid to recompute them each time.
+    _is_multitask: bool
+        True if the model is a multitask model, False otherwise. Default False.
     _pre_processing: bool
         True if the dataset must be pre-processed, False otherwise.
     """
@@ -76,6 +84,7 @@ class DataProcessor:
             transformerType: Type[TransformerType],
             classification_type: ClassificationType,
             tratto_model_type: Type[TrattoModelType],
+            is_multitask: bool = False,
             pre_processing: bool = False
     ):
         self._train_dataset_path = train_dataset_path
@@ -84,6 +93,7 @@ class DataProcessor:
         self._classification_type = classification_type
         self._transformer_type = transformerType
         self._tratto_model_type = tratto_model_type
+        self._is_multitask = is_multitask
         self._pre_processing = pre_processing
         if pre_processing:
             if classification_type == ClassificationType.LABEL_PREDICTION:
@@ -211,6 +221,142 @@ class DataProcessor:
             self._cache["weights"][df_type.value][column_name] = class_weights
         # Return the computed weights
         return self._cache["weights"][df_type.value][column_name]
+
+    @staticmethod
+    def generate_datapoint_input(
+            row: Type[pd.Series],
+            tratto_model_type: Type[TrattoModelType],
+            is_multitask: bool = False
+    ):
+        """
+        The method generates the input for the model, given a row of the dataframe.
+
+        Parameters
+        ----------
+        row: pandas.Series
+            The row of the dataframe to process.
+        tratto_model_type: Type[TrattoModelType]
+            The type of the tratto model (ORACLES, TOKEN_CLASSES, TOKEN_VALUES).
+        is_multitask: bool
+            True if the model is a multitask model, False otherwise. Default False.
+
+        Returns
+        -------
+        The input for the model.
+        """
+
+        # Create the root element
+        datapoint_tag = ET.Element("Datapoint")
+        # Identify input type, if the tratto model type is multitask
+        if is_multitask:
+            # Create the child element
+            input_type_tag = ET.SubElement(datapoint_tag, "InputType")
+            input_type_tag.text = row["inputType"]
+        # Shared tags
+        javadoc_tag = ET.Element("JavadocTag")
+        javadoc_tag.text = row["javadocTag"] if len(row["javadocTag"]) > 0 else "_|empty|_"
+        oracle_type_tag = ET.Element( "OracleType")
+        oracle_type_tag.text = row["oracleType"]
+        methodJavadoc_tag = ET.Element( "MethodJavadoc")
+        methodJavadoc_tag.text = row["methodJavadoc"] if len(row["methodJavadoc"]) > 0 else "_|empty|_"
+        methodSourceCode_tag = ET.Element( "MethodSourceCode")
+        methodSourceCode_tag.text = row["methodSourceCode"] if len(row["methodSourceCode"]) > 0 else "_|empty|_"
+        # packageName_tag = ET.Element( "PackageName")
+        # packageName_tag.text = row["packageName"]
+        # className_tag = ET.Element( "ClassName")
+        # className_tag.text = row["className"]
+        # classJavadoc_tag = ET.Element( "ClassJavadoc")
+        # classJavadoc_tag.text = row["classJavadoc"]
+        # classSourceCode_tag = ET.Element( "ClassSourceCode")
+        # classSourceCode_tag.text = row["classSourceCode"]
+        if tratto_model_type in [TrattoModelType.TOKEN_CLASSES, TrattoModelType.TOKEN_VALUES]:
+            oracleSoFar_tag = ET.Element( "OracleSoFar")
+            oracleSoFar_tag.text = row["oracleSoFar"] if len(row["oracleSoFar"]) > 0 else "_|empty|_"
+        # Token Classes tags
+        if tratto_model_type == TrattoModelType.TOKEN_CLASSES:
+            tokenClass_tag = ET.Element( "TokenClass")
+            tokenClass_tag.text = row["tokenClass"]
+            tokenClassesSoFar_tag = ET.Element( "TokenClassesSoFar")
+            tokens_list = row["tokenClassesSoFar"][1:-1].split()
+            for token in tokens_list:
+                if token.strip() == "" and len(tokens_list) == 1:
+                    tokenClassesSoFar_tag.text = "_|empty|_"
+                    break
+                option_element = ET.SubElement(tokenClassesSoFar_tag, "TokenClassAdded")
+                option_element.text = token.strip()[1:-1]
+            eligibleTokenClasses_tag = ET.Element( "EligibleTokenClasses")
+            tokens_list = row["eligibleTokenClasses"][1:-1].split()
+            for token in tokens_list:
+                option_element = ET.SubElement(eligibleTokenClasses_tag, "TokenClassOption")
+                option_element.text = token.strip()
+        #Token Values tags
+        if tratto_model_type == TrattoModelType.TOKEN_VALUES:
+            token_tag = ET.Element( "Token")
+            token_tag.text = row["token"]
+            tokenInfo_tag = ET.Element( "TokenInfo")
+            tokens_list = row["tokenInfo"][1:-1].split(',')
+            for token in tokens_list:
+                if token.strip() == "" and len(tokens_list) == 1:
+                    tokenInfo_tag.text = "_|empty|_"
+                    break
+                info_element = ET.SubElement(tokenInfo_tag, "Info")
+                info_element.text = token.strip()[1:-1]
+        #eligibleTokens_tag = ET.Element( "EligibleTokens")
+        #eligibleTokens_tag.text = row["eligibleTokens"]
+        # Compose the XML tree
+        if tratto_model_type == TrattoModelType.ORACLES:
+            datapoint_tag.append(javadoc_tag)
+            datapoint_tag.append(oracle_type_tag)
+            datapoint_tag.append(methodSourceCode_tag)
+            datapoint_tag.append(methodJavadoc_tag)
+        if tratto_model_type == TrattoModelType.TOKEN_CLASSES:
+            datapoint_tag.append(tokenClass_tag)
+            datapoint_tag.append(oracleSoFar_tag)
+            datapoint_tag.append(tokenClassesSoFar_tag)
+            datapoint_tag.append(eligibleTokenClasses_tag)
+            datapoint_tag.append(javadoc_tag)
+            datapoint_tag.append(oracle_type_tag)
+            datapoint_tag.append(methodSourceCode_tag)
+            datapoint_tag.append(methodJavadoc_tag)
+        if tratto_model_type == TrattoModelType.TOKEN_VALUES:
+            datapoint_tag.append(token_tag)
+            datapoint_tag.append(tokenInfo_tag)
+            datapoint_tag.append(oracleSoFar_tag)
+            datapoint_tag.append(javadoc_tag)
+            datapoint_tag.append(oracle_type_tag)
+            datapoint_tag.append(methodSourceCode_tag)
+            datapoint_tag.append(methodJavadoc_tag)
+        # Convert the XML tree to a string with indentation
+        datapoint_xml_string = xml.dom.minidom.parseString(ET.tostring(datapoint_tag, encoding="utf-8")).toprettyxml(indent="\t")
+        # Clean the XML string
+        datapoint_xml_string = re.sub(r'<MethodSourceCode>([\s\S]*?)</MethodSourceCode>', lambda match: "<MethodSourceCode>" + ('\n' + match.group(1)).replace('\n','\n\t\t') + "\n\t</MethodSourceCode>", datapoint_xml_string)
+        datapoint_xml_string = re.sub(r'<MethodJavadoc>([\s\S]*?)</MethodJavadoc>', lambda match: "<MethodJavadoc>" + ('\n' + match.group(1)).replace('\n','\n\t') + "\n\t</MethodJavadoc>", datapoint_xml_string)
+        datapoint_xml_string = re.sub(r'<JavadocTag>([\s\S]*?)</JavadocTag>', lambda match: "<JavadocTag>" + ('\n' + match.group(1)).replace('\n','\n\t\t') + "\n\t</JavadocTag>", datapoint_xml_string)
+        datapoint_xml_string = datapoint_xml_string[len("<?xml version=\"1.0\" ?>\n"):] \
+            .replace("&lt;", "<") \
+            .replace("&gt;", ">") \
+            .replace("&amp;", "&") \
+            .replace("_|empty|_", "") \
+            .replace("<JavadocTag>\n\t\t\n\t</JavadocTag>", "<JavadocTag></JavadocTag>") \
+            .replace("<MethodSourceCode>\n\t\n\t</MethodSourceCode>", "<MethodSourceCode></MethodSourceCode>") \
+            .replace("<MethodJavadoc>\n\t\n\t</MethodJavadoc>", "<MethodJavadoc></MethodJavadoc>") \
+            .replace("<Info>", "<Info>\n\t\t\t") \
+            .replace("</Info>", "\n\t\t</Info>") \
+            .replace("<TokenClassOption>", "<TokenClassOption>\n\t\t\t") \
+            .replace("</TokenClassOption>", "\n\t\t</TokenClassOption>") \
+            .replace("<OracleType>", "<OracleType>\n\t\t") \
+            .replace("</OracleType>", "\n\t</OracleType>") \
+            .replace("<Token>", "<Token>\n\t\t") \
+            .replace("</Token>", "\n\t</Token>") \
+            .replace("<OracleSoFar>", "<OracleSoFar>\n\t\t") \
+            .replace("</OracleSoFar>", "\n\t</OracleSoFar>") \
+            .replace("<OracleSoFar>\n\t\t\n\t</OracleSoFar>", "<OracleSoFar></OracleSoFar>") \
+            #.replace("<JavadocTag>", "<JavadocTag>\n\t\t") \
+            #.replace("</JavadocTag>", "\n\t</JavadocTag>") \
+
+            #re.sub(r'<TokenInfo>\s+</TokenInfo>', '<TokenInfo>\s+</TokenInfo>', datapoint_xml_string)
+            # Return the XML string
+        return datapoint_xml_string
 
     def get_encoder_labels_ids(
             self,
@@ -563,6 +709,10 @@ class DataProcessor:
                     'methodJavadoc': 'str',
                     'methodSourceCode': 'str'
                 }
+                if self._is_multitask:
+                    t_df['inputType'] = 'oracle'
+                    v_df['inputType'] = 'oracle'
+                    df_types['inputType'] = 'str'
                 # Set the type of each column in the dataset
                 t_df = t_df.astype(df_types)
                 v_df = v_df.astype(df_types)
@@ -572,6 +722,8 @@ class DataProcessor:
                 new_columns_order = [
                     'javadocTag', 'oracleType', 'methodSourceCode', 'methodJavadoc', 'oracleId', 'oracle', 'label'
                 ]
+                if self._is_multitask:
+                    new_columns_order.insert(0, 'inputType')
                 # Reindex the DataFrame with the new order
                 t_df = t_df.reindex(columns=new_columns_order)
                 v_df = v_df.reindex(columns=new_columns_order)
@@ -601,11 +753,16 @@ class DataProcessor:
                     'tokenClass': 'str',
                     'tokenInfo': 'str'
                 }
+                if self._is_multitask:
+                    input_type = 'token_class' if self._tratto_model_type == TrattoModelType.TOKEN_CLASSES else 'tokenValue'
+                    t_df['inputType'] = input_type
+                    v_df['inputType'] = input_type
+                    df_types['inputType'] = 'str'
                 # Set the type of each column in the dataset
                 t_df = t_df.astype(df_types)
                 v_df = v_df.astype(df_types)
                 # Enrich vocabulary
-                self.enrich_vocabulary(self._tokenizer, self._tratto_model_type)
+                # self.enrich_vocabulary(self._tokenizer, self._tratto_model_type)
                 # Balance dataset
                 # t_df = self._balance_dataframe(t_df)
                 # Pre-process the dataset, according to the Tratto model considered (tokenClasses or tokenValues).
@@ -622,24 +779,30 @@ class DataProcessor:
                         'javadocTag', 'oracleType', 'packageName', 'className', 'methodSourceCode', 'methodJavadoc',
                         'classJavadoc', 'classSourceCode', 'oracleId', 'label', 'token', 'tokenInfo', 'projectName'
                     ]
+                    if self._is_multitask:
+                        new_columns_order.insert(0, 'inputType')
                     # Reindex the DataFrame with the new order
                     t_df = t_df.reindex(columns=new_columns_order)
                     v_df = v_df.reindex(columns=new_columns_order)
                 else:
                     # Compute eligible token values
-                    t_df = self.compute_eligible_token_values(t_df)
-                    v_df = self.compute_eligible_token_values(v_df)
+                    #t_df = self.compute_eligible_token_values(t_df)
+                    #v_df = self.compute_eligible_token_values(v_df)
                     # Define the new order of columns
                     new_columns_order = [
-                        'token', 'oracleSoFar', 'eligibleTokens', 'javadocTag', 'oracleType',
+                        'token', 'oracleSoFar',
+                        #'eligibleTokens',
+                        'javadocTag', 'oracleType',
                         'packageName', 'className', 'methodSourceCode', 'methodJavadoc', 'tokenInfo',
                         'classJavadoc', 'classSourceCode', 'oracleId', 'label', 'tokenClass', 'projectName'
                     ]
+                    if self._is_multitask:
+                        new_columns_order.insert(0, 'inputType')
                     # Reindex the DataFrame with the new order
                     t_df = t_df.reindex(columns=new_columns_order)
-                    t_df = t_df.drop(['eligibleTokens'], axis=1)
+                    #t_df = t_df.drop(['eligibleTokens'], axis=1)
                     v_df = v_df.reindex(columns=new_columns_order)
-                    v_df = v_df.drop(['eligibleTokens'], axis=1)
+                    #v_df = v_df.drop(['eligibleTokens'], axis=1)
                 # Keep only the instance with label 'True', for each combination of oracleId and oracleSoFar, if the model
                 # predicts the categories (tokenClasses or tokenValues)
                 if self._classification_type == ClassificationType.CATEGORY_PREDICTION:
@@ -680,9 +843,15 @@ class DataProcessor:
             else:
                 t_df.drop(['label', 'oracleId', 'classJavadoc', 'classSourceCode', 'projectName'], axis=1, inplace=True)
                 v_df.drop(['label', 'oracleId', 'classJavadoc', 'classSourceCode', 'projectName'], axis=1, inplace=True)
+            # Bind parameter values to input generator function
+            binded_generate_datapoint_input = partial(
+                self.generate_datapoint_input,
+                tratto_model_type=self._tratto_model_type,
+                is_multitask=self._is_multitask
+            )
             # Generate input strings for training and validation datasets
-            t_src = self.concat_src(t_df, self._tokenizer)
-            v_src = self.concat_src(v_df, self. _tokenizer)
+            t_src = self.concat_src(t_df, self._tokenizer, binded_generate_datapoint_input)
+            v_src = self.concat_src(v_df, self. _tokenizer, binded_generate_datapoint_input)
             # Release memory to reduce consumptions with large datasets
             del t_df
             del v_df
@@ -938,12 +1107,13 @@ class DataProcessor:
     @staticmethod
     def concat_src(
             df: Type[DataFrame],
-            tokenizer: Type[PreTrainedTokenizer]
+            tokenizer: Type[PreTrainedTokenizer],
+            lambda_function: Callable = None
     ):
         """
         Maps each row of the given dataframe, with multiple columns, to a row with a single column containing the
-        concatenation of the strings of each original column, using a token as a separator (</s>).
-
+        concatenation of the strings of each original column.
+        By default, if no callable is passed to the method, it concatenates the columns using a token as a separator (</s>).
         For example:
 
           1. Given the first row of the dataset:
@@ -972,6 +1142,11 @@ class DataProcessor:
 
         The result of step (3) represents the content of the unique column of the new map row. The process is repeated
         for each row in the diven dataframe.
+
+        Otherwise, if the lambda_function parameter is not None, the method uses the lambda function to build the input,
+        for each row of the dataframe df. For example, a lambda function can create a string representing an xml tree,
+        instead of a concatenated string.
+
         Finally, the dataframe is transformed into a numpy list where each element corresponds to a row of the new
         dataframe, i.e. a string representing the concatenation of the values of the original columns.
 
@@ -981,6 +1156,8 @@ class DataProcessor:
             The dataframe to process
         tokenizer: Type[PreTrainedTokenizer]
             The tokenizer to use to tokenize the input strings
+        lambda_function: Callable
+            A lambda function to apply to each row to generate a custom input. The parameter is optional, None by default.
 
         Returns
         -------
@@ -988,14 +1165,18 @@ class DataProcessor:
             A list of strings, where each string represents the concatenation of the values of the original columns
             of the dataframe.
         """
-        df = df.apply(lambda row: tokenizer.sep_token.join(row.values), axis=1)
+        if lambda_function is not None:
+            df = df.apply(lambda row: lambda_function(row=row), axis=1)
+        else:
+            df = df.apply(lambda row: tokenizer.sep_token.join(row.values), axis=1)
         rows_list = df.to_numpy().tolist()
         return rows_list
 
     @staticmethod
     def enrich_vocabulary(
             tokenizer: Type[PreTrainedTokenizer],
-            tratto_model_type: Type[TrattoModelType]
+            tratto_model_type: Type[TrattoModelType],
+            multitask: bool = False
     ):
         """
         The method enriches the vocabulary of the tokenizer with the words of the token classes.
@@ -1015,11 +1196,11 @@ class DataProcessor:
         value_mappings = DataProcessor.get_token_classes_value_mappings()
         # If the model is for the token values consider only a subset of words
         # (the other ones will never appear whitin the dataset)
-        if tratto_model_type == TrattoModelType.TOKEN_VALUES:
+        if tratto_model_type == TrattoModelType.TOKEN_VALUES and not multitask:
             ignore_values = DataProcessor.get_token_classes_ignore_values()
         vocab = tokenizer.get_vocab()
         for old_word, new_word in value_mappings.items():
-            if tratto_model_type == TrattoModelType.TOKEN_VALUES and old_word in ignore_values:
+            if (not multitask) and tratto_model_type == TrattoModelType.TOKEN_VALUES and old_word in ignore_values:
                 continue
             for new_sub_word in new_word.split("_"):
                 if not new_sub_word in vocab.keys():

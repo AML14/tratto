@@ -1,5 +1,7 @@
 package star.tratto.data;
 
+import star.tratto.data.records.EligibleToken;
+
 import java.util.List;
 
 /**
@@ -8,7 +10,6 @@ import java.util.List;
 public class TokenDatapoint {
 
     private Long id;
-    private Boolean label;
     private Integer oracleId;
     private OracleType oracleType;
     private String projectName;
@@ -20,14 +21,11 @@ public class TokenDatapoint {
     private String classJavadoc;
     private String classSourceCode;
     private String oracleSoFar;
-    private List<String> tokenClassesSoFar;
+    private List<EligibleToken> eligibleTokens; // token, tokenClass, tokenInfo
     private String token;
-    private String tokenClass;
-    private List<String> tokenInfo;
 
-    public TokenDatapoint(Long id, Boolean label, OracleDatapoint oracleDatapoint, String oracleSoFar, List<String> tokenClassesSoFar, String token, String tokenClass, List<String> tokenInfo) {
+    public TokenDatapoint(Long id, OracleDatapoint oracleDatapoint, String oracleSoFar, List<EligibleToken> eligibleTokens, String token) {
         this.id = id;
-        this.label = label;
         this.oracleId = oracleDatapoint.getId();
         this.oracleType = oracleDatapoint.getOracleType();
         this.projectName = oracleDatapoint.getProjectName();
@@ -39,10 +37,8 @@ public class TokenDatapoint {
         this.classJavadoc = oracleDatapoint.getClassJavadoc();
         this.classSourceCode = oracleDatapoint.getClassSourceCode();
         this.oracleSoFar = oracleSoFar;
-        this.tokenClassesSoFar = tokenClassesSoFar;
+        this.eligibleTokens = eligibleTokens;
         this.token = token;
-        this.tokenClass = tokenClass;
-        this.tokenInfo = tokenInfo;
     }
 
     public Long getId() {
@@ -51,14 +47,6 @@ public class TokenDatapoint {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Boolean getLabel() {
-        return label;
-    }
-
-    public void setLabel(Boolean label) {
-        this.label = label;
     }
 
     public Integer getOracleId() {
@@ -149,12 +137,12 @@ public class TokenDatapoint {
         this.oracleSoFar = oracleSoFar;
     }
 
-    public List<String> getTokenClassesSoFar() {
-        return tokenClassesSoFar;
+    public List<EligibleToken> getEligibleTokens() {
+        return eligibleTokens;
     }
 
-    public void setTokenClassesSoFar(List<String> tokenClassesSoFar) {
-        this.tokenClassesSoFar = tokenClassesSoFar;
+    public void setEligibleTokens(List<EligibleToken> eligibleTokens) {
+        this.eligibleTokens = eligibleTokens;
     }
 
     public String getToken() {
@@ -163,21 +151,5 @@ public class TokenDatapoint {
 
     public void setToken(String token) {
         this.token = token;
-    }
-
-    public String getTokenClass() {
-        return tokenClass;
-    }
-
-    public void setTokenClass(String tokenClass) {
-        this.tokenClass = tokenClass;
-    }
-
-    public List<String> getTokenInfo() {
-        return tokenInfo;
-    }
-
-    public void setTokenInfo(List<String> tokenInfo) {
-        this.tokenInfo = tokenInfo;
     }
 }

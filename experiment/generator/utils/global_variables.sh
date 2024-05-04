@@ -9,9 +9,6 @@ ANT_VERSION="1.10.13"
 # Sdkman Gradle version
 GRADLE_VERSION="8.3"
 
-# Environment Paths
-DEFECTS4J_HOME="/Users/davidemolinelli/Documents/phd/repositories/defects4j"
-
 # Directories
 ROOT_DIR=$(dirname "$(dirname "$(realpath "$(dirname "$BASH_SOURCE")")")")
 GENERATOR_DIR="${ROOT_DIR}/generator"
@@ -33,7 +30,6 @@ EXPERIMENT_JAR="${RESOURCES_DIR}/experiment.jar"
 EVOSUITE_JAR="${RESOURCES_DIR}/evosuite-1.0.6.jar"
 JDOCTOR_JAR="${RESOURCES_DIR}/jdoctor.jar"
 TRATTO_JAR="${RESOURCES_DIR}/tratto.jar"
-TOGA_INPUT_GENERATOR="${RESOURCES_DIR}/toga_input_generator.py"
 
 # Server
 SERVER_PORT=5000

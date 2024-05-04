@@ -180,7 +180,7 @@ class ArgumentParser:
             help="Path to pre-trained model or shortcut name for the tokenValues model."
         )
         parser.add_argument(
-            "--config_name_multitask",
+            "--config_name_or_path_multitask",
             default=None,
             type=str,
             help="Pretrained config name or path if not the same as model_name for the multitask model."
@@ -202,6 +202,19 @@ class ArgumentParser:
             default=None,
             type=str,
             help="Pretrained config name or path if not the same as model_name for the tokenValues model."
+        )
+        parser.add_argument(
+            "--max_src_length",
+            default=2048,
+            type=int,
+            help="The maximum total input sequence length after tokenization. " \
+                 "Sequences longer than this will be truncated, sequences shorter will be padded."
+        )
+        parser.add_argument(
+            "--max_tgt_length",
+            default=30,
+            type=int,
+            help="The maximum total length for the target inference."
         )
 
     @staticmethod
@@ -288,6 +301,12 @@ class ArgumentParser:
             type=int,
             default=42,
             help="random seed for initialization"
+        )
+        parser.add_argument(
+            "--is_multitask",
+            default="False",
+            type=str,
+            help="Perform pre-processing of the dataset"
         )
 
     @staticmethod
@@ -488,11 +507,17 @@ class ArgumentParser:
             help="Trasformer type: encoder or decoder. Default decoder."
         )
         parser.add_argument(
-            "--max_seq_length",
-            default=512,
+            "--max_src_length",
+            default=2048,
             type=int,
             help="The maximum total input sequence length after tokenization. " \
                  "Sequences longer than this will be truncated, sequences shorter will be padded."
+        )
+        parser.add_argument(
+            "--max_tgt_length",
+            default=30,
+            type=int,
+            help="The maximum total length for the target inference."
         )
         parser.add_argument(
             "--do_train",
@@ -630,4 +655,10 @@ class ArgumentParser:
             type=int,
             default=42,
             help="random seed for initialization"
+        )
+        parser.add_argument(
+            "--is_multitask",
+            default="False",
+            type=str,
+            help="Perform pre-processing of the dataset"
         )

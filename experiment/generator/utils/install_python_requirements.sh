@@ -26,11 +26,6 @@ for package_name in "${packages[@]}"; do
 done
 # Install the packages not installed
 if [ "$install_packages" == "Y" ]; then
-  #choice=$(bash "${UTILS_DIR}/y_n.sh" "To proceed it is necessary to install the python packages from the requirements.txt of the ${2} repository. Proceed? (Y/n): ")
-  #if [ ! "$choice" == "Y" ]; then
-  #  echo "[ERROR] - Impossible to proceed without authorization to install python packages."
-  #  exit 1
-  #fi
   echo "Installing packages..."
   cd "$project_dir"
   pip install -r "$requirements_filename"
