@@ -12,7 +12,7 @@ public enum TrattoPath {
     ORACLES_DATASET(Paths.get("src", "main", "resources", "oracles-dataset")),
     OUTPUT(Paths.get("target", "output")),
     OUTPUT_DATASET(Paths.get("target", "output", "dataset")),
-    REPOS(Paths.get("src", "main", "java", "star", "tratto", "data", "repos")),
+    REPOS(Paths.get("src", "main", "resources", "repos")),
     RESOURCES(Paths.get("src", "main", "resources", "projects-source")),
     // files
     ARRAY_METHODS(TrattoPath.REPOS.getPath().resolve("array_methods.json")),
