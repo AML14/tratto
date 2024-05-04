@@ -141,6 +141,7 @@ public class Tratto {
         reposFilesPaths.add(TrattoPath.NON_VARIABLE_TOKENS.getRelativePath());
         reposFilesPaths.add(TrattoPath.TOKENS_GENERAL_VALUES.getRelativePath());
         reposFilesPaths.add(TrattoPath.TOKENS_GRAMMAR.getRelativePath());
+        reposFilesPaths.add(TrattoPath.GLOBAL_DICTIONARY.getRelativePath());
 
         for (Path reposFilePath : reposFilesPaths) {
             String reposFilePathString = Paths.get("/","repos", reposFilePath.getFileName().toString()).toString();
