@@ -3,8 +3,8 @@
 # output to "output/tratto/oracle" as a list of OracleOutput records.
 
 # Arguments check
-if [ ! $# -eq 4 ]; then
-  echo -e "tratto.sh: Incorrect number of arguments. Expected 4 arguments, but got ${#}".
+if [ ! $# -eq 5 ]; then
+  echo -e "tratto.sh: Incorrect number of arguments. Expected 5 arguments, but got ${#}".
   exit 1
 fi
 # Get current directory
