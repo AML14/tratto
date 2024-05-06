@@ -192,4 +192,4 @@ def predict_next_token(
         else:
             raise Exception(f"Predicted token not in eligible tokens: {next_token}")
     else:
-        return next_token if next_token != ";)" else ";"
+        return next_token if next_token != ");" else ";"
