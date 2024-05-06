@@ -18,8 +18,10 @@ fi
 tog="${1}"
 # Round number
 round="${2}"
+# d4j project bugs file path
+d4j_projects_bugs="${3-${D4J_PROJECTS_BUGS}}"
 # Server port
-server_port="${3-${SERVER_PORT}}"
+server_port="${4-${SERVER_PORT}}"
 
 # Clone defects4jprefix project
 if [ ! -d "$DEFECTS4J_DIR/defects4jprefix" ]; then
@@ -122,17 +124,7 @@ while IFS=, read -r project_id bug_id modified_classes; do
           echo -e "tog.sh: Invalid TOG name, ${tog}"
           exit 1
         fi
-        #if [ "$tog" != "baseline" ]; then
-        #  cp -r "${tog_fqn_output}/${tog}-oracles" "$d4j_fqn_output"
-        #fi
-        #if [ "$tog" == "toga" ]; then
-        #  cp -r "${tog_fqn_output}/${tog}-input" "$d4j_fqn_output"
-        #  cp -r "${tog_fqn_output}/${tog}-log" "$d4j_fqn_output"
-        #fi
-        #cp -r "${tog_fqn_output}/${tog}-tests" "$d4j_fqn_output"
-        #cp -r "${tog_fqn_output}/${tog}-test-suite" "$d4j_fqn_output"
-        #cp -r "${tog_fqn_output}/${tog}_defects4joutput.json" "$d4j_fqn_output"
         cp -r "${tog_fqn_output}" "$(dirname ${d4j_fqn_output})"
     done
-done < "$D4J_PROJECTS_BUGS"
+done < "$d4j_projects_bugs"
 
