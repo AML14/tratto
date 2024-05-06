@@ -47,8 +47,8 @@ public class Tratto {
         String projectJarPath = args[2];
         String serverPort = args[3];
         Path fqnTrattoOutputPath = TRATTO_OUTPUT.resolve(Paths.get(fullyQualifiedClassName.replace(".", "/")));
-        Path tokenDatapointsPath = TRATTO_OUTPUT.resolve("token_datapoints.json");
-        Path oracleDatapointsPath = TRATTO_OUTPUT.resolve("oracle_datapoints.json");
+        Path tokenDatapointsPath = fqnTrattoOutputPath.resolve("token_datapoints.json");
+        Path oracleDatapointsPath = fqnTrattoOutputPath.resolve("oracle_datapoints.json");
         String mlModelAPIUrl = String.format("http://127.0.0.1:%s/api/next_token?filename=%s/token_datapoints.json", serverPort, fqnTrattoOutputPath);
 
         if (!Files.exists(fqnTrattoOutputPath)) {
