@@ -9,8 +9,8 @@ source "${current_dir}/generator/utils/global_variables.sh"
 source "${UTILS_DIR}/init_sdkman.sh"
 
 # Arguments and setup check
-if [ $# -lt 2 ] || [ $# -gt 3 ]; then
-  echo -e "defects4j.sh: Incorrect number of arguments. Expected 2 or 3 argument, but got ${#}".
+if [ $# -lt 2 ] || [ $# -gt 4 ]; then
+  echo -e "defects4j.sh: Incorrect number of arguments. Expected 2 or 4 argument, but got ${#}".
   exit 1
 fi
 
