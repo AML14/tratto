@@ -19,9 +19,7 @@ src_path=${2}
 project_jar_path=${3}
 output_dir=${4-${OUTPUT_DIR}}
 server_port=${5-${SERVER_PORT}}
-resources_dir="${ROOT_DIR}/generator/resources"
-utils_dir="${ROOT_DIR}/generator/utils"
-tratto_project_dir="${ROOT_DIR}/../tratto"
+fqn_path=$(echo "$fully_qualified_name" | sed 's/\./\//g')
 tratto_output_dir="${output_dir}/tratto-oracles"
 tratto_output_file="${tratto_output_dir}/tratto_output.json"
 # Generate path to tratto output directory, if it does not exists
@@ -33,10 +31,10 @@ fi
 # Switch to Java 17
 sdk use java "${JAVA17}"
 # Setup Tratto to perform the experiment
-bash "${utils_dir}/tratto_setup.sh"
+bash "${UTILS_DIR}/tratto_setup.sh"
 # Execute Tratto to generate oracles
 java -jar "${TRATTO_JAR}" "${fully_qualified_name}" "${src_path}" "${project_jar_path}" "${server_port}"
-mv "${tratto_project_dir}/tratto_output/oracle_datapoints.json" "${tratto_output_file}"
+mv "${TRATTO_PROJECT_DIR}/tratto_output/${fqn_path}/oracle_datapoints.json" "${tratto_output_file}"
 # Map Tratto output to OracleOutput datapoints
 echo "tratto.sh: Map oracles generated with Tratto into OracleOutputs."
 java -jar "$EXPERIMENT_JAR" "generate_oracle_output" "tratto" "${tratto_output_file}" "${project_jar_path}"
