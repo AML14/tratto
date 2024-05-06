@@ -34,7 +34,7 @@ sdk use java "${JAVA17}"
 bash "${UTILS_DIR}/tratto_setup.sh"
 # Execute Tratto to generate oracles
 java -jar "${TRATTO_JAR}" "${fully_qualified_name}" "${src_path}" "${project_jar_path}" "${server_port}"
-mv "${TRATTO_PROJECT_DIR}/tratto_output/${fqn_path}/oracle_datapoints.json" "${tratto_output_file}"
+mv "${ROOT_DIR}/tratto_output/${fqn_path}/oracle_datapoints.json" "${tratto_output_file}"
 # Map Tratto output to OracleOutput datapoints
 echo "tratto.sh: Map oracles generated with Tratto into OracleOutputs."
 java -jar "$EXPERIMENT_JAR" "generate_oracle_output" "tratto" "${tratto_output_file}" "${project_jar_path}"
