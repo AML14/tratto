@@ -798,7 +798,7 @@ public class TogUtils {
             testStr = testStr.substring(startIdx);
         }
         String togaInput = String.format("\"%s\",\"%s\",\"%s\"\n", focalMethodBody, testStr, javadocString);
-        String togaMetadata = String.format("project,0,%s,0,0,False,\"\",\"\"\n", testName.concat(Integer.toString(stmtIndex)));
+        String togaMetadata = String.format("project,0,%s,0,0,False,\"\",\"\"\n", testName + "_" + stmtIndex);
         togaRow.put("className", cuClassFile.getPrimaryType().orElseThrow().getFullyQualifiedName().orElseThrow());
         togaRow.put("methodName", methodName);
         togaRow.put("methodSignature", focalMethodSignature);
