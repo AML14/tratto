@@ -798,7 +798,7 @@ public class TogUtils {
             testStr = testStr.substring(startIdx);
         }
         String togaInput = String.format("\"%s\",\"%s\",\"%s\"\n", focalMethodBody, testStr, javadocString);
-        String togaMetadata = String.format("project,0,%s,0,0,False,\"\",\"\"\n", testName);
+        String togaMetadata = String.format("project,0,%s,0,0,False,\"\",\"\"\n", testName.concat(Integer.toString(stmtIndex)));
         togaRow.put("className", cuClassFile.getPrimaryType().orElseThrow().getFullyQualifiedName().orElseThrow());
         togaRow.put("methodName", methodName);
         togaRow.put("methodSignature", focalMethodSignature);
@@ -1235,23 +1235,27 @@ public class TogUtils {
         }
         List<OracleOutput> oracleOutputs = new ArrayList<>();
         for (CSVRecord record : csvParser) {
-            String testName = record.get(columnIndexMap.get("test_name"));
+            String fullTestName = record.get(columnIndexMap.get("test_name"));
+            String testName = fullTestName.split("_")[0];
+            String stmtIdx = fullTestName.split("_")[1];
             String exceptPred = record.get(columnIndexMap.get("except_pred"));
             String assertPred = record.get(columnIndexMap.get("assert_pred"));
             List<Map<String,String>> togaRowList = togaInfo.get(testName);
             boolean isException = Boolean.parseBoolean(exceptPred);
 
             for (Map<String,String> togaRow : togaRowList) {
-                OracleOutput oracleOutput = new OracleOutput(
-                    togaRow.get("className"),
-                    togaRow.get("methodSignature"),
-                    OracleType.NON_AXIOMATIC,
-                    assertPred,
-                    isException ? "java.lang.Exception" : "",
-                    testName,
-                    togaRow.get("statementIndex")
-                );
-                oracleOutputs.add(oracleOutput);
+                if (togaRow.get("statementIndex").equals(stmtIdx)) {
+                    OracleOutput oracleOutput = new OracleOutput(
+                        togaRow.get("className"),
+                        togaRow.get("methodSignature"),
+                        OracleType.NON_AXIOMATIC,
+                        assertPred,
+                        isException ? "java.lang.Exception" : "",
+                        testName,
+                        togaRow.get("statementIndex")
+                    );
+                    oracleOutputs.add(oracleOutput);
+                }
             }
         }
         FileUtils.writeJSON(oraclePath, oracleOutputs);
