@@ -95,6 +95,7 @@ public class OracleInserterTest {
         OracleInserter.insertOracles(
                 Paths.get("output", "evosuite-prefixes"),
                 Paths.get("output", "jdoctor-oracles"),
+                Paths.get(""),
                 projectClasspath
         );
         Path testPath = Paths.get("output", "jdoctor-tests", "tutorial", "Stack_ESTest.java");
@@ -143,6 +144,7 @@ public class OracleInserterTest {
         OracleInserter.insertOracles(
                 Paths.get("output", "evosuite-prefixes"),
                 Paths.get("output", "toga-oracles"),
+                Paths.get(""),
                 projectClasspath
         );
         Path testPath = Paths.get("output", "toga-tests", "tutorial", "Stack_ESTest.java");
