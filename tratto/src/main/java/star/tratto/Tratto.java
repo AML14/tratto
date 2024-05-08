@@ -82,7 +82,7 @@ public class Tratto {
                     oracleDatapoint.getJavadocTag(),
                     oracleDatapoint.getOracleType());
 
-            while (!oracleDatapoint.getOracle().endsWith(";")) {
+            while (!oracleDatapoint.getOracle().endsWith(";") && !oracleDatapoint.getOracle().endsWith("(((((((((((") && !oracleDatapoint.getOracle().endsWith(")))))))))))") && !(oracleDatapoint.getOracle().length() > 500)) {
                 // Generate token datapoints and save to file
                 try {
                     TokenDatapoint tokenDatapoint = oracleSoFarAndTokenToTokenDatapoint(oracleDatapoint, oracleSoFarTokens, "");
@@ -93,11 +93,11 @@ public class Tratto {
                     oracleDatapoint.setOracle(compactExpression(oracleDatapoint.getOracle() + " " + nextToken));
                     oracleSoFarTokens.add(nextToken);
                     logger.info("Oracle so far: {}", oracleDatapoint.getOracle());
-                } catch (TokenNotFoundException e) {
+                } catch (TokenNotFoundException | ServerErrorException | ServerUnexpectedResponseCodeException | IOException  e) {
                     logger.error(e.getMessage());
                     oracleDatapoint.setOracle(";");
                     break;
-                }// HTTP call to ML-model API to get next token and class
+                }
             }
             logger.info("Final oracle: {}", oracleDatapoint.getOracle());
             logger.info("-------------------------------------------------------------------------");
@@ -113,7 +113,7 @@ public class Tratto {
         logger.info("Finished generating oracles for: \n\tClass: {}\n\tProject source: {}\n\tProject JAR: {}", classPath, projectSourcePath, projectJarPath);
     }
 
-    private static String getNextToken(String mlModelAPIUrl) throws IOException {
+    private static String getNextToken(String mlModelAPIUrl) throws TokenNotFoundException, ServerErrorException, ServerUnexpectedResponseCodeException, IOException {
         HttpURLConnection mlModelApiConn = (HttpURLConnection) new URL(mlModelAPIUrl).openConnection();
         mlModelApiConn.setRequestMethod("GET");
         mlModelApiConn.connect();
@@ -127,8 +127,10 @@ public class Tratto {
             // Handle 404 response
             String errorResponse = new String(mlModelApiConn.getErrorStream().readAllBytes(), StandardCharsets.UTF_8);
             throw new TokenNotFoundException(errorResponse);
+        } else if (responseCode == HttpURLConnection.HTTP_INTERNAL_ERROR) {
+            throw new ServerErrorException("Unexpected internal error: " + responseCode);
         } else {
-            throw new IOException("Unexpected response code: " + responseCode);
+            throw new ServerUnexpectedResponseCodeException("Unexpected response code: " + responseCode);
         }
 
         mlModelApiConn.disconnect();
