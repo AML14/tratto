@@ -1387,11 +1387,10 @@ public class OracleInserter {
      * such oracle exists.
      */
     private static List<OracleOutput> getOraclesWithTestName(String testName, List<OracleOutput> oracles) {
-        List<OracleOutput> testOracles = oracles
+        return oracles
                 .stream()
                 .filter(o -> o.testName().equals(testName) && !o.oracle().isEmpty())
                 .toList();
-        return testOracles;
     }
 
     /**
@@ -1418,7 +1417,7 @@ public class OracleInserter {
                                 .toList();
                         List<OracleOutput> exceptionOracles = stmtOracles
                                 .stream()
-                                .filter(o -> o.isExceptional())
+                                .filter(OracleOutput::isExceptional)
                                 .toList();
                         List<OracleOutput> assertionOracles = stmtOracles
                                 .stream()
