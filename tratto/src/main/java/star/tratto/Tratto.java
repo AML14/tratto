@@ -38,8 +38,9 @@ public class Tratto {
     public static final Path TRATTO_OUTPUT = Paths.get(System.getProperty("user.dir"), "tratto_output");
 
     public static void main(String[] args) throws IOException {
-        generateRepos();
-
+        if (!Files.exists(REPOS_DIR)) {
+            generateRepos();
+        }
         ClassAnalyzer classAnalyzer = ClassAnalyzer.getInstance();
         String fullyQualifiedClassName = args[0];
         String projectSourcePath = args[1];
