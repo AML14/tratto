@@ -39,6 +39,7 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.nio.file.Files;
@@ -330,85 +331,118 @@ public class TogUtils {
             // If only one candidate method/constructor is found, set the focal method to the candidate method/constructor
             focalMethod = candidatesCallables.get(0);
         } else {
-            // If multiple candidate methods are found, try to discern the focal method by analyzing
-            // the types of the parameters of the focal method call expression and the parameters of the
-            // candidate methods/constructors.
+            List<ResolvedType> focalMethodResolvedTypes = focalMethodArgs.stream().map(a -> a.calculateResolvedType()).collect(Collectors.toList());
+            focalMethod = matchCallableDeclaration(focalMethodResolvedTypes, candidatesCallables);
+        }
+        return focalMethod;
+    }
 
-            // Initialize the number of parameters in common to -1 (no parameters in common)
-            int bestParamsTypesInCommon = -1;
-            // Initialize the boolean flag multipleCandidates to false (only one candidate method/constructor is
-            // the most similar to the method call expression)
-            boolean multipleCandidates = false;
-            // Initialize the most similar candidate method/constructor to null
-            CallableDeclaration mostSimilar = null;
-            // Iterate over the list of candidate methods/constructors
-            for (CallableDeclaration callable : candidatesCallables) {
-                // Get the list of parameters of the candidate method/constructor
-                NodeList<com.github.javaparser.ast.body.Parameter> paramsList = callable.getParameters();
-                // Initialize the number of parameters in common with the current candidate to 0
-                int paramsTypesInCommon = 0;
-                // Iterate over the list of parameters of the current candidate method/constructor
-                for (int i = 0; i < paramsList.size(); i++) {
-                    // Get the i-th parameter
-                    com.github.javaparser.ast.body.Parameter param = paramsList.get(i);
-                    // Get the type of the i-th parameter of the focal method call in the test
-                    ResolvedType focalMethodArg = focalMethodArgs.get(i).calculateResolvedType();
-                    String focalMethodTypeName = focalMethodArgs.get(i).calculateResolvedType().describe();
+    private static CallableDeclaration matchCallableDeclaration(List<ResolvedType> focalMethodArgs, List<CallableDeclaration> candidatesCallables) throws CandidateCallableDeclarationNotFoundException, MultipleCandidatesException {
+        // Define the focal method. Initially null.
+        CallableDeclaration focalMethod = null;
+        // Initialize the number of parameters in common to -1 (no parameters in common)
+        int bestParamsTypesInCommon = -1;
+        // Initialize the boolean flag multipleCandidates to false (only one candidate method is
+        // the most similar to the method call expression)
+        boolean multipleCandidates = false;
+        // Initialize the most similar candidate method to null
+        CallableDeclaration mostSimilar = null;
+        // Iterate over the list of candidate methods/constructors
+        for (CallableDeclaration callable : candidatesCallables) {
+            // Get the list of parameters of the candidate method/constructor
+            NodeList<com.github.javaparser.ast.body.Parameter> paramsList = callable.getParameters();
+            // Initialize the number of parameters in common with the current candidate to 0
+            int paramsTypesInCommon = 0;
+            // Iterate over the list of parameters of the current candidate method/constructor
+            for (int i = 0; i < paramsList.size(); i++) {
+                // Get the i-th parameter
+                com.github.javaparser.ast.body.Parameter param = paramsList.get(i);
+                // Get the type of the i-th parameter of the focal method call in the test
+                ResolvedType focalMethodArg = focalMethodArgs.get(i);
+                String focalMethodTypeName = focalMethodArgs.get(i).describe();
 
-                    if (focalMethodArg.isArray() && !param.getType().isArrayType()) {
+                if (focalMethodArg.isArray() && !param.getType().isArrayType()) {
+                    continue;
+                }
+                if (!focalMethodArg.isArray() && param.getType().isArrayType()) {
+                    continue;
+                }
+                if (focalMethodArg.describe().startsWith("java.util.List") && !param.getTypeAsString().startsWith("List")) {
+                    continue;
+                }
+                if (!focalMethodArg.describe().startsWith("java.util.List") && param.getTypeAsString().startsWith("List")) {
+                    continue;
+                }
+                if (focalMethodArg.isArray() && param.getType().isArrayType()) {
+                    if (focalMethodArg.asArrayType().arrayLevel() != param.getType().asArrayType().getArrayLevel()) {
                         continue;
-                    }
-                    if (!focalMethodArg.isArray() && param.getType().isArrayType()) {
-                        continue;
-                    }
-                    if (focalMethodArg.describe().startsWith("java.util.List") && !param.getTypeAsString().startsWith("List")) {
-                        continue;
-                    }
-                    if (!focalMethodArg.describe().startsWith("java.util.List") && param.getTypeAsString().startsWith("List")) {
-                        continue;
-                    }
-                    if (focalMethodArg.isArray() && param.getType().isArrayType()) {
-                        if (focalMethodArg.asArrayType().arrayLevel() != param.getType().asArrayType().getArrayLevel()) {
-                            continue;
-                        }
-                    }
-
-                    // Get the type of the i-th parameter of the current candidate method, as a string
-                    String paramTypeName = param.getTypeAsString();
-
-                    // Compare the parameters type names
-                    if (focalMethodTypeName.contains(paramTypeName.replaceAll("List|\\[\\]|<|>", ""))) {
-                        // If the type names corresponds, increment the number of parameters in common
-                        paramsTypesInCommon += 1;
                     }
                 }
-                // If the number of parameters in common with the current candidate method/constructor is
-                // greater or equal to the best number of parameters in common found so far, update the best
-                // number of parameters in common and assign the current candidate method/constructor to the
-                // most similar candidate method/constructor
-                if (paramsTypesInCommon >= bestParamsTypesInCommon) {
-                    if (paramsTypesInCommon == bestParamsTypesInCommon) {
-                        multipleCandidates = true;
-                    } else {
-                        bestParamsTypesInCommon = paramsTypesInCommon;
-                        multipleCandidates = false;
-                        mostSimilar = callable;
-                    }
+                // Get the type of the i-th parameter of the current candidate method, as a string
+                String paramTypeName = param.getTypeAsString();
+                // Compare the parameters type names
+                if (focalMethodTypeName.contains(paramTypeName.replaceAll("List|\\[\\]|<|>", ""))) {
+                    // If the type names corresponds, increment the number of parameters in common
+                    paramsTypesInCommon += 1;
                 }
             }
-            // If only one candidate method/constructor is the most similar to the focal method call expression, set
-            // the focal method to the most similar candidate method
-            if (!(multipleCandidates || mostSimilar == null)) {
-                focalMethod = mostSimilar;
-                if (bestParamsTypesInCommon < focalMethodArgs.size()) {
-                    // If the number of parameters in common is less than the number of parameters of
-                    // the method call expression, log a warning
-                    throw new CandidateCallableDeclarationNotFoundException("[WARNING] - No candidate method fully match the signature of the callable expression. No focal method found.");
+            // If the number of parameters in common with the current candidate method/constructor is
+            // greater or equal to the best number of parameters in common found so far, update the best
+            // number of parameters in common and assign the current candidate method/constructor to the
+            // most similar candidate method/constructor
+            if (paramsTypesInCommon >= bestParamsTypesInCommon) {
+                if (paramsTypesInCommon == bestParamsTypesInCommon) {
+                    multipleCandidates = true;
+                } else {
+                    bestParamsTypesInCommon = paramsTypesInCommon;
+                    multipleCandidates = false;
+                    mostSimilar = callable;
                 }
-            } else {
-                // Multiple candidates, impossible to discern
-                throw new MultipleCandidatesException(String.format("[WARNING] - Multiple candidate methods/constructors found. Impossible to discern the focal method."));
             }
+        }
+        // If only one candidate method/constructor is the most similar to the focal method call expression, set
+        // the focal method to the most similar candidate method
+        if (!(multipleCandidates || mostSimilar == null)) {
+            focalMethod = mostSimilar;
+            if (bestParamsTypesInCommon < focalMethodArgs.size()) {
+                // If the number of parameters in common is less than the number of parameters of
+                // the method call expression, log a warning
+                throw new CandidateCallableDeclarationNotFoundException("[WARNING] - No candidate method fully match the signature of the callable expression. No focal method found.");
+            }
+        } else {
+            // Multiple candidates, impossible to discern
+            throw new MultipleCandidatesException(String.format("[WARNING] - Multiple candidate methods/constructors found. Impossible to discern the focal method."));
+        }
+        return focalMethod;
+    }
+
+    private static CallableDeclaration matchMethodUsageWithMethodDeclaration(MethodUsage referenceMethodUsage, List<MethodDeclaration> methodDeclarationList) throws  CandidateCallableDeclarationNotFoundException, MultipleCandidatesException {
+        String referenceMethodUsageName = referenceMethodUsage.getName();
+        List<ResolvedType> referenceMehodUsageArgs = referenceMethodUsage.getParamTypes();
+        // Define the focal method. Initially null.
+        CallableDeclaration focalMethod = null;
+        // Define a list of candidate methods (methods with the same name and number of parameters).
+        // Initially empty.
+        List<CallableDeclaration> candidatesMethods = new ArrayList<>();
+        // Iterate over the list of methods/constructors in the class file
+        for (MethodDeclaration method : methodDeclarationList) {
+            // Check if the method/constructor name is the same
+            if (method.getNameAsString().equals(referenceMethodUsageName)) {
+                // Check if the number of parameters is the same
+                if (method.getParameters().size() == referenceMehodUsageArgs.size()) {
+                    // Add method/constructor to candidates if the previous conditions are satisfied
+                    candidatesMethods.add(method);
+                }
+            }
+        }
+        // If no candidate methods are found, throw an exception (focal method not found)
+        if (candidatesMethods.size() == 0) {
+            return focalMethod;
+        } else if (candidatesMethods.size() == 1) {
+            // If only one candidate method/constructor is found, set the focal method to the candidate method/constructor
+            focalMethod = candidatesMethods.get(0);
+        } else {
+            focalMethod = matchCallableDeclaration(referenceMethodUsage.getParamTypes(), candidatesMethods);
         }
         return focalMethod;
     }
@@ -596,10 +630,10 @@ public class TogUtils {
                                 // Generate a toga input row as a triplet where the first element is the toga input to feed the
                                 // model, the second element represent the corresponding metadata, and the third element is a Map
                                 // representing the toga row.
-                                Triplet<String, String, Map<String, String>> togaRow = generateTogaRow(cuClassFile, cuTestClassSimpleTestsFile, expr, exprType, testPrefix, stmtIndex);
+                                Triplet<String, String, Map<String, String>> togaRow = generateTogaRow(cuClassFile, cuTestClassSimpleTestsFile, expr, exprType, testPrefix, srcDirPath, stmtIndex);
                                 // Update the input, metadata, and info objects
                                 addTogaRow(togaRow, testName, togaInputBuilder, togaMetadataBuilder, togaInfo);
-                            } catch (NoFocalMethodMatchingException | NoPrimaryTypeException | UnrecognizedExprException | CandidateCallableDeclarationNotFoundException | CandidateCallableMethodUsageNotFoundException | MultipleCandidatesException e) {
+                            } catch (NoFocalMethodMatchingException | NoPrimaryTypeException | UnrecognizedExprException | CandidateCallableDeclarationNotFoundException | CandidateCallableMethodUsageNotFoundException | MultipleCandidatesException | FileNotFoundException e) {
                                 try {
                                     boolean isFromAnotherClass = isExpressionFromAnotherCompilationUnit(expr, cuClassFile, fullyQualifiedClassName, srcDirPath);
                                     if (!isFromAnotherClass) {
@@ -723,7 +757,7 @@ public class TogUtils {
      * @throws NoFocalMethodMatchingException if the corresponding focal method has not been found.
      * @throws IllegalStateException if the statement does not correspond to a method call or a constructor invocation
      */
-    public static Triplet<String,String,Map<String,String>> generateTogaRow(CompilationUnit cuClassFile, CompilationUnit cuClassSimpleTestFile, Expression expr, ExpressionType exprType, MethodDeclaration testPrefix, int stmtIndex) throws NoFocalMethodMatchingException, NoPrimaryTypeException, IllegalStateException, CandidateCallableMethodUsageNotFoundException, CandidateCallableDeclarationNotFoundException, MultipleCandidatesException {
+    public static Triplet<String,String,Map<String,String>> generateTogaRow(CompilationUnit cuClassFile, CompilationUnit cuClassSimpleTestFile, Expression expr, ExpressionType exprType, MethodDeclaration testPrefix, Path srcDirPath, int stmtIndex) throws NoFocalMethodMatchingException, NoPrimaryTypeException, IllegalStateException, CandidateCallableMethodUsageNotFoundException, CandidateCallableDeclarationNotFoundException, MultipleCandidatesException, FileNotFoundException {
         // Define the focal method to find (the last method call in the test). Initially null.
         // The focal method must be a method declaration or a constructor declaration.
         CallableDeclaration focalMethod = null;
@@ -752,19 +786,31 @@ public class TogUtils {
             // If the focal method is still not found, raise an exception
             if (focalMethodUsage == null) {
                 throw new NoFocalMethodMatchingException("The focal method do not belong to the class under test " + testPrefix.getNameAsString());
-            } else {
-
             }
             // If the focal method is found, get the information of the focal method
             methodName = focalMethodUsage.getName();
             focalMethodSignature = getMethodSignature(focalMethodUsage);
-            Matcher matcher = FOCAL_METHOD.matcher(focalMethodUsage.toString());
-            if (matcher.find()) {
-                // Extract the Javadoc comment
-                if (matcher.group(1) != null) {
-                    javadocString = matcher.group(1).replace("\"", "\"\"").trim();;
+
+            Path fullyQualifiedClassNameLastExpressionPath = FileUtils.getFQNPath(focalMethodUsage.declaringType().getQualifiedName());
+            Path classFileFocalMethodUsagePath = srcDirPath.resolve(fullyQualifiedClassNameLastExpressionPath);
+            File classFileFocalMethodUsage = new File(classFileFocalMethodUsagePath.toString());
+            CompilationUnit cuFocalMethodUsage = null;
+            if (classFileFocalMethodUsage.exists()) {
+                cuFocalMethodUsage = javaParser.parse(classFileFocalMethodUsage).getResult().orElse(null);
+            }
+            if (cuFocalMethodUsage == null) {
+                focalMethodBody = focalMethodSignature + "{}";
+            } else {
+                List<MethodDeclaration> candidateMethods = cuFocalMethodUsage.getPrimaryType().orElseThrow(() -> new NoPrimaryTypeException("[ERROR] - ClassFile from method usage, with no primary file.")).getMethods();
+                focalMethod = matchMethodUsageWithMethodDeclaration(focalMethodUsage, candidateMethods);
+                Matcher matcher = FOCAL_METHOD.matcher(focalMethod.toString());
+                if (matcher.find()) {
+                    // Extract the Javadoc comment
+                    if (matcher.group(1) != null) {
+                        javadocString = matcher.group(1).replace("\"", "\"\"").trim();;
+                    }
+                    focalMethodBody = matcher.group(2).replace("\"", "\"\"").trim();
                 }
-                focalMethodBody = matcher.group(2).replace("\"", "\"\"").trim();
             }
         } else {
             methodName = focalMethod.getNameAsString();
