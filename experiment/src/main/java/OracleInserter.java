@@ -1,43 +1,17 @@
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
-import com.github.javaparser.ast.ImportDeclaration;
 import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.comments.Comment;
 import com.github.javaparser.ast.comments.LineComment;
-import com.github.javaparser.ast.expr.AnnotationExpr;
-import com.github.javaparser.ast.expr.ArrayAccessExpr;
-import com.github.javaparser.ast.expr.ArrayCreationExpr;
-import com.github.javaparser.ast.expr.ArrayInitializerExpr;
 import com.github.javaparser.ast.expr.AssignExpr;
-import com.github.javaparser.ast.expr.BinaryExpr;
-import com.github.javaparser.ast.expr.BooleanLiteralExpr;
-import com.github.javaparser.ast.expr.CastExpr;
-import com.github.javaparser.ast.expr.CharLiteralExpr;
-import com.github.javaparser.ast.expr.ClassExpr;
-import com.github.javaparser.ast.expr.ConditionalExpr;
-import com.github.javaparser.ast.expr.DoubleLiteralExpr;
-import com.github.javaparser.ast.expr.EnclosedExpr;
 import com.github.javaparser.ast.expr.Expression;
-import com.github.javaparser.ast.expr.FieldAccessExpr;
-import com.github.javaparser.ast.expr.InstanceOfExpr;
-import com.github.javaparser.ast.expr.IntegerLiteralExpr;
-import com.github.javaparser.ast.expr.LambdaExpr;
-import com.github.javaparser.ast.expr.LiteralExpr;
-import com.github.javaparser.ast.expr.LongLiteralExpr;
 import com.github.javaparser.ast.expr.MethodCallExpr;
-import com.github.javaparser.ast.expr.MethodReferenceExpr;
 import com.github.javaparser.ast.expr.NameExpr;
-import com.github.javaparser.ast.expr.NullLiteralExpr;
 import com.github.javaparser.ast.expr.ObjectCreationExpr;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
-import com.github.javaparser.ast.expr.SuperExpr;
-import com.github.javaparser.ast.expr.TextBlockLiteralExpr;
-import com.github.javaparser.ast.expr.ThisExpr;
-import com.github.javaparser.ast.expr.TypeExpr;
-import com.github.javaparser.ast.expr.UnaryExpr;
 import com.github.javaparser.ast.expr.VariableDeclarationExpr;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.stmt.CatchClause;
@@ -47,9 +21,7 @@ import com.github.javaparser.ast.stmt.IfStmt;
 import com.github.javaparser.ast.stmt.Statement;
 import com.github.javaparser.ast.stmt.ThrowStmt;
 import com.github.javaparser.ast.stmt.TryStmt;
-import com.github.javaparser.ast.type.PrimitiveType;
 import com.github.javaparser.ast.type.Type;
-import com.github.javaparser.ast.type.VoidType;
 import com.github.javaparser.symbolsolver.JavaSymbolSolver;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.CombinedTypeSolver;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.JarTypeSolver;
@@ -60,8 +32,6 @@ import data.OracleType;
 import data.TogType;
 
 import java.io.IOException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -69,6 +39,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -78,28 +49,6 @@ import java.util.stream.Stream;
 public class OracleInserter {
     /** A unique id for placeholder variable names when inserting oracles. */
     private static int variableID = 0;
-    /** All primitive fully qualified type names.  */
-    private static final List<String> primitiveTypes = List.of(
-            "boolean",
-            "byte",
-            "char",
-            "short",
-            "int",
-            "long",
-            "float",
-            "double"
-    );
-    /** All primitive field descriptor type names. */
-    private static final List<String> allPrimitiveFieldDescriptors = List.of(
-            "Z",
-            "B",
-            "C",
-            "S",
-            "I",
-            "J",
-            "F",
-            "D"
-    );
 
     /** Private constructor to avoid creating an instance of this class. */
     private OracleInserter() {
@@ -138,14 +87,7 @@ public class OracleInserter {
         return current;
     }
 
-    /**
-     * Gets the type names of all parameters from the method signature. If a
-     * parameter is a generic type parameter, then uses "java.lang.Object".
-     *
-     * @param methodSignature a method signature
-     * @return all parameter type names in the method signature
-     */
-    private static List<String> getParameterTypeNames(String methodSignature) {
+    private static List<String> getParameterTypesFromMethodSignature(String methodSignature) {
         String parameters = methodSignature.substring(methodSignature.indexOf('(') + 1, methodSignature.indexOf(')'));
         if (parameters.length() == 0) {
             return new ArrayList<>();
@@ -159,11 +101,9 @@ public class OracleInserter {
                                 .append(paramParts[i].trim())
                                 .append(" ");
                     }
-                    String paramTypeFqn = paramTypeFqnBuilder.toString().trim();
-                    Class<?> paramClass = getClass(paramTypeFqn);
-                    return paramClass.getTypeName();
+                    return paramTypeFqnBuilder.toString().trim();
                 })
-                .toList();
+                .collect(Collectors.toList());
     }
 
     /**
@@ -183,262 +123,6 @@ public class OracleInserter {
     }
 
     /**
-     * Gets the array level of a fully qualified name.
-     *
-     * @param fullyQualifiedName a fully qualified name
-     * @return the array level of the fully qualified name
-     */
-    private static int getArrayLevel(String fullyQualifiedName) {
-        int arrayLevel = 0;
-        for (int i = 0; i < fullyQualifiedName.length(); i++) {
-            if (fullyQualifiedName.charAt(i) == '[') {
-                arrayLevel++;
-            }
-        }
-        return arrayLevel;
-    }
-
-    /**
-     * Gets the field descriptor of a given fully qualified primitive type
-     * name.
-     *
-     * @param primitiveName a fully qualified primitive type name
-     * @return the field descriptor corresponding to the primitive type
-     * @throws IllegalArgumentException if the given type name is not a
-     * primitive type
-     */
-    private static String fqnToFieldDescriptor(String primitiveName) {
-        switch (primitiveName) {
-            case "boolean" -> {
-                return "Z";
-            }
-            case "byte" -> {
-                return "B";
-            }
-            case "char" -> {
-                return "C";
-            }
-            case "short" -> {
-                return "S";
-            }
-            case "int" -> {
-                return "I";
-            }
-            case "long" -> {
-                return "J";
-            }
-            case "float" -> {
-                return "F";
-            }
-            case "double" -> {
-                return "D";
-            }
-            default -> throw new IllegalArgumentException("Unrecognized primitive type " + primitiveName);
-        }
-    }
-
-    /**
-     * Gets the fully qualified name of a given primitive field descriptor
-     * type name.
-     *
-     * @param primitiveFD a primitive field descriptor type name
-     * @return the fully qualified name corresponding to the primitive type
-     * @throws IllegalArgumentException if the given type name is not a
-     * recognized primitive type
-     */
-    private static String fieldDescriptorToFQN(String primitiveFD) {
-        switch (primitiveFD) {
-            case "Z" -> {
-                return "boolean";
-            }
-            case "B" -> {
-                return "byte";
-            }
-            case "C" -> {
-                return "char";
-            }
-            case "S" -> {
-                return "short";
-            }
-            case "I" -> {
-                return "int";
-            }
-            case "J" -> {
-                return "long";
-            }
-            case "F" -> {
-                return "float";
-            }
-            case "D" -> {
-                return "double";
-            }
-            default -> throw new IllegalArgumentException("Unrecognized primitive field descriptor " + primitiveFD);
-        }
-    }
-
-    /**
-     * Converts a fully qualified name to the {@code Class.getName()} form of
-     * a name. This method does not distinguish between package names and
-     * inner classes, such that no "$" symbols are added.
-     *
-     * @param fullyQualifiedName a fully qualified name
-     * @return the {@code Class.getName()} form of a name
-     */
-    private static String fqnToClassGetName(String fullyQualifiedName) {
-        int arrayLevel = getArrayLevel(fullyQualifiedName);
-        if (arrayLevel == 0) {
-            return fullyQualifiedName;
-        }
-        String componentType = fullyQualifiedName.replaceAll("\\[]", "");
-        StringBuilder sb = new StringBuilder();
-        if (primitiveTypes.contains(componentType)) {
-            sb.append(fqnToFieldDescriptor(componentType));
-            sb.insert(0, "[".repeat(arrayLevel));
-        } else {
-            sb.append(componentType);
-            sb.insert(0, "L");
-            sb.insert(0, "[".repeat(arrayLevel));
-            sb.append(";");
-        }
-        return sb.toString();
-    }
-
-    /**
-     * Gets the Class of a given primitive type name.
-     *
-     * @param primitiveName a primitive type name
-     * @return the Class corresponding to the primitive type
-     * @throws IllegalArgumentException if the given type name is not a
-     * primitive type
-     */
-    private static Class<?> getPrimitiveClass(String primitiveName) {
-        switch (primitiveName) {
-            case "boolean" -> {
-                return boolean.class;
-            }
-            case "byte" -> {
-                return byte.class;
-            }
-            case "char" -> {
-                return char.class;
-            }
-            case "short" -> {
-                return short.class;
-            }
-            case "int" -> {
-                return int.class;
-            }
-            case "long" -> {
-                return long.class;
-            }
-            case "float" -> {
-                return float.class;
-            }
-            case "double" -> {
-                return double.class;
-            }
-            default -> throw new IllegalArgumentException("Unrecognized primitive type " + primitiveName);
-        }
-    }
-
-    /**
-     * Gets the Class of a given type name.
-     *
-     * @param className a fully qualified type name
-     * @return the Class corresponding to the type name
-     */
-    private static Class<?> getClass(String className) {
-        if (className.endsWith("...")) {
-            className = className.substring(0, className.length() - 3) + "[]";
-        }
-        if (primitiveTypes.contains(className)) {
-            return getPrimitiveClass(className);
-        } else {
-            try {
-                className = removeTypeParameters(className);
-                className = fqnToClassGetName(className);
-                return Class.forName(className);
-            } catch (ClassNotFoundException e) {
-                // return "java.lang.Object" for type parameters
-                if (!className.contains(".")) {
-                    return Object.class;
-                }
-                throw new Error("Unable to find class " + className);
-            }
-        }
-    }
-
-    /**
-     * Gets all Class objects of a given list of types.
-     *
-     * @param classNames a list of fully qualified type names
-     * @return the Class objects corresponding to the type names
-     * @see OracleInserter#getClass(String)
-     */
-    private static List<Class<?>> getClasses(List<String> classNames) {
-        List<Class<?>> classes = new ArrayList<>();
-        for (String className : classNames) {
-            classes.add(getClass(className));
-        }
-        return classes;
-    }
-
-    /**
-     * Gets the reflection {@link Method} representation of a method.
-     *
-     * @param className the fully qualified name of the declaring class
-     * @param methodSignature the method signature
-     * @return the reflection representation of the method
-     */
-    private static Method getMethod(String className, String methodSignature) {
-        String methodName = getMethodName(methodSignature);
-        List<Class<?>> parameterTypes = getClasses(getParameterTypeNames(methodSignature));
-        Class<?> receiverObjectID = getClass(className);
-        try {
-            return receiverObjectID.getDeclaredMethod(methodName, parameterTypes.toArray(Class[]::new));
-        } catch (NoSuchMethodException e) {
-            throw new Error("Unable to find method " + methodSignature + " in " + className);
-        }
-    }
-
-    /**
-     * Checks if a given method is static.
-     *
-     * @param className the fully qualified name of the declaring class
-     * @param methodSignature the method signature
-     * @return true iff the given method is static
-     */
-    private static boolean isStatic(String className, String methodSignature) {
-        Method method = getMethod(className, methodSignature);
-        return Modifier.isStatic(method.getModifiers());
-    }
-
-    /**
-     * Gets the return type of a method.
-     *
-     * @param className the fully qualified name of the declaring class
-     * @param methodSignature the method signature
-     * @return the return type of the given method
-     */
-    private static Type getReturnType(String className, String methodSignature) {
-        Method method = getMethod(className, methodSignature);
-        Class<?> returnType = method.getReturnType();
-        String returnTypeName = returnType.getName();
-        if (returnTypeName.startsWith("[")) {
-            int arrayLevel = getArrayLevel(returnTypeName);
-            String elementGetName = returnTypeName.substring(arrayLevel);
-            String elementFqn;
-            if (allPrimitiveFieldDescriptors.contains(elementGetName)) {
-                elementFqn = fieldDescriptorToFQN(elementGetName);
-            } else {
-                elementFqn = elementGetName.substring(1, elementGetName.length() - 1);
-            }
-            return StaticJavaParser.parseType(elementFqn + "[]".repeat(arrayLevel));
-        }
-        return StaticJavaParser.parseType(returnTypeName);
-    }
-
-    /**
      * Gets the name of a method from the method signature.
      *
      * @param methodSignature a method signature
@@ -446,358 +130,6 @@ public class OracleInserter {
      */
     private static String getMethodName(String methodSignature) {
         return methodSignature.substring(0, methodSignature.indexOf('('));
-    }
-
-    /**
-     * Gets the package name of a given JavaParser type. This method assumes
-     * that all types (including types from the same package) have
-     * corresponding import statements in the compilation unit. This is TRUE
-     * for all compilation units generated by EvoSuite. If no matching import
-     * statement is found, then the type is assumed to be in the "java.lang"
-     * package. EvoSuite also requires each class to have a package, which
-     * avoids the default package.
-     *
-     * @param cu the Java file that imports {@code type}
-     * @param type a type
-     * @return the package of {@code type}. Returns an empty string for
-     * primitive types.
-     */
-    private static String getPackageName(CompilationUnit cu, Type type) {
-        if (type.isReferenceType()) {
-            List<ImportDeclaration> importDeclarations = cu.getImports()
-                    .stream()
-                    .filter(id -> !id.isStatic())
-                    .toList();
-            for (ImportDeclaration importDeclaration : importDeclarations) {
-                String packageName = importDeclaration.getName().asString();
-                if (packageName.endsWith(type.asString())) {
-                    return packageName;
-                }
-            }
-            return "java.lang";
-        } else {
-            return "";
-        }
-    }
-
-    /**
-     * Gets the element type of a given type. If the type is an array, then
-     * all outer arrays are removed. Otherwise, the type is not modified. For
-     * example,
-     *     "int[][]"    ->    "int"
-     *     "Object"    ->    "Object"
-     *     "T[]"    ->    "T"
-     *
-     * @param type a type
-     * @return the element type of the given type
-     */
-    private static Type getElementType(Type type) {
-        while (type.isArrayType()) {
-            type = type.asArrayType().getComponentType();
-        }
-        return type;
-    }
-
-    /**
-     * Gets the fully qualified name of a given type.
-     *
-     * @param cu the Java file that imports {@code type}
-     * @param type a type
-     * @return the fully qualified name of {@code type}
-     * @see OracleInserter#getPackageName(CompilationUnit, Type)
-     */
-    private static String getFullyQualifiedName(CompilationUnit cu, Type type) {
-        if (getElementType(type).isClassOrInterfaceType()) {
-            return getPackageName(cu, type) + "." + type.asString();
-        } else {
-            return type.asString();
-        }
-    }
-
-    /**
-     * Gets the type of a given variable. Iterates through all statements in
-     * the parent method to find the variable declaration.
-     *
-     * @param name a variable name
-     * @param body all statements in the parent method that declares
-     *             {@code name}
-     * @return the type of {@code name}
-     */
-    private static Type getTypeOfName(List<Statement> body, String name) {
-        for (Statement stmt : body) {
-            if (!stmt.isExpressionStmt()) {
-                continue;
-            }
-            Expression expr = stmt.asExpressionStmt().getExpression();
-            if (!expr.isVariableDeclarationExpr()) {
-                continue;
-            }
-            for (VariableDeclarator varDecl : expr.asVariableDeclarationExpr().getVariables()) {
-                if (name.equals(varDecl.getNameAsString())) {
-                    return varDecl.getType();
-                }
-            }
-        }
-        throw new IllegalArgumentException("Unable to find the type of the variable " + name);
-    }
-
-    /**
-     * Gets the type of a literal expression. For example,
-     *     {@code 0}    ->    {@code int}
-     *     {@code "hello"}    ->    {@code java.lang.String}
-     * If the literal is {@code null}, then this method returns null, as
-     * JavaParser does not have a {@link Type} representation for null types.
-     *
-     * @param literalExpr a literal value expression
-     * @return the corresponding type of the expression. Returns null if the
-     * literal is a null expression.
-     * @throws IllegalArgumentException if the literal expression is an
-     * unknown type
-     */
-    private static Type getTypeOfLiteral(LiteralExpr literalExpr) {
-        if (literalExpr instanceof BooleanLiteralExpr) {
-            return PrimitiveType.booleanType();
-        } else if (literalExpr instanceof NullLiteralExpr) {
-            return null;
-        } else if (literalExpr instanceof CharLiteralExpr) {
-            return PrimitiveType.charType();
-        } else if (literalExpr instanceof DoubleLiteralExpr) {
-            return PrimitiveType.doubleType();
-        } else if (literalExpr instanceof IntegerLiteralExpr) {
-            return PrimitiveType.intType();
-        } else if (literalExpr instanceof LongLiteralExpr) {
-            return PrimitiveType.longType();
-        } else if (
-                literalExpr instanceof StringLiteralExpr ||
-                        literalExpr instanceof TextBlockLiteralExpr
-        ) {
-            return StaticJavaParser.parseType("String");
-        } else {
-            throw new IllegalArgumentException("Unknown literal expression type " + literalExpr);
-        }
-    }
-
-    /** All expression types that cannot be parsed to find a Type. */
-    private static final List<Class<?>> unsupportedExpr = List.of(
-            AnnotationExpr.class,
-            ArrayInitializerExpr.class,
-            FieldAccessExpr.class,
-            LambdaExpr.class,
-            MethodCallExpr.class,
-            MethodReferenceExpr.class,
-            SuperExpr.class,
-            ThisExpr.class
-    );
-
-    /**
-     * Gets the type of a given expression. This method handles four types of
-     * expressions:
-     * <ul>
-     *     <li>Cast (e.g. "{@code (double) 1}"): If the value
-     *     being cast is null, then returns null. Otherwise, returns the type
-     *     of the cast expression.</li>
-     *     <li>Name (e.g. "{@code x}"): Searches the body of the declaring
-     *     method to find the variable type.</li>
-     *     <li>Binary (e.g. "{@code y == null}"): Returns boolean.</li>
-     *     <li>Literal (e.g. "{@code "Hello, world"}): Parses the type of the
-     *     literal expression. Returns null if the literal value is null.</li>
-     * </ul>
-     *
-     * @param body all statements in the parent method
-     * @param expr a Java variable or literal expression
-     * @return the type of the given expression. Returns VoidType if the given
-     * Expression cannot be parsed to find a Type.
-     * @see OracleInserter#getTypeOfName(List, String)
-     * @see OracleInserter#getTypeOfLiteral(LiteralExpr)
-     */
-    private static Type getTypeOfExpression(List<Statement> body, Expression expr) {
-        // return VoidType if the given type is not supported
-        if (unsupportedExpr.contains(expr.getClass())) {
-            return new VoidType();
-        }
-        // search all supported Expression types
-        if (expr instanceof ArrayAccessExpr) {
-            Type arrayType = getTypeOfName(body, expr.asArrayAccessExpr().getName().asNameExpr().getNameAsString());
-            return arrayType.asArrayType().getElementType();
-        } else if (expr instanceof ArrayCreationExpr) {
-            return expr.asArrayCreationExpr().createdType();
-        } else if (expr instanceof AssignExpr) {
-            return getTypeOfExpression(body, expr.asAssignExpr().getTarget());
-        } else if (expr instanceof BinaryExpr) {
-            return PrimitiveType.booleanType();
-        } else if (expr instanceof CastExpr) {
-            Type baseType = getTypeOfExpression(body, expr.asCastExpr().getExpression());
-            if (baseType == null) {
-                return null;
-            } else {
-                return expr.asCastExpr().getType();
-            }
-        } else if (expr instanceof ClassExpr) {
-            return expr.asClassExpr().getType();
-        } else if (expr instanceof ConditionalExpr) {
-            Type thenType = getTypeOfExpression(body, expr.asConditionalExpr().getThenExpr());
-            Type elseType = getTypeOfExpression(body, expr.asConditionalExpr().getElseExpr());
-            if (thenType == null || elseType == null) {
-                return null;
-            }
-            if (thenType.equals(elseType)) {
-                return thenType;
-            } else {
-                return StaticJavaParser.parseType("Object");
-            }
-        } else if (expr instanceof EnclosedExpr) {
-            return getTypeOfExpression(body, expr.asEnclosedExpr().getInner());
-        } else if (expr instanceof InstanceOfExpr) {
-            return PrimitiveType.booleanType();
-        } else if (expr instanceof LiteralExpr) {
-            return getTypeOfLiteral(expr.asLiteralExpr());
-        } else if (expr instanceof NameExpr) {
-            return getTypeOfName(body, expr.asNameExpr().getNameAsString());
-        } else if (expr instanceof ObjectCreationExpr) {
-            return expr.asObjectCreationExpr().getType();
-        } else if (expr instanceof TypeExpr) {
-            return expr.asTypeExpr().getType();
-        } else if (expr instanceof UnaryExpr) {
-            return getTypeOfExpression(body, expr.asUnaryExpr().getExpression());
-        } else if (expr instanceof VariableDeclarationExpr) {
-            return expr.asVariableDeclarationExpr().getVariable(0).getType();
-        }
-        throw new IllegalArgumentException("Unrecognized Expression type " + expr.getClass());
-    }
-
-    /**
-     * Gets the type names of all parameters in a JavaParser method call. If
-     * the method call uses a null literal expression as an argument, then the
-     * corresponding entry in the returned list is null.
-     *
-     * @param cu the parent Java file of {@code body}
-     * @param body a list of statements in a method body
-     * @param methodCall a method call in the given method body
-     * @return all parameter type names in the given method. May contain null
-     * values for null literal expressions.
-     */
-    private static List<String> getParameterTypeNames(
-            CompilationUnit cu,
-            List<Statement> body,
-            MethodCallExpr methodCall
-    ) {
-        return methodCall.getArguments()
-                .stream()
-                .map(arg -> {
-                    Type type = getTypeOfExpression(body, arg);
-                    if (type == null) {
-                        return null;
-                    }
-                    String fqn = getFullyQualifiedName(cu, type);
-                    return removeTypeParameters(fqn);
-                })
-                .toList();
-    }
-
-    /**
-     * Checks if a list of parameter types from a method signature is
-     * equivalent to a list of parameters from a method call. These two lists
-     * cannot be directly compared (e.g.
-     * {@code methodSignatureTypes.equals(methodCallTypes)}) as the method
-     * call may use null literal expressions, which may apply to any object
-     * types. Similarly, the method signature may use generic type parameters,
-     * which also may apply to any object types.
-     *
-     * @param methodSignatureTypes all parameter types from a method signature
-     * @param methodCallTypes all parameter types from a method call. May
-     *                        contain null values.
-     * @return true iff the two lists represent equivalent types
-     */
-    private static boolean isEqualParameterTypes(
-            List<String> methodSignatureTypes,
-            List<String> methodCallTypes
-    ) {
-        if (methodSignatureTypes.size() != methodCallTypes.size()) {
-            return false;
-        }
-        for (int i = 0; i < methodSignatureTypes.size(); i++) {
-            String signatureType = methodSignatureTypes.get(i);
-            String callType = methodCallTypes.get(i);
-            // handle null value case
-            if (callType == null) {
-                if (primitiveTypes.contains(signatureType)) {
-                    return false;
-                } else {
-                    continue;
-                }
-            }
-            // handle generic type parameter case
-            int signatureArrayLevel = getArrayLevel(signatureType);
-            int callArrayLevel = getArrayLevel(callType);
-            String signatureElementType = signatureType.replaceAll("\\[]", "");
-            String callElementType = callType.replaceAll("\\[]", "");
-            if (signatureElementType.equals("java.lang.Object")) {
-                if (callArrayLevel > signatureArrayLevel) {
-                    // if the call type has a larger array level than the given signature, then continue
-                    continue;
-                } else if (callArrayLevel == signatureArrayLevel && !primitiveTypes.contains(callElementType)) {
-                    // if base types are both objects of equal array level, then continue
-                    continue;
-                }
-            }
-            // handle base case
-            if (!signatureType.equals(callType)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Checks if a given JavaParser method call corresponds to the same method
-     * as a given signature. This method only checks the method signatures and
-     * does not consider the declaring classes.
-     *
-     * @param jpFile the parent Java file of {@code jpBody}
-     * @param jpBody a list of statements in a method body
-     * @param jpMethodCall a method call in the given method body
-     * @param expectedSignature an expected method signature
-     * @return true iff the given method call matches the method signature
-     */
-    private static boolean isMatchingMethod(
-            CompilationUnit jpFile,
-            List<Statement> jpBody,
-            MethodCallExpr jpMethodCall,
-            String expectedSignature
-    ) {
-        String expectedName = getMethodName(expectedSignature);
-        List<String> expectedTypes = getParameterTypeNames(expectedSignature);
-        String jpName = jpMethodCall.getNameAsString();
-        List<String> jpTypes = getParameterTypeNames(jpFile, jpBody, jpMethodCall);
-        return expectedName.equals(jpName) && isEqualParameterTypes(expectedTypes, jpTypes);
-    }
-
-    /**
-     * Gets all oracles applicable to a Java statement. An oracle is
-     * applicable to a statement if and only if it corresponds to the method
-     * call in the given statement.
-     *
-     * @param cu the parent Java file of {@code body}
-     * @param body the parent method of {@code stmt}
-     * @param stmt a Java statement
-     * @param allOracles all possible oracles
-     * @return all oracles corresponding to the method call in the given
-     * statement
-     */
-    private static List<OracleOutput> getRelatedOracles(
-            CompilationUnit cu,
-            List<Statement> body,
-            Statement stmt,
-            List<OracleOutput> allOracles
-    ) {
-        List<MethodCallExpr> methodCalls = getAllMethodCallsOfStatement(stmt);
-        if (methodCalls.isEmpty()) {
-            return new ArrayList<>();
-        }
-        return allOracles
-                .stream()
-                .filter(o -> isMatchingMethod(cu, body, methodCalls.get(0), o.methodSignature()))
-                .toList();
     }
 
     /**
@@ -855,19 +187,16 @@ public class OracleInserter {
      * is initialized for any possible post-conditions.
      *
      * @param testStmt a Java statement with a method call
-     * @param oracles all oracles related to the method call of
-     *                {@code testStmt}
      * @return a Java statement that initializes a variable for the return
      * type of the original statement. Returns an empty statement if a
      * variable does not need to be initialized.
      */
     private static Statement getInitStmt(
-            Statement testStmt,
-            List<OracleOutput> oracles
+            Statement testStmt
     ) {
-        String className = oracles.get(0).className();
-        String methodSignature = oracles.get(0).methodSignature();
-        Type returnType = getReturnType(className, methodSignature);
+        MethodCallExpr methodCallExpr = testStmt.findAll(MethodCallExpr.class).get(0);
+        MethodDeclaration methodDeclaration = (MethodDeclaration) methodCallExpr.resolve().toAst().orElseThrow();
+        Type returnType = methodDeclaration.getType();
         if (returnType.isVoidType() || !testStmt.isExpressionStmt()) {
             return new EmptyStmt();
         }
@@ -998,10 +327,9 @@ public class OracleInserter {
             Statement testStmt,
             OracleOutput oracleOutput
     ) {
-        String className = oracleOutput.className();
-        String methodSignature = oracleOutput.methodSignature();
-        if (isStatic(className, methodSignature)) {
-            // if the method is static, then the receiverObjectID is not necessary.
+        MethodCallExpr methodCallExpr = testStmt.findAll(MethodCallExpr.class).get(0);
+        MethodDeclaration methodDeclaration = (MethodDeclaration) methodCallExpr.resolve().toAst().orElseThrow();
+        if (methodDeclaration.isStatic()) {
             return oracleOutput;
         }
         String originalName = "receiverObjectID";
@@ -1267,7 +595,7 @@ public class OracleInserter {
             List<OracleOutput> oracles
     ) {
         NodeList<Statement> oracleStatements = new NodeList<>();
-        Statement initStmt = getInitStmt(testStmt, oracles);
+        Statement initStmt = getInitStmt(testStmt);
         Statement postStmt = getPostStmt(initStmt, testStmt);
         oracles = oracles
                 .stream()
@@ -1297,6 +625,43 @@ public class OracleInserter {
                 .toList());
     }
 
+    private static String fqnToSimpleName(String fqn) {
+        // remove type parameters
+        String simpleName = removeTypeParameters(fqn);
+        boolean isVarArgs = simpleName.endsWith("...");
+        if (isVarArgs) {
+            simpleName = simpleName.substring(0, simpleName.length() - 3);
+        }
+        // remove package
+        int nameIdx = simpleName.lastIndexOf('.');
+        simpleName = simpleName.substring(nameIdx + 1);
+        if (isVarArgs) {
+            simpleName += "...";
+        }
+        return simpleName;
+    }
+
+    private static List<OracleOutput> getRelatedOracles(List<OracleOutput> oracles, MethodDeclaration targetMethod) {
+        String targetMethodName = targetMethod.getNameAsString();
+        List<String> targetMethodParameters = targetMethod
+                .getParameters()
+                .stream()
+                .map(Parameter::getTypeAsString)
+                .map(OracleInserter::fqnToSimpleName)
+                .toList();
+        return oracles
+                .stream()
+                .filter(o -> {
+                    String oracleMethodName = getMethodName(o.methodSignature());
+                    List<String> oracleMethodParameters = getParameterTypesFromMethodSignature(o.methodSignature())
+                            .stream()
+                            .map(OracleInserter::fqnToSimpleName)
+                            .toList();
+                    return oracleMethodName.equals(targetMethodName) && oracleMethodParameters.equals(targetMethodParameters);
+                })
+                .toList();
+    }
+
     /**
      * Adds axiomatic oracles to test prefixes in a given Java file.
      * Axiomatic oracles are not specific to a given test prefix. The oracles
@@ -1312,22 +677,34 @@ public class OracleInserter {
      * @param oracles a list of test oracles made by an axiomatic tog
      */
     private static void insertAxiomaticOracles(CompilationUnit testFile, List<OracleOutput> oracles) {
-        testFile.findAll(MethodDeclaration.class).forEach(testCase -> {
-            NodeList<Statement> newBody = new NodeList<>();
-            NodeList<Statement> originalBody = testCase
-                    .getBody()
-                    .orElseThrow()
-                    .getStatements();
-            for (Statement testStatement : originalBody) {
-                List<OracleOutput> relatedOracles = getRelatedOracles(testFile, originalBody, testStatement, oracles);
-                if (relatedOracles.size() != 0) {
-                    newBody.addAll(getOracleStatements(testStatement, relatedOracles));
+        List<MethodDeclaration> tests = testFile.findAll(MethodDeclaration.class);
+        for (MethodDeclaration test : tests) {
+            NodeList<Statement> oldTestBody = test.getBody().orElseThrow().getStatements();
+            NodeList<Statement> newTestBody = new NodeList<>();
+            for (Statement testStatement : oldTestBody) {
+                List<MethodCallExpr> methodCallExprs = testStatement.findAll(MethodCallExpr.class);
+                if (methodCallExprs.isEmpty()) {
+                    newTestBody.add(testStatement.clone());
                 } else {
-                    newBody.add(testStatement);
+                    MethodCallExpr primaryMethodCallExpr = methodCallExprs.get(0);
+                    MethodDeclaration methodDeclaration = (MethodDeclaration) primaryMethodCallExpr
+                            .resolve()
+                            .toAst()
+                            .orElse(new MethodDeclaration());
+                    if (methodDeclaration.getNameAsString().equals("empty")) {
+                        newTestBody.add(testStatement.clone());
+                        continue;
+                    }
+                    List<OracleOutput> relatedOracles = getRelatedOracles(oracles, methodDeclaration);
+                    if (relatedOracles.isEmpty()) {
+                        newTestBody.add(testStatement.clone());
+                    } else {
+                        newTestBody.addAll(getOracleStatements(testStatement, relatedOracles));
+                    }
                 }
             }
-            testCase.setBody(new BlockStmt(newBody));
-        });
+            test.setBody(new BlockStmt(newTestBody));
+        }
     }
 
     /**
