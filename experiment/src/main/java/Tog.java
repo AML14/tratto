@@ -85,6 +85,7 @@ public class Tog {
             case INSERT_ORACLES -> OracleInserter.insertOracles(
                     Paths.get(args[1]),
                     Paths.get(args[2]),
+                    Paths.get(""),
                     args[3]
             );
             case GENERATE_TOG_INPUT -> generateTogInput(
