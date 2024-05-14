@@ -29,13 +29,30 @@ class ServerMultitask:
         filename = request.args.get('filename')
         if filename:
             # Enqueue the request for processing
+            task_event = threading.Event()
             self._request_queue.put({
-                'filename': filename
+                'filename': filename,
+                'event': task_event
             })
-            return 'Request queued'
+            # Wait for task completion
+            task_event.wait()
+            task_result = task_event.result
+
+            if 'error' in task_result:
+                # Create a response object with the string content
+                response = make_response(task_result['error'], 404)
+                # Optionally, set any additional headers if needed
+                response.headers['Content-Type'] = 'text/plain'
+                return response
+            else:
+                token = task_result['token']
+                # Create a response object with the string content
+                response = make_response(token)
+                # Optionally, set any additional headers if needed
+                response.headers['Content-Type'] = 'text/plain'
+                return response
         else:
-            return 'Missing filename parameter', 400  # Return an error if the 'data' parameter is missing
-        return jsonify({'token': token})
+            return 'Missing filename parameter', 400
 
     def process_request(self):
         while True:
@@ -53,17 +70,14 @@ class ServerMultitask:
                     self._max_src_length,
                     self._max_tgt_length
                 )
-                # Create a response object with the string content
-                response = make_response(token)
-                # Optionally, set any additional headers if needed
-                response.headers['Content-Type'] = 'text/plain'
+                task['token'] = token
                 print("Processed request for:", filename)
             except TokenNotFoundException as e:
                 print("Error processing request for:", filename)
-                response = make_response(str(e.predicted_token), 404)
-                response.headers['Content-Type'] = 'text/plain'
-            # Send the response
-            response.send()
+                task['error'] = str(e.predicted_token)
+            # Notify the waiting thread with the result
+            task['event'].result = task
+            task['event'].set()
             # Mark the task as done
             self._request_queue.task_done()
 
