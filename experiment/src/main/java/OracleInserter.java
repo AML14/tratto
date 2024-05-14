@@ -3,6 +3,7 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
+import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.comments.Comment;
 import com.github.javaparser.ast.comments.LineComment;
@@ -22,7 +23,11 @@ import com.github.javaparser.ast.stmt.Statement;
 import com.github.javaparser.ast.stmt.ThrowStmt;
 import com.github.javaparser.ast.stmt.TryStmt;
 import com.github.javaparser.ast.type.Type;
+import com.github.javaparser.resolution.MethodUsage;
+import com.github.javaparser.resolution.UnsolvedSymbolException;
+import com.github.javaparser.resolution.types.ResolvedType;
 import com.github.javaparser.symbolsolver.JavaSymbolSolver;
+import com.github.javaparser.symbolsolver.javaparsermodel.declarations.JavaParserMethodDeclaration;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.CombinedTypeSolver;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.JarTypeSolver;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.JavaParserTypeSolver;
@@ -32,6 +37,7 @@ import data.OracleType;
 import data.TogType;
 
 import java.io.IOException;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -663,6 +669,94 @@ public class OracleInserter {
     }
 
     /**
+     *
+     *
+     * @param expression a method argument expression
+     * @param fieldDescriptor a primitive field descriptor name
+     * @return
+     */
+    private static Expression boxExpression(Expression expression, String fieldDescriptor) {
+        String boxingObject;
+        switch (fieldDescriptor) {
+            case "B" -> boxingObject = "Byte";
+            case "C" -> boxingObject = "Character";
+            case "D" -> boxingObject = "Double";
+            case "F" -> boxingObject = "Float";
+            case "I" -> boxingObject = "Integer";
+            case "J" -> boxingObject = "Long";
+            case "S" -> boxingObject = "Short";
+            case "Z" -> boxingObject = "Boolean";
+            default -> throw new Error("Unable to identify field descriptor " + fieldDescriptor);
+        }
+        return StaticJavaParser.parseExpression(boxingObject + ".valueOf(" + expression + ")");
+    }
+
+    /**
+     *
+     *
+     * @param methodCallExpr
+     */
+    private static void boxMethodCallArguments(MethodCallExpr methodCallExpr) {
+        NodeList<Expression> methodArguments = methodCallExpr.getArguments();
+        for (Expression methodArgument : methodArguments) {
+            ResolvedType resolvedType = methodArgument.calculateResolvedType();
+            if (resolvedType.isPrimitive()) {
+                Expression boxedExpression = boxExpression(methodArgument, resolvedType.toDescriptor());
+                methodArguments.replace(methodArgument, boxedExpression);
+            }
+        }
+    }
+
+    /**
+     *
+     *
+     * @param methodUsages
+     * @param methodCallExpr
+     * @return
+     */
+    private static MethodDeclaration matchMethodCallToMethodDeclaration(
+            List<MethodUsage> methodUsages,
+            MethodCallExpr methodCallExpr
+    ) {
+        if (methodUsages.isEmpty()) {
+            return new MethodDeclaration();
+        }
+        throw new Error("Not yet implemented: Unable to match method call " + methodCallExpr);
+    }
+
+    /**
+     *
+     *
+     * @param classUnderTest
+     * @param methodCallExpr
+     * @return
+     */
+    private static MethodDeclaration resolveMethodCall(
+            TypeDeclaration<?> classUnderTest,
+            MethodCallExpr methodCallExpr
+    ) {
+        // attempt to use JavaParser to resolve method call
+        try {
+            return (MethodDeclaration) methodCallExpr.resolve().toAst().orElse(new MethodDeclaration());
+        } catch (UnsolvedSymbolException ignored) {
+        }
+        // attempt to use JavaParser to resolve boxed method call
+        MethodCallExpr unboxedMethodCallExpr = methodCallExpr.clone();
+        boxMethodCallArguments(methodCallExpr);
+        try {
+            return (MethodDeclaration) methodCallExpr.resolve().toAst().orElse(new MethodDeclaration());
+        } catch (UnsolvedSymbolException ignored) {
+            methodCallExpr.setArguments(unboxedMethodCallExpr.getArguments());
+        }
+        // search class under test for candidate methods
+        List<MethodUsage> methodUsages = classUnderTest.resolve().getAllMethods()
+                .stream()
+                .filter(m -> m.getDeclaration() instanceof JavaParserMethodDeclaration)
+                .toList();
+        return matchMethodCallToMethodDeclaration(methodUsages, methodCallExpr);
+    }
+
+    /**
      * Adds axiomatic oracles to test prefixes in a given Java file.
      * Axiomatic oracles are not specific to a given test prefix. The oracles
      * are inserted wherever they may be applicable in source code. For
@@ -674,9 +768,14 @@ public class OracleInserter {
      * oracles.
      *
      * @param testFile a Java test file
+     * @param classUnderTest the class corresponding to the EvoSuite test file
      * @param oracles a list of test oracles made by an axiomatic tog
      */
-    private static void insertAxiomaticOracles(CompilationUnit testFile, List<OracleOutput> oracles) {
+    private static void insertAxiomaticOracles(
+            CompilationUnit testFile,
+            TypeDeclaration<?> classUnderTest,
+            List<OracleOutput> oracles
+    ) {
         List<MethodDeclaration> tests = testFile.findAll(MethodDeclaration.class);
         for (MethodDeclaration test : tests) {
             NodeList<Statement> oldTestBody = test.getBody().orElseThrow().getStatements();
@@ -687,10 +786,7 @@ public class OracleInserter {
                     newTestBody.add(testStatement.clone());
                 } else {
                     MethodCallExpr primaryMethodCallExpr = methodCallExprs.get(0);
-                    MethodDeclaration methodDeclaration = (MethodDeclaration) primaryMethodCallExpr
-                            .resolve()
-                            .toAst()
-                            .orElse(new MethodDeclaration());
+                    MethodDeclaration methodDeclaration = resolveMethodCall(classUnderTest, primaryMethodCallExpr);
                     if (methodDeclaration.getNameAsString().equals("empty")) {
                         newTestBody.add(testStatement.clone());
                         continue;
@@ -895,6 +991,28 @@ public class OracleInserter {
     }
 
     /**
+     *
+     * @param testFile
+     * @param pathToSrc
+     * @return
+     */
+    private static TypeDeclaration<?> getClassUnderTest(CompilationUnit testFile, Path pathToSrc) {
+        String packageName = testFile.getPackageDeclaration().orElseThrow().getNameAsString();
+        String testName = testFile.getPrimaryTypeName().orElseThrow();
+        String simpleClassName = testName.substring(0, testName.length() - "_ESTest".length());
+        String fullyQualifiedClassName = packageName + "." + simpleClassName;
+        String[] pathSegments = fullyQualifiedClassName.split("[.]");
+        String pathString = String.join(FileSystems.getDefault().getSeparator(), pathSegments) + ".java";
+        Path pathToClass = pathToSrc.resolve(Paths.get(pathString));
+        try {
+            CompilationUnit classFile = StaticJavaParser.parse(pathToClass);
+            return classFile.getPrimaryType().orElseThrow();
+        } catch (IOException e) {
+            throw new Error("Unable to parse class file " + pathToClass);
+        }
+    }
+
+    /**
      * Adds a given collection of oracles to a given collection of test
      * prefixes generated by EvoSuite. The approach for adding oracles varies
      * based on whether the oracles are axiomatic or non-axiomatic. Saves the
@@ -925,8 +1043,9 @@ public class OracleInserter {
             walk.forEach(p -> {
                 if (!Files.isDirectory(p) && !FileUtils.isScaffolding(p)) {
                     CompilationUnit cu = FileUtils.getCompilationUnit(p);
+                    TypeDeclaration<?> classUnderTest = getClassUnderTest(cu, pathToSrc);
                     if (tog.isAxiomatic()) {
-                        insertAxiomaticOracles(cu, oracleOutputs);
+                        insertAxiomaticOracles(cu, classUnderTest, oracleOutputs);
                     } else {
                         insertNonAxiomaticOracles(cu, oracleOutputs);
                     }
@@ -937,4 +1056,15 @@ public class OracleInserter {
             throw new Error("Unable to traverse directory " + pathToTests);
         }
     }
+
+//    public static void main(String[] args) {
+//        Path projectSrcPath = Paths.get("/Users/elliottzackrone/IdeaProjects/tratto-experiment-pipeline/experiment/temp/Chart_1/source");
+//        Path pathToPrefixes = Paths.get("/Users/elliottzackrone/IdeaProjects/tratto-experiment-pipeline/experiment/output/evosuite-prefixes/Chart/1");
+//        Path pathToOracles = Paths.get("/Users/elliottzackrone/IdeaProjects/tratto-experiment-pipeline/experiment/output/jdoctor-oracles/Chart/1");
+//        String classpath = "/Users/elliottzackrone/IdeaProjects/tratto-experiment-pipeline/experiment/temp/Chart_1/build:/Users/elliottzackrone/IdeaProjects/tratto-experiment-pipeline/experiment/temp/Chart_1/lib/servlet.jar";
+//        String prefixClasspath = "/Users/elliottzackrone/IdeaProjects/tratto-experiment-pipeline/experiment/generator/resources/evosuite-runtime.jar:" +
+//                "/Users/elliottzackrone/IdeaProjects/tratto-experiment-pipeline/experiment/generator/resources/junit-4.13.2.jar";
+//        setJavaParser(projectSrcPath, classpath);
+//        insertOracles(pathToPrefixes, pathToOracles, projectSrcPath, classpath + ":" + prefixClasspath);
+//    }
 }
