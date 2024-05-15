@@ -24,6 +24,7 @@ import com.github.javaparser.ast.stmt.CatchClause;
 import com.github.javaparser.ast.stmt.EmptyStmt;
 import com.github.javaparser.ast.stmt.ExpressionStmt;
 import com.github.javaparser.ast.stmt.IfStmt;
+import com.github.javaparser.ast.stmt.ReturnStmt;
 import com.github.javaparser.ast.stmt.Statement;
 import com.github.javaparser.ast.stmt.ThrowStmt;
 import com.github.javaparser.ast.stmt.TryStmt;
@@ -501,6 +502,7 @@ public class OracleInserter {
         Comment comment = new LineComment(" Successfully thrown exception");
         BlockStmt catchBody = new BlockStmt();
         catchBody.addOrphanComment(comment);
+        catchBody.addStatement(new ReturnStmt());
         CatchClause catchClause = new CatchClause(exceptionParameter, catchBody);
         NodeList<Statement> tryBody = new NodeList<>(
                 postStmt,
