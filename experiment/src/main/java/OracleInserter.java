@@ -1,6 +1,8 @@
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.NodeList;
+import com.github.javaparser.ast.body.CallableDeclaration;
+import com.github.javaparser.ast.body.ConstructorDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.body.TypeDeclaration;
@@ -9,11 +11,14 @@ import com.github.javaparser.ast.comments.Comment;
 import com.github.javaparser.ast.comments.LineComment;
 import com.github.javaparser.ast.expr.AssignExpr;
 import com.github.javaparser.ast.expr.Expression;
+import com.github.javaparser.ast.expr.MarkerAnnotationExpr;
 import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.expr.NameExpr;
 import com.github.javaparser.ast.expr.ObjectCreationExpr;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
 import com.github.javaparser.ast.expr.VariableDeclarationExpr;
+import com.github.javaparser.ast.nodeTypes.NodeWithArguments;
+import com.github.javaparser.ast.nodeTypes.NodeWithOptionalScope;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.stmt.CatchClause;
 import com.github.javaparser.ast.stmt.EmptyStmt;
@@ -61,18 +66,19 @@ public class OracleInserter {
         throw new UnsupportedOperationException("This class cannot be instantiated.");
     }
 
-    /**
-     * Gets all method calls in a Java statement.
-     *
-     * @param statement a Java statement
-     * @return all method calls present in the statement
-     */
-    private static List<MethodCallExpr> getAllMethodCallsOfStatement(Statement statement) {
-        List<MethodCallExpr> methodCalls = new ArrayList<>();
-        statement
-                .clone()
-                .walk(MethodCallExpr.class, methodCalls::add);
-        return methodCalls;
+    private static Expression getOracleExpression(Statement statement) {
+        List<MethodCallExpr> methodCallExprs = statement.findAll(MethodCallExpr.class);
+        List<ObjectCreationExpr> objectCreationExprs = statement.findAll(ObjectCreationExpr.class);
+        List<VariableDeclarationExpr> variableDeclarationExprs = statement.findAll(VariableDeclarationExpr.class);
+        if (!methodCallExprs.isEmpty()) {
+            return methodCallExprs.get(0);
+        } else if (!objectCreationExprs.isEmpty()) {
+            return objectCreationExprs.get(0);
+        } else if (!variableDeclarationExprs.isEmpty()) {
+            return variableDeclarationExprs.get(0);
+        } else {
+            return new MarkerAnnotationExpr("UnableToIdentifyOracleExpression");
+        }
     }
 
     /**
@@ -198,11 +204,10 @@ public class OracleInserter {
      * variable does not need to be initialized.
      */
     private static Statement getInitStmt(
+            Expression oracleExpr,
             Statement testStmt
     ) {
-        MethodCallExpr methodCallExpr = testStmt.findAll(MethodCallExpr.class).get(0);
-        MethodDeclaration methodDeclaration = (MethodDeclaration) methodCallExpr.resolve().toAst().orElseThrow();
-        Type returnType = methodDeclaration.getType();
+        Type returnType = StaticJavaParser.parseType(oracleExpr.calculateResolvedType().describe());
         if (returnType.isVoidType() || !testStmt.isExpressionStmt()) {
             return new EmptyStmt();
         }
@@ -226,6 +231,7 @@ public class OracleInserter {
      * empty (e.g. void method).
      */
     private static Statement getPostStmt(
+            Expression oracleExpr,
             Statement initStmt,
             Statement testStmt
     ) {
@@ -236,15 +242,13 @@ public class OracleInserter {
         Expression initExpr = initStmt
                 .asExpressionStmt()
                 .getExpression();
-        Expression testExpr = getAllMethodCallsOfStatement(testStmt)
-                .get(0);
         String name = initExpr
                 .asVariableDeclarationExpr()
                 .getVariable(0)
                 .getNameAsString();
         AssignExpr assignExpr = new AssignExpr(
                 new NameExpr(name),
-                testExpr,
+                oracleExpr.clone(),
                 AssignExpr.Operator.ASSIGN
         );
         return new ExpressionStmt(assignExpr);
@@ -286,17 +290,17 @@ public class OracleInserter {
      * Replaces all parameter variable names in an oracle with names or
      * literal expressions from a method call of the method under test.
      *
-     * @param testStmt a Java test statement
+     * @param oracleExpr a Java test statement
      * @param oracleOutput an oracle record
      * @return an equivalent oracle record with relevant parameter names or
      * literal values
      */
     private static OracleOutput getParameterID(
-            Statement testStmt,
+            Expression oracleExpr,
             OracleOutput oracleOutput
     ) {
         List<String> originalNames = getParameterNames(oracleOutput.methodSignature());
-        List<String> contextNames = getAllMethodCallsOfStatement(testStmt).get(0).getArguments()
+        List<String> contextNames = ((NodeWithArguments<?>) oracleExpr).getArguments()
                 .stream()
                 .map(expr -> {
                     if (expr.isLiteralExpr() || (expr.isCastExpr() && expr.asCastExpr().getExpression().isLiteralExpr())) {
@@ -325,22 +329,35 @@ public class OracleInserter {
      * the "receiverObjectID" does not exist, and the given oracle is not
      * modified.
      *
-     * @param testStmt a Java test statement
+     * @param callableDeclaration the callable declaration associated to the oracle expression
+     * @param oracleExpr the expression containing the method under test to which the oracles refer
+     * @param initStmt a Java test statement
      * @param oracleOutput an oracle record
      * @return an equivalent oracle record with the relevant object name
      */
     private static OracleOutput getReceiverObjectID(
-            Statement testStmt,
+            CallableDeclaration<?> callableDeclaration,
+            Expression oracleExpr,
+            Statement initStmt,
             OracleOutput oracleOutput
     ) {
-        MethodCallExpr methodCallExpr = testStmt.findAll(MethodCallExpr.class).get(0);
-        MethodDeclaration methodDeclaration = (MethodDeclaration) methodCallExpr.resolve().toAst().orElseThrow();
-        if (methodDeclaration.isStatic()) {
-            return oracleOutput;
+        if (callableDeclaration.isMethodDeclaration()) {
+            if (callableDeclaration.asMethodDeclaration().isStatic()) {
+                return oracleOutput;
+            }
         }
         String originalName = "receiverObjectID";
-        String contextName = getAllMethodCallsOfStatement(testStmt).get(0)
-                .getScope().orElseThrow().toString();
+        String contextName;
+        if (oracleExpr.isObjectCreationExpr()) {
+            if (initStmt.isEmptyStmt()) {
+                contextName = "";
+            } else {
+                Expression initExpr = initStmt.asExpressionStmt().getExpression();
+                contextName = initExpr.asVariableDeclarationExpr().getVariable(0).getNameAsString();
+            }
+        } else {
+            contextName = ((NodeWithOptionalScope<?>) oracleExpr).getScope().orElseThrow().toString();
+        }
         String contextOracle = replaceNames(List.of(originalName), List.of(contextName), oracleOutput.oracle());
         return new OracleOutput(
                 oracleOutput.className(),
@@ -402,20 +419,24 @@ public class OracleInserter {
      * for the instance of the declaring class, and "methodResultID" for the
      * instance of the method return type.
      *
+     * @param callableDeclaration the callable declaration associated to the oracle expression
+     * @param oracleExpr the expression containing the method under test to which the oracles refer
      * @param postStmt a Java statement that assigns the return value of the
      *                 method under test to a variable
-     * @param testStmt a Java test statement
+     * @param initStmt a Java test statement
      * @param oracleOutput an original oracle record
      * @return an equivalent oracle record with contextual names from a test
      * statement
      */
     private static OracleOutput contextualizeOracle(
+            CallableDeclaration<?> callableDeclaration,
+            Expression oracleExpr,
+            Statement initStmt,
             Statement postStmt,
-            Statement testStmt,
             OracleOutput oracleOutput
     )  {
-        oracleOutput = getParameterID(testStmt, oracleOutput);
-        oracleOutput = getReceiverObjectID(testStmt, oracleOutput);
+        oracleOutput = getParameterID(oracleExpr, oracleOutput);
+        oracleOutput = getReceiverObjectID(callableDeclaration, oracleExpr, initStmt, oracleOutput);
         oracleOutput = getMethodResultID(postStmt, oracleOutput);
         return oracleOutput;
     }
@@ -590,6 +611,8 @@ public class OracleInserter {
      *     is called (if no exceptional conditions are present)</li>
      * </ul>
      *
+     * @param callableDeclaration the callable declaration associated to the oracle expression
+     * @param oracleExpr the expression containing the method under test to which the oracles refer
      * @param testStmt a Java statement with a method call for the method
      *                 under test
      * @param oracles all oracles related to the method under test
@@ -597,15 +620,17 @@ public class OracleInserter {
      * assertions
      */
     private static NodeList<Statement> getOracleStatements(
+            CallableDeclaration<?> callableDeclaration,
+            Expression oracleExpr,
             Statement testStmt,
             List<OracleOutput> oracles
     ) {
         NodeList<Statement> oracleStatements = new NodeList<>();
-        Statement initStmt = getInitStmt(testStmt);
-        Statement postStmt = getPostStmt(initStmt, testStmt);
+        Statement initStmt = getInitStmt(oracleExpr, testStmt);
+        Statement postStmt = getPostStmt(oracleExpr, initStmt, testStmt);
         oracles = oracles
                 .stream()
-                .map(o -> contextualizeOracle(postStmt, testStmt, o))
+                .map(o -> contextualizeOracle(callableDeclaration, oracleExpr, initStmt, postStmt, o))
                 .toList();
         List<OracleOutput> preConditions = oracles
                 .stream()
@@ -647,7 +672,7 @@ public class OracleInserter {
         return simpleName;
     }
 
-    private static List<OracleOutput> getRelatedOracles(List<OracleOutput> oracles, MethodDeclaration targetMethod) {
+    private static List<OracleOutput> getRelatedOracles(List<OracleOutput> oracles, CallableDeclaration<?> targetMethod) {
         String targetMethodName = targetMethod.getNameAsString();
         List<String> targetMethodParameters = targetMethod
                 .getParameters()
@@ -659,6 +684,10 @@ public class OracleInserter {
                 .stream()
                 .filter(o -> {
                     String oracleMethodName = getMethodName(o.methodSignature());
+                    // if constructor, convert fully qualified name to simple name
+                    if (oracleMethodName.contains(".")) {
+                        oracleMethodName = fqnToSimpleName(oracleMethodName);
+                    }
                     List<String> oracleMethodParameters = getParameterTypesFromMethodSignature(o.methodSignature())
                             .stream()
                             .map(OracleInserter::fqnToSimpleName)
@@ -668,13 +697,6 @@ public class OracleInserter {
                 .toList();
     }
 
-    /**
-     *
-     *
-     * @param expression a method argument expression
-     * @param fieldDescriptor a primitive field descriptor name
-     * @return
-     */
     private static Expression boxExpression(Expression expression, String fieldDescriptor) {
         String boxingObject;
         switch (fieldDescriptor) {
@@ -691,46 +713,17 @@ public class OracleInserter {
         return StaticJavaParser.parseExpression(boxingObject + ".valueOf(" + expression + ")");
     }
 
-    /**
-     *
-     *
-     * @param methodCallExpr
-     */
-    private static void boxMethodCallArguments(MethodCallExpr methodCallExpr) {
-        NodeList<Expression> methodArguments = methodCallExpr.getArguments();
-        for (Expression methodArgument : methodArguments) {
-            ResolvedType resolvedType = methodArgument.calculateResolvedType();
+    private static void boxArguments(NodeWithArguments<?> methodOrConstructorUsage) {
+        NodeList<Expression> arguments = methodOrConstructorUsage.getArguments();
+        for (Expression argument : arguments) {
+            ResolvedType resolvedType = argument.calculateResolvedType();
             if (resolvedType.isPrimitive()) {
-                Expression boxedExpression = boxExpression(methodArgument, resolvedType.toDescriptor());
-                methodArguments.replace(methodArgument, boxedExpression);
+                Expression boxedArgument = boxExpression(argument, resolvedType.toDescriptor());
+                arguments.replace(argument, boxedArgument);
             }
         }
     }
 
-    /**
-     *
-     *
-     * @param methodUsages
-     * @param methodCallExpr
-     * @return
-     */
-    private static MethodDeclaration matchMethodCallToMethodDeclaration(
-            List<MethodUsage> methodUsages,
-            MethodCallExpr methodCallExpr
-    ) {
-        if (methodUsages.isEmpty()) {
-            return new MethodDeclaration();
-        }
-        throw new Error("Not yet implemented: Unable to match method call " + methodCallExpr);
-    }
-
-    /**
-     *
-     *
-     * @param classUnderTest
-     * @param methodCallExpr
-     * @return
-     */
     private static MethodDeclaration resolveMethodCall(
             TypeDeclaration<?> classUnderTest,
             MethodCallExpr methodCallExpr
@@ -742,7 +735,7 @@ public class OracleInserter {
         }
         // attempt to use JavaParser to resolve boxed method call
         MethodCallExpr unboxedMethodCallExpr = methodCallExpr.clone();
-        boxMethodCallArguments(methodCallExpr);
+        boxArguments(methodCallExpr);
         try {
             return (MethodDeclaration) methodCallExpr.resolve().toAst().orElse(new MethodDeclaration());
         } catch (UnsolvedSymbolException ignored) {
@@ -753,7 +746,51 @@ public class OracleInserter {
                 .stream()
                 .filter(m -> m.getDeclaration() instanceof JavaParserMethodDeclaration)
                 .toList();
-        return matchMethodCallToMethodDeclaration(methodUsages, methodCallExpr);
+        if (methodUsages.isEmpty()) {
+            return new MethodDeclaration();
+        }
+        throw new Error("Unable to match method call " + methodCallExpr);
+    }
+
+    private static ConstructorDeclaration resolveObjectCreation(
+            TypeDeclaration<?> classUnderTest,
+            ObjectCreationExpr objectCreationExpr
+    ) {
+        // attempt to use JavaParser to resolve method call
+        try {
+            return (ConstructorDeclaration) objectCreationExpr.resolve().toAst().orElse(new ConstructorDeclaration());
+        } catch (UnsolvedSymbolException ignored) {
+        }
+        // attempt to use JavaParser to resolve boxed method call
+        ObjectCreationExpr unboxedObjectCreationExpr = objectCreationExpr.clone();
+        boxArguments(objectCreationExpr);
+        try {
+            return (ConstructorDeclaration) objectCreationExpr.resolve().toAst().orElse(new ConstructorDeclaration());
+        } catch (UnsolvedSymbolException ignored) {
+            objectCreationExpr.setArguments(unboxedObjectCreationExpr.getArguments());
+        }
+        // search class under test for candidate methods
+        List<MethodUsage> methodUsages = classUnderTest.resolve().getAllMethods()
+                .stream()
+                .filter(m -> m.getDeclaration() instanceof JavaParserMethodDeclaration)
+                .toList();
+        if (methodUsages.isEmpty()) {
+            return new ConstructorDeclaration();
+        }
+        throw new Error("Unable to match method call " + objectCreationExpr);
+    }
+
+    private static CallableDeclaration<?> resolveDeclaration(
+            TypeDeclaration<?> classUnderTest,
+            Expression oracleExpr
+    ) {
+        if (oracleExpr.isMethodCallExpr()) {
+            return resolveMethodCall(classUnderTest, oracleExpr.asMethodCallExpr());
+        } else if (oracleExpr.isObjectCreationExpr()) {
+            return resolveObjectCreation(classUnderTest, oracleExpr.asObjectCreationExpr());
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -781,22 +818,19 @@ public class OracleInserter {
             NodeList<Statement> oldTestBody = test.getBody().orElseThrow().getStatements();
             NodeList<Statement> newTestBody = new NodeList<>();
             for (Statement testStatement : oldTestBody) {
-                List<MethodCallExpr> methodCallExprs = testStatement.findAll(MethodCallExpr.class);
-                if (methodCallExprs.isEmpty()) {
+                // get all oracles related to a method call
+                Expression oracleExpr = getOracleExpression(testStatement);
+                CallableDeclaration<?> callableDeclaration = resolveDeclaration(classUnderTest, oracleExpr);
+                if (callableDeclaration == null) {
+                    newTestBody.add(testStatement.clone());
+                    continue;
+                }
+                List<OracleOutput> relatedOracles = getRelatedOracles(oracles, callableDeclaration);
+                // insert oracles into test suite
+                if (relatedOracles.isEmpty()) {
                     newTestBody.add(testStatement.clone());
                 } else {
-                    MethodCallExpr primaryMethodCallExpr = methodCallExprs.get(0);
-                    MethodDeclaration methodDeclaration = resolveMethodCall(classUnderTest, primaryMethodCallExpr);
-                    if (methodDeclaration.getNameAsString().equals("empty")) {
-                        newTestBody.add(testStatement.clone());
-                        continue;
-                    }
-                    List<OracleOutput> relatedOracles = getRelatedOracles(oracles, methodDeclaration);
-                    if (relatedOracles.isEmpty()) {
-                        newTestBody.add(testStatement.clone());
-                    } else {
-                        newTestBody.addAll(getOracleStatements(testStatement, relatedOracles));
-                    }
+                    newTestBody.addAll(getOracleStatements(callableDeclaration, oracleExpr, testStatement, relatedOracles));
                 }
             }
             test.setBody(new BlockStmt(newTestBody));
@@ -990,12 +1024,6 @@ public class OracleInserter {
                 .setSymbolResolver(symbolSolver);
     }
 
-    /**
-     *
-     * @param testFile
-     * @param pathToSrc
-     * @return
-     */
     private static TypeDeclaration<?> getClassUnderTest(CompilationUnit testFile, Path pathToSrc) {
         String packageName = testFile.getPackageDeclaration().orElseThrow().getNameAsString();
         String testName = testFile.getPrimaryTypeName().orElseThrow();
@@ -1056,15 +1084,4 @@ public class OracleInserter {
             throw new Error("Unable to traverse directory " + pathToTests);
         }
     }
-
-//    public static void main(String[] args) {
-//        Path projectSrcPath = Paths.get("/Users/elliottzackrone/IdeaProjects/tratto-experiment-pipeline/experiment/temp/Chart_1/source");
-//        Path pathToPrefixes = Paths.get("/Users/elliottzackrone/IdeaProjects/tratto-experiment-pipeline/experiment/output/evosuite-prefixes/Chart/1");
-//        Path pathToOracles = Paths.get("/Users/elliottzackrone/IdeaProjects/tratto-experiment-pipeline/experiment/output/jdoctor-oracles/Chart/1");
-//        String classpath = "/Users/elliottzackrone/IdeaProjects/tratto-experiment-pipeline/experiment/temp/Chart_1/build:/Users/elliottzackrone/IdeaProjects/tratto-experiment-pipeline/experiment/temp/Chart_1/lib/servlet.jar";
-//        String prefixClasspath = "/Users/elliottzackrone/IdeaProjects/tratto-experiment-pipeline/experiment/generator/resources/evosuite-runtime.jar:" +
-//                "/Users/elliottzackrone/IdeaProjects/tratto-experiment-pipeline/experiment/generator/resources/junit-4.13.2.jar";
-//        setJavaParser(projectSrcPath, classpath);
-//        insertOracles(pathToPrefixes, pathToOracles, projectSrcPath, classpath + ":" + prefixClasspath);
-//    }
 }
