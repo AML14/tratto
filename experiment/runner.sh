@@ -22,6 +22,14 @@ while IFS=, read -r project_id bug_id _; do
       fi
     fi
   fi
+  if [ -f "${root_dir}/test-suite/bug_detection_log/${project_id}/evosuite/${bug_id}b.1.trigger.log" ]; then
+    echo "Already ran test for ${tog} ${project_id} ${bug_id}"
+    continue
+  fi
+  if [ ! -d "${root_dir}/output/${tog}-tests/${project_id}/${bug_id}" ]; then
+    echo -e "Unable to find test directory for ${tog} ${project_id} ${bug_id}"
+    continue
+  fi
   sdk use java "8.0.382-amzn"
   # compress test suite
   cd "${root_dir}/output/${tog}-tests/${project_id}/${bug_id}" || exit 1
