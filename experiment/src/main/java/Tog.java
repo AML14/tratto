@@ -55,21 +55,18 @@ public class Tog {
      * @param togType a TOG
      * @param togOraclesPath a path to a file or directory for generating OracleOutputs
      * @param outputDirPath the path to the output folder (must not be null if the tog type is Toga)
-     * @param jarDirPath the directory to the jars of the project under test and its dependencies (must not be null if
-     *                   the tog type is Tratto).
      */
     private static void generateOracleOutput(
             TogType togType,
             Path togOraclesPath,
-            Path outputDirPath,
-            Path jarDirPath
+            Path outputDirPath
     ) {
         if (togType == TogType.JDOCTOR) {
             TogUtils.jDoctorToOracleOutput(togOraclesPath);
         } else if (togType == TogType.TOGA) {
             TogUtils.togaToOracleOutput(togOraclesPath, outputDirPath);
         } else if (togType == TogType.TRATTO) {
-            TogUtils.trattoToOracleOutput(togOraclesPath, jarDirPath);
+            TogUtils.trattoToOracleOutput(togOraclesPath);
         }
     }
 
@@ -98,8 +95,7 @@ public class Tog {
             case GENERATE_ORACLE_OUTPUT -> generateOracleOutput(
                     TogType.valueOf(args[1].toUpperCase()),
                     Paths.get(args[2]),
-                    args.length > 3 && TogType.valueOf(args[1].toUpperCase()) == TogType.TOGA ? Paths.get(args[3]) : null,
-                    args.length > 3 && TogType.valueOf(args[1].toUpperCase()) == TogType.TRATTO ? Paths.get(args[3]) : null
+                    args.length > 3 && TogType.valueOf(args[1].toUpperCase()) == TogType.TOGA ? Paths.get(args[3]) : null
             );
             case GENERATE_DEFECTS4J_OUTPUT -> TogUtils.generateDefects4JOutput(
                     TogType.valueOf(args[1].toUpperCase()),
