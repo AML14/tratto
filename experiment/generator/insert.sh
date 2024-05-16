@@ -2,7 +2,7 @@
 # This script generates oracles for all bugs in Defects4J for a given TOG.
 current_dir=$(realpath "$(dirname "${BASH_SOURCE[0]}")")
 # Setup global variables
-source "${current_dir}/generator/utils/global_variables.sh"
+source "${current_dir}/utils/global_variables.sh"
 # setup sdkman
 source "${UTILS_DIR}/init_sdkman.sh"
 tog=${1}
@@ -19,8 +19,9 @@ while IFS=, read -r project_id bug_id modified_classes; do
   # Check for a given project or bug id
   sdk use java "$JAVA8"
   # Checkout Defects4J project and export classpath
-  project_dir="${DEFECTS4J_DIR}/temp/${project_id}_${bug_id}"
-  if [ ! -d "$project_dir"]; then
+  project_dir="${DEFECTS4J_DIR}/temp/${project_id}_${bug_id}b"
+  if [ ! -d "$project_dir" ]; then
+    mkdir -p "$project_dir"
     defects4j checkout -p "${project_id}" -v "${bug_id}b" -w "${project_dir}"
   fi
   external_classpath="${RESOURCES_DIR}/evosuite-runtime.jar:${RESOURCES_DIR}/junit-4.13.2.jar:${SDKMAN_DIR}/candidates/java/${JAVA8}/src"
@@ -36,24 +37,38 @@ while IFS=, read -r project_id bug_id modified_classes; do
       # output path
       tog_project_bug_output="${OUTPUT_DIR}/${tog}/${round}/${project_id}/${bug_id}"
       tog_fqn_output="${tog_project_bug_output}/${fqn_path}"
-      # Insert oracles
       if [ ! -d "$tog_fqn_output" ]; then
         mkdir -p "$tog_fqn_output"
       fi
-      cp -r "$d4j_fqn_output"/* "$tog_fqn_output"
-      prefix_path="${tog_fqn_output}/evosuite-prefixes/${project_id}/${bug_id}"
-      oracle_path="${tog_fqn_output}/${tog}-oracles/${project_id}/${bug_id}"
+      mv "$d4j_fqn_output"/* "$tog_fqn_output"
+      prefix_path="${tog_fqn_output}/evosuite-prefixes"
+      oracle_path="${tog_fqn_output}/${tog}-oracles"
       src_path="${project_dir}/${src_rel_path}"
-  echo "source path: ${src_path}"
-  sdk use java "17.0.8-oracle"
-  java -cp "${classpath}" -jar "${EXPERIMENT_JAR}" "insert_oracles" "${prefix_path}" "${oracle_path}" "${src_path}" "${classpath}:${external_classpath}"
-  # Run tests and generate output
-  if [ "$run" == "true" ]; then
-    echo "Running tests and generating test output"
-    # Execute tests with evosuite
-    bash "${ROOT_DIR}/runner_d4j.sh" "$tog" "$project_id" "$bug_id" "${tog_fqn_output}" "${tog_fqn_output}/${tog}-test-suite"
-    # Generate tests stats
-    java -jar "$EXPERIMENT_JAR" generate_defects4j_output "$tog" "$target_class" "$project_id" "$bug_id" "${tog_fqn_output}/${tog}-tests" "${tog_fqn_output}/${tog}-test-suite"
-  fi
+      # Insert oracles
+      if [ "$tog" != "baseline" ]; then
+        echo "source path: ${src_path}"
+        sdk use java "$JAVA17"
+        java -cp "${classpath}" -jar "${EXPERIMENT_JAR}" "insert_oracles" "${prefix_path}" "${oracle_path}" "${src_path}" "${classpath}:${external_classpath}"
+      else
+        echo "Skipping oracle insertion in test prefixes for baseline"
+        baseline_tests_path="${tog_fqn_output}/${tog}-tests"
+        output_test_suite_path="${tog_fqn_output}/${tog}-test-suite"
+        mkdir -p "$baseline_tests_path"
+        mkdir -p "$output_test_suite_path"
+        echo "$prefix_path"
+        cp -r "${prefix_path}"/* "${baseline_tests_path}"
+      fi
+      # Run tests and generate output
+      if [ "$run" == "true" ]; then
+        echo "Running tests and generating test output"
+        # Execute tests with evosuite
+        sdk use java "$JAVA8"
+        bash "${ROOT_DIR}/runner_d4j.sh" "$tog" "$project_id" "$bug_id" "${tog_fqn_output}" "${tog_fqn_output}/${tog}-test-suite"
+        # Generate tests stats
+        sdk use java "$JAVA17"
+        java -jar "$EXPERIMENT_JAR" generate_defects4j_output "$tog" "$target_class" "$project_id" "$bug_id" "${tog_fqn_output}/${tog}-tests" "${tog_fqn_output}/${tog}-test-suite"
+      fi
+      cp -r "${tog_fqn_output}" "$(dirname ${d4j_fqn_output})"
+  done
 done < "${d4j_classes_file_path}"
 echo "Experiment complete!"
