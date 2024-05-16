@@ -45,7 +45,7 @@ public class Tog {
             Path jarDir
     ) {
         if (togType == TogType.TOGA) {
-            TogUtils.generateTOGAInput(srcDir, jarDir, outputDir, fullyQualifiedName, TogaInputType.LAST_OCCURRENCE);
+            TogUtils.generateTOGAInput(srcDir, jarDir, outputDir, fullyQualifiedName, TogaInputType.LAST_OCCURRENCE, true);
         }
     }
 
