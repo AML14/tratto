@@ -11,9 +11,7 @@ import com.github.javaparser.ast.body.*;
 import com.github.javaparser.ast.comments.JavadocComment;
 import com.github.javaparser.ast.expr.*;
 import com.github.javaparser.ast.nodeTypes.NodeWithSimpleName;
-import com.github.javaparser.ast.stmt.AssertStmt;
 import com.github.javaparser.ast.stmt.BlockStmt;
-import com.github.javaparser.ast.stmt.ExpressionStmt;
 import com.github.javaparser.ast.stmt.Statement;
 import com.github.javaparser.ast.type.ReferenceType;
 import com.github.javaparser.ast.type.TypeParameter;
@@ -548,12 +546,9 @@ public class TogUtils {
      * @param jarDirPath the path to the jars of the project under test and its dependencies
      * @param outputDirPath the path to the output folder
      * @param fullyQualifiedClassName the fully qualified name of the class under test
-     * @param togaInputType last occurrence or any occurrence
-     * @param originalTest if true the original test with assertion is added, otherwise only the test prefix is used
-     *                     and a fake assertTrue(true) assertion is generated at the end of the test prefix.
      *
      */
-    public static void generateTOGAInput(Path srcDirPath, Path jarDirPath, Path outputDirPath, String fullyQualifiedClassName, TogaInputType togaInputType, boolean originalTest) {
+    public static void generateTOGAInput(Path srcDirPath, Path jarDirPath, Path outputDirPath, String fullyQualifiedClassName, TogaInputType togaInputType) {
         javaParser = getJavaParser(jarDirPath);
         Path prefixPath = outputDirPath.resolve(Paths.get("toga-input"));
         Path logPath = outputDirPath.resolve(Paths.get("toga-log"));
@@ -635,7 +630,7 @@ public class TogUtils {
                                 // Generate a toga input row as a triplet where the first element is the toga input to feed the
                                 // model, the second element represent the corresponding metadata, and the third element is a Map
                                 // representing the toga row.
-                                Triplet<String, String, Map<String, String>> togaRow = generateTogaRow(cuClassFile, cuTestClassSimpleTestsFile, expr, exprType, testPrefix, srcDirPath, stmtIndex, originalTest);
+                                Triplet<String, String, Map<String, String>> togaRow = generateTogaRow(cuClassFile, cuTestClassSimpleTestsFile, expr, exprType, testPrefix, srcDirPath, stmtIndex);
                                 // Update the input, metadata, and info objects
                                 addTogaRow(togaRow, testName, togaInputBuilder, togaMetadataBuilder, togaInfo);
                             } catch (NoFocalMethodMatchingException | NoPrimaryTypeException | UnrecognizedExprException | CandidateCallableDeclarationNotFoundException | CandidateCallableMethodUsageNotFoundException | MultipleCandidatesException | FileNotFoundException e) {
@@ -757,14 +752,12 @@ public class TogUtils {
      * @param expr the expression from which to extract the focal method and generate a toga input row
      * @param testPrefix the test prefix to which the expression belongs.
      * @param stmtIndex the index of the statement within the test prefix
-     * @param originalTest if true the original test with assertion is added, otherwise only the test prefix is used
-     *                     and a fake assertTrue(true) assertion is generated at the end of the test prefix.
      * @return a triplet, containing the toga input to feed the model, the corresponding metadata and the info about
      * the generated toga input row.
      * @throws NoFocalMethodMatchingException if the corresponding focal method has not been found.
      * @throws IllegalStateException if the statement does not correspond to a method call or a constructor invocation
      */
-    public static Triplet<String,String,Map<String,String>> generateTogaRow(CompilationUnit cuClassFile, CompilationUnit cuClassSimpleTestFile, Expression expr, ExpressionType exprType, MethodDeclaration testPrefix, Path srcDirPath, int stmtIndex, boolean originalTest) throws NoFocalMethodMatchingException, NoPrimaryTypeException, IllegalStateException, CandidateCallableMethodUsageNotFoundException, CandidateCallableDeclarationNotFoundException, MultipleCandidatesException, FileNotFoundException {
+    public static Triplet<String,String,Map<String,String>> generateTogaRow(CompilationUnit cuClassFile, CompilationUnit cuClassSimpleTestFile, Expression expr, ExpressionType exprType, MethodDeclaration testPrefix, Path srcDirPath, int stmtIndex) throws NoFocalMethodMatchingException, NoPrimaryTypeException, IllegalStateException, CandidateCallableMethodUsageNotFoundException, CandidateCallableDeclarationNotFoundException, MultipleCandidatesException, FileNotFoundException {
         // Define the focal method to find (the last method call in the test). Initially null.
         // The focal method must be a method declaration or a constructor declaration.
         CallableDeclaration focalMethod = null;
@@ -814,8 +807,7 @@ public class TogUtils {
                 if (matcher.find()) {
                     // Extract the Javadoc comment
                     if (matcher.group(1) != null) {
-                        javadocString = matcher.group(1).replace("\"", "\"\"").trim();
-                        ;
+                        javadocString = matcher.group(1).replace("\"", "\"\"").trim();;
                     }
                     focalMethodBody = matcher.group(2).replace("\"", "\"\"").trim();
                 }
@@ -827,53 +819,36 @@ public class TogUtils {
             if (matcher.find()) {
                 // Extract the Javadoc comment
                 if (matcher.group(1) != null) {
-                    javadocString = matcher.group(1).replace("\"", "\"\"").trim();
-                    ;
+                    javadocString = matcher.group(1).replace("\"", "\"\"").trim();;
                 }
                 focalMethodBody = matcher.group(2).replace("\"", "\"\"").trim();
             }
         }
 
-        String testStr = "";
-
-        if (originalTest) {
-            List<MethodDeclaration> tests = cuClassSimpleTestFile
-                    .findAll(MethodDeclaration.class)
-                    .stream()
-                    .filter(t -> t.getNameAsString().equals(testName))
-                    .toList();
-            if (tests.size() == 0 || tests.size() > 1) {
-                throw new IllegalStateException(String.format("[ERROR] - Multiple candidates simple tests found with the same test name %s", testName));
-            }
-
-            // Generate the toga input, metadata e info row and return them as a triplet
-            MethodDeclaration test = tests.get(0);
-            testStr = test.toString().replace("\"", "\"\"");
-            Matcher matcher = testPrefixPattern.matcher(testPrefix.toString());
-            if (matcher.find()) {
-                int startIdx = matcher.start();
-                testStr = testStr.substring(startIdx);
-            }
-        } else {
-            MethodDeclaration testPrefixClone = testPrefix.clone();
-            BlockStmt testPrefixCloneBody = testPrefixClone.getBody().orElse(null);
-
-            if (testPrefixCloneBody != null) {
-                MethodCallExpr assertTrueCall = new MethodCallExpr( "assertTrue");
-                assertTrueCall.addArgument(new BooleanLiteralExpr(true));
-                // Create an expression statement with the method call expression
-                ExpressionStmt assertionStmt = new ExpressionStmt(assertTrueCall);
-                // Add the assertion statement to the method body
-                testPrefixCloneBody.addStatement(assertionStmt);
-            }
+        List<MethodDeclaration> tests = cuClassSimpleTestFile
+                .findAll(MethodDeclaration.class)
+                .stream()
+                .filter(t -> t.getNameAsString().equals(testName))
+                .toList();
+        if (tests.size() == 0 || tests.size() > 1) {
+            throw new IllegalStateException(String.format("[ERROR] - Multiple candidates simple tests found with the same test name %s", testName));
         }
 
+        // Generate the toga input, metadata e info row and return them as a triplet
+        MethodDeclaration test = tests.get(0);
+        String testStr = test.toString().replace("\"", "\"\"");
+        String testPrefixStr = testPrefix.toString();
+        Matcher matcher = testPrefixPattern.matcher(testPrefix.toString());
+        if (matcher.find()) {
+            int startIdx = matcher.start();
+            testStr = testStr.substring(startIdx);
+        }
         String togaInput = String.format("\"%s\",\"%s\",\"%s\"\n", focalMethodBody, testStr, javadocString);
         String togaMetadata = String.format("project,0,%s,0,0,False,\"\",\"\"\n", testName + "_" + stmtIndex);
         togaRow.put("className", cuClassFile.getPrimaryType().orElseThrow().getFullyQualifiedName().orElseThrow());
         togaRow.put("methodName", methodName);
         togaRow.put("methodSignature", focalMethodSignature);
-        togaRow.put("testPrefix", testPrefix.toString());
+        togaRow.put("testPrefix", testPrefixStr);
         togaRow.put("testName", testName);
         togaRow.put("statementIndex", Integer.toString(stmtIndex));
         return new Triplet<>(togaInput, togaMetadata, togaRow);
@@ -1317,13 +1292,13 @@ public class TogUtils {
             for (Map<String,String> togaRow : togaRowList) {
                 if (togaRow.get("statementIndex").equals(stmtIdx)) {
                     OracleOutput oracleOutput = new OracleOutput(
-                        togaRow.get("className"),
-                        togaRow.get("methodSignature"),
-                        OracleType.NON_AXIOMATIC,
-                        assertPred,
-                        isException ? "java.lang.Exception" : "",
-                        testName,
-                        togaRow.get("statementIndex")
+                            togaRow.get("className"),
+                            togaRow.get("methodSignature"),
+                            OracleType.NON_AXIOMATIC,
+                            assertPred,
+                            isException ? "java.lang.Exception" : "",
+                            testName,
+                            togaRow.get("statementIndex")
                     );
                     oracleOutputs.add(oracleOutput);
                 }
@@ -1588,7 +1563,7 @@ public class TogUtils {
      */
     private static List<String> getFailingTestsFromLog(Path logPath) {
         return Arrays.stream(FileUtils.readString(logPath)
-                .split("\n"))
+                        .split("\n"))
                 .toList()
                 .stream()
                 .filter(l -> l.startsWith("---"))
