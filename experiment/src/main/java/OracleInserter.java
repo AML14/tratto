@@ -16,6 +16,7 @@ import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.expr.NameExpr;
 import com.github.javaparser.ast.expr.ObjectCreationExpr;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
+import com.github.javaparser.ast.expr.ThisExpr;
 import com.github.javaparser.ast.expr.VariableDeclarationExpr;
 import com.github.javaparser.ast.nodeTypes.NodeWithArguments;
 import com.github.javaparser.ast.nodeTypes.NodeWithOptionalScope;
@@ -61,6 +62,8 @@ import java.util.stream.Stream;
 public class OracleInserter {
     /** A unique id for placeholder variable names when inserting oracles. */
     private static int variableID = 0;
+    /** The current TOG under analysis. Used to resolve formatting inconsistencies. */
+    private static TogType togUnderAnalysis = TogType.BASELINE;
 
     /** Private constructor to avoid creating an instance of this class. */
     private OracleInserter() {
@@ -284,6 +287,13 @@ public class OracleInserter {
                 name.replace(new NameExpr(newNames.get(idx)));
             }
         });
+        // search for "this" keyword in Tratto output
+        jpExpression.walk(ThisExpr.class, name -> {
+            int idx = originalNames.indexOf("this");
+            if (idx != -1) {
+                name.replace(new NameExpr(newNames.get(idx)));
+            }
+        });
         return jpExpression.toString();
     }
 
@@ -347,7 +357,7 @@ public class OracleInserter {
                 return oracleOutput;
             }
         }
-        String originalName = "receiverObjectID";
+        String originalName = togUnderAnalysis.equals(TogType.TRATTO) ? "this" : "receiverObjectID";
         String contextName;
         if (oracleExpr.isObjectCreationExpr()) {
             if (initStmt.isEmptyStmt()) {
@@ -1066,6 +1076,7 @@ public class OracleInserter {
         setJavaParser(pathToSrc, classpath);
         List<OracleOutput> oracleOutputs = getOracleOutputs(pathToOracles);
         TogType tog = getTogFromOraclePath(pathToOracles);
+        togUnderAnalysis = tog;
         String togName = tog.toString().toLowerCase();
         Path pathToTests = FileUtils.swapParentDirectory(pathToOracles, togName + "-oracles", togName + "-tests");
         FileUtils.copy(pathToPrefixes, pathToTests);
