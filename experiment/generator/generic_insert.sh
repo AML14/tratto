@@ -19,6 +19,14 @@ while IFS=, read -r project_id bug_id _; do
       fi
     fi
   fi
+  if [ ! -d "${root_dir}/output/${tog}-oracles/${project_id}/${bug_id}" ]; then
+    echo -e "Unable to find oracles generated for ${tog} ${project_id} ${bug_id}"
+    continue
+  fi
+  if [ -d "${root_dir}/output/${tog}-tests/${project_id}/${bug_id}" ]; then
+    echo -e "Already generated tests for ${tog} ${project_id} ${bug_id}"
+    continue
+  fi
   sdk use java "8.0.392-amzn"
   # checkout Defects4J project and export classpath
   project_dir="${root_dir}/temp/${project_id}_${bug_id}"
