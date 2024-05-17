@@ -81,7 +81,7 @@ if [[ "$tog" != "baseline" && "$testsuite" == "true" ]]; then
   echo "Insert oracles in test prefixes"
   tog_oracles_path="${tog_output_dir}/${tog}-oracles"
   java -jar "${EXPERIMENT_JAR}" "insert_oracles" "${evosuite_prefix_path}" "${tog_oracles_path}" "${classpath_or_jar}"
-else
+elif [[ "$tog" == "baseline" && "$testsuite" == "true" ]]; then
   echo "Skipping oracle insertion in test prefixes for baseline"
   baseline_tests_path="${tog_output_dir}/${tog}-tests"
   output_test_suite_path="${tog_output_dir}/${tog}-test-suite"
