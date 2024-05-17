@@ -108,16 +108,16 @@ while IFS=, read -r project_id bug_id modified_classes; do
 
         # Generate jdoctor oracles
         if [ "${tog}" == "jdoctor" ]; then
-          bash experiment.sh jdoctor "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}" "${classpath}" ${tog_fqn_output} "false" "${project_id}" ${bug_id}
+          bash experiment.sh jdoctor "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}" "${classpath}" ${tog_fqn_output} "false" "true" "" "${project_id}" ${bug_id}
         # Generate toga oracles
         elif [ "${tog}" == "toga" ]; then
-          bash experiment.sh toga "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}" "${jars_path}" ${tog_fqn_output} "false" "${project_id}" ${bug_id}
+          bash experiment.sh toga "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}" "${jars_path}" ${tog_fqn_output} "false" "true" "" "${project_id}" ${bug_id}
         # Generate tratto oracles
         elif [ "${tog}" == "tratto" ]; then
-          bash experiment.sh tratto "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}" "${jars_path}" ${tog_fqn_output} "false" "${server_port}" "${project_id}" "${bug_id}"
+          bash experiment.sh tratto "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}" "${jars_path}" ${tog_fqn_output} "false" "true" "${server_port}" "${project_id}" "${bug_id}"
         # Execute baseline
         elif [ "${tog}" == "baseline" ]; then
-          bash experiment.sh baseline "$modified_class" "" "" "" ${tog_fqn_output} "false" "" "${project_id}" ${bug_id}
+          bash experiment.sh baseline "$modified_class" "" "" "" ${tog_fqn_output} "false" "true" "" "${project_id}" ${bug_id}
         else
           echo -e "tog.sh: Invalid TOG name, ${tog}"
           exit 1

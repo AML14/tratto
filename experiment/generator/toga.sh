@@ -8,11 +8,7 @@ current_dir=$(realpath "$(dirname "${BASH_SOURCE}")")
 source "${current_dir}/utils/global_variables.sh"
 # Setup sdkman
 source "${UTILS_DIR}/init_sdkman.sh" "${SDKMAN_DIR}"
-# Argument and setup check
-if [ ! ${#} -eq 6 ]; then
-  echo -e "toga.sh: Incorrect number of arguments. Expected 6 arguments, but got ${#}".
-  exit 1
-fi
+
 # Define local variables
 fully_qualified_name=${1}
 src_path=${2}
