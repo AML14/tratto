@@ -18,7 +18,7 @@ while IFS=, read -r project_name src_path _ _; do
     src_path="${project_path}/project/${src_path}"
     binary_path="${project_path}/bin/unzip"
     jars_path="${project_path}/jars"
-    classes_list_file="${project_path}/class_list.csv"
+    classes_list_file="${project_path}/fqn_class_list.csv"
     classpath=""
     if [ ! -d "$binary_path" ]; then
         mkdir -p "$binary_path"
