@@ -59,9 +59,6 @@ while IFS=, read -r project_name src_path _ _; do
         # Generate tratto oracles
         elif [ "${tog}" == "tratto" ]; then
           bash experiment.sh tratto "$project_class" "${src_path}" "${binary_path}" "${jars_path}" "${tog_fqn_output}" "false" "${server_port}"
-        # Execute baseline
-        elif [ "${tog}" == "baseline" ]; then
-          bash experiment.sh baseline "$project_class" "" "" "" ${tog_fqn_output} "false"
         else
           echo -e "tog.sh: Invalid TOG name, ${tog}"
           exit 1
