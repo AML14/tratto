@@ -4,7 +4,7 @@
 # Get current directory
 current_dir=$(realpath "$(dirname "${BASH_SOURCE[@]}")")
 # Setup global variables
-source "${current_dir}/generator/utils/global_variables.sh"
+source "${current_dir}/global_variables.sh"
 
 # Read the CSV file line by line and split into project_id, bug_id, and modified_classes fields
 while IFS=, read -r project_name _ github_link commit_id; do
