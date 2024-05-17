@@ -52,13 +52,13 @@ while IFS=, read -r project_name src_path _ _; do
         fi
         # Generate jdoctor oracles
         if [ "${tog}" == "jdoctor" ]; then
-          bash experiment.sh jdoctor "$project_class" "${src_path}" "${binary_path}" "${classpath}" "${tog_fqn_output}" "false"
+          bash experiment.sh jdoctor "$project_class" "${src_path}" "${binary_path}" "${classpath}" "${tog_fqn_output}" "false" "false"
         # Generate toga oracles
         elif [ "${tog}" == "toga" ]; then
-          bash experiment.sh toga "$project_class" "${src_path}" "${binary_path}" "${jars_path}" "${tog_fqn_output}" "false"
+          bash experiment.sh toga "$project_class" "${src_path}" "${binary_path}" "${jars_path}" "${tog_fqn_output}" "false" "false"
         # Generate tratto oracles
         elif [ "${tog}" == "tratto" ]; then
-          bash experiment.sh tratto "$project_class" "${src_path}" "${binary_path}" "${jars_path}" "${tog_fqn_output}" "false" "${server_port}"
+          bash experiment.sh tratto "$project_class" "${src_path}" "${binary_path}" "${jars_path}" "${tog_fqn_output}" "false" "false" "${server_port}"
         else
           echo -e "tog.sh: Invalid TOG name, ${tog}"
           exit 1
