@@ -43,32 +43,30 @@ while IFS=, read -r project_id bug_id modified_classes; do
     buggy_project_bug_dir="${DEFECTS4J_DIR}/temp/${project_id}_${bug_id}b"
     # Define the path to the fixed version of the project_id-bug_id project
     fixed_project_bug_dir="${DEFECTS4J_DIR}/temp/${project_id}_${bug_id}f"
-    if [ "$tog" != "baseline" ]; then
-        # Checkout buggy version of the project_id-bug_id project
-        echo "Checkout buggy version: project ${project_id}-${bug_id}b."
-        defects4j checkout -p "${project_id}" -v "${bug_id}b" -w "$buggy_project_bug_dir"
-        echo "Checkout complete."
-        # Checkout fixed version of the project_id-bug_id project
-        echo "Checkout fixed version: project ${project_id}-${bug_id}f."
-        defects4j checkout -p "${project_id}" -v "${bug_id}f" -w "$fixed_project_bug_dir"
-        echo "Checkout complete."
-        # Get the directory to the maven/ant configuration file of the project_id
-        project_builder_dir="${BUILDERS_DIR}/${project_id}"
-        # Get the path to the source directory of the ant project_id-bug_id project
-        project_bug_source_path="${buggy_project_bug_dir}/source"
-        echo "Compiling buggy version: project ${project_id}-${bug_id}b."
-        defects4j compile -w "$buggy_project_bug_dir"
-        echo "Compilation complete."
-        # Compile the fixed version of the ant project_id-bug_id project
-        echo "Compiling fixed version: project ${project_id}-${bug_id}f."
-        defects4j compile -w "$fixed_project_bug_dir"
-        echo "Compilation complete."
-        # Get source, binary, and test directories
-        src_path=$(defects4j export -p "dir.src.classes" -w "$buggy_project_bug_dir")
-        binary_path=$(defects4j export -p "dir.bin.classes" -w "$buggy_project_bug_dir")
-        test_path=$(defects4j export -p "dir.src.tests" -w "$buggy_project_bug_dir")
-        classpath=$(defects4j export -p "cp.compile" -w "$buggy_project_bug_dir")
-    fi
+    # Checkout buggy version of the project_id-bug_id project
+    echo "Checkout buggy version: project ${project_id}-${bug_id}b."
+    defects4j checkout -p "${project_id}" -v "${bug_id}b" -w "$buggy_project_bug_dir"
+    echo "Checkout complete."
+    # Checkout fixed version of the project_id-bug_id project
+    echo "Checkout fixed version: project ${project_id}-${bug_id}f."
+    defects4j checkout -p "${project_id}" -v "${bug_id}f" -w "$fixed_project_bug_dir"
+    echo "Checkout complete."
+    # Get the directory to the maven/ant configuration file of the project_id
+    project_builder_dir="${BUILDERS_DIR}/${project_id}"
+    # Get the path to the source directory of the ant project_id-bug_id project
+    project_bug_source_path="${buggy_project_bug_dir}/source"
+    echo "Compiling buggy version: project ${project_id}-${bug_id}b."
+    defects4j compile -w "$buggy_project_bug_dir"
+    echo "Compilation complete."
+    # Compile the fixed version of the ant project_id-bug_id project
+    echo "Compiling fixed version: project ${project_id}-${bug_id}f."
+    defects4j compile -w "$fixed_project_bug_dir"
+    echo "Compilation complete."
+    # Get source, binary, and test directories
+    src_path=$(defects4j export -p "dir.src.classes" -w "$buggy_project_bug_dir")
+    binary_path=$(defects4j export -p "dir.bin.classes" -w "$buggy_project_bug_dir")
+    test_path=$(defects4j export -p "dir.src.tests" -w "$buggy_project_bug_dir")
+    classpath=$(defects4j export -p "cp.compile" -w "$buggy_project_bug_dir")
 
     cd "$ROOT_DIR"
 
@@ -116,10 +114,10 @@ while IFS=, read -r project_id bug_id modified_classes; do
           bash experiment.sh toga "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}" "${jars_path}" ${tog_fqn_output} "false" "${project_id}" ${bug_id}
         # Generate tratto oracles
         elif [ "${tog}" == "tratto" ]; then
-          bash experiment.sh tratto "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}" "${jars_path}" ${tog_fqn_output} "false" "${project_id}" "${bug_id}" "${server_port}"
+          bash experiment.sh tratto "$modified_class" "${buggy_project_bug_dir}/${src_path}" "${buggy_project_bug_dir}/${binary_path}" "${jars_path}" ${tog_fqn_output} "false" "${server_port}" "${project_id}" "${bug_id}"
         # Execute baseline
         elif [ "${tog}" == "baseline" ]; then
-          bash experiment.sh baseline "$modified_class" "" "" "" ${tog_fqn_output} "false" "${project_id}" ${bug_id}
+          bash experiment.sh baseline "$modified_class" "" "" "" ${tog_fqn_output} "false" "" "${project_id}" ${bug_id}
         else
           echo -e "tog.sh: Invalid TOG name, ${tog}"
           exit 1

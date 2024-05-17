@@ -25,9 +25,9 @@ bin_dir=${4}
 classpath_or_jar=${5}
 tog_output_dir=${6-${OUTPUT_DIR}}
 evosuite_flag=$( [[ "$7" == "true" ]] && echo true || echo false )
-project_id=${8-"none"}
-bug_id=${9-"none"}
-server_port=${10-${SERVER_PORT}}
+server_port=${8-${SERVER_PORT}}
+project_id=${9-"none"}
+bug_id=${10-"none"}
 qualifiers="${target_class%.*}"
 evosuite_prefix_path="${tog_output_dir}/evosuite-prefixes"
 # Arguments check
@@ -71,7 +71,7 @@ fi
 if [ "${tog}" == "jdoctor" ]; then
   bash ./generator/jdoctor.sh "${target_class}" "${src_dir}" "${classpath_or_jar}" "${tog_output_dir}"
 elif [ "${tog}" == "toga" ]; then
-  bash ./generator/toga.sh "${target_class}" "${src_dir}" "${classpath_or_jar}" "${tog_output_dir}" "${project_id}" "${bug_id}"
+  bash ./generator/toga.sh "${target_class}" "${src_dir}" "${classpath_or_jar}" "${tog_output_dir}"
 elif [ "${tog}" == "tratto" ]; then
   bash ./generator/tratto.sh "${target_class}" "${src_dir}" "${classpath_or_jar}" "${tog_output_dir}" "${server_port}"
 fi
@@ -93,10 +93,6 @@ if [ "$project_id" != "none" ]; then
   echo "Running tests and generating test output"
   # Execute tests with evosuite
   bash ./runner_d4j.sh "$tog" "$project_id" "$bug_id" "${tog_output_dir}" "${tog_output_dir}/${tog}-test-suite"
-  #if [ ! -d "${tog_output_dir}/${tog}-tests/${project_id}/${bug_id}" ]; then
-  #  mkdir -p "${tog_output_dir}/${tog}-tests/${project_id}/${bug_id}"
-  #fi
-  #find "${tog_output_dir}/${tog}-tests" -mindepth 1 -maxdepth 1 -type d -not -path "${tog_output_dir}/${tog}-tests/${project_id}/${bug_id}" -exec mv -t "${tog_output_dir}/${tog}-tests/${project_id}/${bug_id}" {} +
   java -jar "$EXPERIMENT_JAR" generate_defects4j_output "$tog" "$target_class" "$project_id" "$bug_id" "${tog_output_dir}/${tog}-tests" "${tog_output_dir}/${tog}-test-suite"
 else
   echo "Running tests not yet implemented for non-defects4j projects."

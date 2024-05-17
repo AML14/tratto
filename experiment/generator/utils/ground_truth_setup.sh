@@ -7,7 +7,7 @@ current_dir=$(realpath "$(dirname "${BASH_SOURCE[@]}")")
 source "${current_dir}/generator/utils/global_variables.sh"
 
 # Read the CSV file line by line and split into project_id, bug_id, and modified_classes fields
-while IFS=, read -r project_name github_link commit_id; do
+while IFS=, read -r project_name _ github_link commit_id; do
     cd "$ROOT_DIR"
     # Clean modified_classes string from undesired white-spaces/line-breaks introduced with the CSV parsing
     commit_id="${commit_id//[$'\t\r\n ']/}"
