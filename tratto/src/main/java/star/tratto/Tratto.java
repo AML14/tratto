@@ -94,7 +94,7 @@ public class Tratto {
                     oracleDatapoint.setOracle(compactExpression(oracleDatapoint.getOracle() + " " + nextToken));
                     oracleSoFarTokens.add(nextToken);
                     logger.info("Oracle so far: {}", oracleDatapoint.getOracle());
-                } catch (TokenNotFoundException | ServerErrorException | ServerUnexpectedResponseCodeException | IOException  e) {
+                } catch (Exception  e) {
                     logger.error(e.getMessage());
                     oracleDatapoint.setOracle(";");
                     break;
