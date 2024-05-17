@@ -77,7 +77,7 @@ elif [ "${tog}" == "tratto" ]; then
   bash ./generator/tratto.sh "${target_class}" "${src_dir}" "${classpath_or_jar}" "${tog_output_dir}" "${server_port}"
 fi
 # Insert oracles into EvoSuite prefixes
-if [ "$tog" != "baseline" && "$testsuite" == "true" ]; then
+if [[ "$tog" != "baseline" && "$testsuite" == "true" ]]; then
   echo "Insert oracles in test prefixes"
   tog_oracles_path="${tog_output_dir}/${tog}-oracles"
   java -jar "${EXPERIMENT_JAR}" "insert_oracles" "${evosuite_prefix_path}" "${tog_oracles_path}" "${classpath_or_jar}"
@@ -90,7 +90,7 @@ else
   cp -r "${evosuite_prefix_path}/"* "${baseline_tests_path}"
 fi
 # Run tests and generate output
-if [ "$testsuite" == "true" ]; then
+if [[ "$testsuite" == "true" ]]; then
   echo "Running tests and generating test output"
   # Execute tests with evosuite
   bash ./runner_d4j.sh "$tog" "$project_id" "$bug_id" "${tog_output_dir}" "${tog_output_dir}/${tog}-test-suite"
