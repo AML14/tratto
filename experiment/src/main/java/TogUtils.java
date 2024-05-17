@@ -1520,7 +1520,7 @@ public class TogUtils {
         if (startParamsIdx == -1 || endParamsIdx == -1) {
             throw new Error("Unable to find parameters in method source code " + methodSource);
         }
-        String beforeParams = methodSource.substring(startParamsIdx, endParamsIdx);
+        String beforeParams = methodSource.substring(0, startParamsIdx);
         String[] parts = beforeParams.split("\\s+");
         String methodName = parts[parts.length - 1];
         String parameters = methodSource.substring(startParamsIdx + 1, endParamsIdx).trim();
