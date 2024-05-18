@@ -1034,7 +1034,7 @@ public class JavaParserUtils {
     ) throws PackageDeclarationNotFoundException {
         Optional<PackageDeclaration> jpPackage = cu.getPackageDeclaration();
         if (jpPackage.isEmpty()) {
-            throw new PackageDeclarationNotFoundException("The compilation unit has no package declaration");
+            throw new PackageDeclarationNotFoundException(String.format("[WARNING] - Unable to resolve package for class %s.", cu));
         }
         return jpPackage.get();
     }
