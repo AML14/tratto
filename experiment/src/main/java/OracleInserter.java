@@ -177,7 +177,7 @@ public class OracleInserter {
         if (testExpr.isVariableDeclarationExpr()) {
             VariableDeclarator variableDeclarator = testExpr.asVariableDeclarationExpr().getVariable(0);
             VariableDeclarationExpr variableDeclarationExpr = new VariableDeclarationExpr(
-                    returnType,
+                    variableDeclarator.getType(),
                     variableDeclarator.getNameAsString()
             );
             return new ExpressionStmt(variableDeclarationExpr);
@@ -243,16 +243,25 @@ public class OracleInserter {
             // if no variable is initialized, then use original statement.
             return testStmt;
         }
-        Expression initExpr = initStmt
-                .asExpressionStmt()
-                .getExpression();
-        String name = initExpr
+        // get name  of test statement variable
+        String name = initStmt.asExpressionStmt().getExpression()
                 .asVariableDeclarationExpr()
                 .getVariable(0)
                 .getNameAsString();
+        // get value of test statement variable
+        Expression testExpr = testStmt.asExpressionStmt().getExpression();
+        Expression initializer;
+        if (testExpr.isVariableDeclarationExpr()) {
+            initializer = testExpr.asVariableDeclarationExpr().getVariable(0)
+                    .getInitializer().orElseThrow();
+        } else if (testExpr.isAssignExpr()) {
+            initializer = testExpr.asAssignExpr().getValue();
+        } else {
+            initializer = oracleExpr.clone();
+        }
         AssignExpr assignExpr = new AssignExpr(
                 new NameExpr(name),
-                oracleExpr.clone(),
+                initializer,
                 AssignExpr.Operator.ASSIGN
         );
         return new ExpressionStmt(assignExpr);
