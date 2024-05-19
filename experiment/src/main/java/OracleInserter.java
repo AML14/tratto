@@ -323,7 +323,7 @@ public class OracleInserter {
         List<String> contextNames = ((NodeWithArguments<?>) oracleExpr).getArguments()
                 .stream()
                 .map(expr -> {
-                    if (expr.isLiteralExpr() || (expr.isCastExpr() && expr.asCastExpr().getExpression().isLiteralExpr())) {
+                    if (expr.isLiteralExpr() || expr.isCastExpr()) {
                         return "(" + expr + ")";
                     } else {
                         return expr.toString();
