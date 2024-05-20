@@ -10,7 +10,9 @@ import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.comments.Comment;
 import com.github.javaparser.ast.comments.LineComment;
 import com.github.javaparser.ast.expr.AssignExpr;
+import com.github.javaparser.ast.expr.EnclosedExpr;
 import com.github.javaparser.ast.expr.Expression;
+import com.github.javaparser.ast.expr.LiteralExpr;
 import com.github.javaparser.ast.expr.MarkerAnnotationExpr;
 import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.expr.NameExpr;
@@ -177,7 +179,7 @@ public class OracleInserter {
         if (testExpr.isVariableDeclarationExpr()) {
             VariableDeclarator variableDeclarator = testExpr.asVariableDeclarationExpr().getVariable(0);
             VariableDeclarationExpr variableDeclarationExpr = new VariableDeclarationExpr(
-                    returnType,
+                    variableDeclarator.getType(),
                     variableDeclarator.getNameAsString()
             );
             return new ExpressionStmt(variableDeclarationExpr);
@@ -243,16 +245,25 @@ public class OracleInserter {
             // if no variable is initialized, then use original statement.
             return testStmt;
         }
-        Expression initExpr = initStmt
-                .asExpressionStmt()
-                .getExpression();
-        String name = initExpr
+        // get name  of test statement variable
+        String name = initStmt.asExpressionStmt().getExpression()
                 .asVariableDeclarationExpr()
                 .getVariable(0)
                 .getNameAsString();
+        // get value of test statement variable
+        Expression testExpr = testStmt.asExpressionStmt().getExpression();
+        Expression initializer;
+        if (testExpr.isVariableDeclarationExpr()) {
+            initializer = testExpr.asVariableDeclarationExpr().getVariable(0)
+                    .getInitializer().orElseThrow();
+        } else if (testExpr.isAssignExpr()) {
+            initializer = testExpr.asAssignExpr().getValue();
+        } else {
+            initializer = oracleExpr.clone();
+        }
         AssignExpr assignExpr = new AssignExpr(
                 new NameExpr(name),
-                oracleExpr.clone(),
+                initializer,
                 AssignExpr.Operator.ASSIGN
         );
         return new ExpressionStmt(assignExpr);
@@ -297,6 +308,62 @@ public class OracleInserter {
         return jpExpression.toString();
     }
 
+    private static String getBoxingTypeName(LiteralExpr literalExpr) {
+        if (literalExpr.isBooleanLiteralExpr()) {
+            return "Boolean";
+        } else if (literalExpr.isCharLiteralExpr()) {
+            return "Character";
+        } else if (literalExpr.isDoubleLiteralExpr()) {
+            return "Double";
+        } else if (literalExpr.isIntegerLiteralExpr()) {
+            return "Integer";
+        } else if (literalExpr.isLongLiteralExpr()) {
+            return "Long";
+        } else {
+            return "Unknown";
+        }
+    }
+
+    private static String getBoxingEnclosedTypeName(EnclosedExpr enclosedExpr) {
+        Expression innerExpr = enclosedExpr.getInner();
+        if (innerExpr.isLiteralExpr()) {
+            String boxingTypeName = getBoxingTypeName(enclosedExpr.asLiteralExpr());
+            if (boxingTypeName.equals("Unknown")) {
+                return enclosedExpr.toString();
+            }
+            return boxingTypeName + ".valueOf" + enclosedExpr;
+        } else if (innerExpr.isUnaryExpr()) {
+            Expression unaryExpr = innerExpr.asUnaryExpr().getExpression();
+            if (unaryExpr.isLiteralExpr()) {
+                String boxingTypeName = getBoxingTypeName(unaryExpr.asLiteralExpr());
+                if (boxingTypeName.equals("Unknown")) {
+                    return enclosedExpr.toString();
+                }
+                return boxingTypeName + ".valueOf" + enclosedExpr;
+            } else {
+                return enclosedExpr.toString();
+            }
+        } else {
+            return enclosedExpr.toString();
+        }
+    }
+
+    private static String getParameterContextName(Expression expr) {
+        if (expr.isCastExpr()) {
+            return "(" + expr + ")";
+        } else if (expr.isLiteralExpr()) {
+            String boxingTypeName = getBoxingTypeName(expr.asLiteralExpr());
+            if (boxingTypeName.equals("Unknown")) {
+                return "(" + expr + ")";
+            }
+            return boxingTypeName + ".valueOf(" + expr + ")";
+        } else if (expr.isEnclosedExpr()) {
+            return getBoxingEnclosedTypeName(expr.asEnclosedExpr());
+        } else {
+            return expr.toString();
+        }
+    }
+
     /**
      * Replaces all parameter variable names in an oracle with names or
      * literal expressions from a method call of the method under test.
@@ -313,13 +380,8 @@ public class OracleInserter {
         List<String> originalNames = getParameterNames(oracleOutput.methodSignature());
         List<String> contextNames = ((NodeWithArguments<?>) oracleExpr).getArguments()
                 .stream()
-                .map(expr -> {
-                    if (expr.isLiteralExpr() || (expr.isCastExpr() && expr.asCastExpr().getExpression().isLiteralExpr())) {
-                        return "(" + expr + ")";
-                    } else {
-                        return expr.toString();
-                    }
-                }).toList();
+                .map(OracleInserter::getParameterContextName)
+                .toList();
         String contextOracle = replaceNames(originalNames, contextNames, oracleOutput.oracle());
         return new OracleOutput(
                 oracleOutput.className(),
