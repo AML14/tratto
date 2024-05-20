@@ -93,6 +93,17 @@ public class OracleInserter {
             "float",
             "double"
     );
+    /** All primitive field descriptor type names. */
+    private static final List<String> allPrimitiveFieldDescriptors = List.of(
+            "Z",
+            "B",
+            "C",
+            "S",
+            "I",
+            "J",
+            "F",
+            "D"
+    );
 
     /** Private constructor to avoid creating an instance of this class. */
     private OracleInserter() {
@@ -145,8 +156,15 @@ public class OracleInserter {
         }
         return Stream.of(parameters.split(","))
                 .map(p -> {
-                    String paramTypeFQN = p.trim().split(" ")[0].trim();
-                    Class<?> paramClass = getClass(paramTypeFQN);
+                    String[] paramParts = p.trim().split(" ");
+                    StringBuilder paramTypeFqnBuilder = new StringBuilder();
+                    for (int i = 0; i < paramParts.length - 1; i++) {
+                        paramTypeFqnBuilder
+                                .append(paramParts[i].trim())
+                                .append(" ");
+                    }
+                    String paramTypeFqn = paramTypeFqnBuilder.toString().trim();
+                    Class<?> paramClass = getClass(paramTypeFqn);
                     return paramClass.getTypeName();
                 })
                 .toList();
@@ -224,6 +242,45 @@ public class OracleInserter {
     }
 
     /**
+     * Gets the fully qualified name of a given primitive field descriptor
+     * type name.
+     *
+     * @param primitiveFD a primitive field descriptor type name
+     * @return the fully qualified name corresponding to the primitive type
+     * @throws IllegalArgumentException if the given type name is not a
+     * recognized primitive type
+     */
+    private static String fieldDescriptorToFQN(String primitiveFD) {
+        switch (primitiveFD) {
+            case "Z" -> {
+                return "boolean";
+            }
+            case "B" -> {
+                return "byte";
+            }
+            case "C" -> {
+                return "char";
+            }
+            case "S" -> {
+                return "short";
+            }
+            case "I" -> {
+                return "int";
+            }
+            case "J" -> {
+                return "long";
+            }
+            case "F" -> {
+                return "float";
+            }
+            case "D" -> {
+                return "double";
+            }
+            default -> throw new IllegalArgumentException("Unrecognized primitive field descriptor " + primitiveFD);
+        }
+    }
+
+    /**
      * Converts a fully qualified name to the {@code Class.getName()} form of
      * a name. This method does not distinguish between package names and
      * inner classes, such that no "$" symbols are added.
@@ -295,6 +352,9 @@ public class OracleInserter {
      * @return the Class corresponding to the type name
      */
     private static Class<?> getClass(String className) {
+        if (className.endsWith("...")) {
+            className = className.substring(0, className.length() - 3) + "[]";
+        }
         if (primitiveTypes.contains(className)) {
             return getPrimitiveClass(className);
         } else {
@@ -339,7 +399,7 @@ public class OracleInserter {
         List<Class<?>> parameterTypes = getClasses(getParameterTypeNames(methodSignature));
         Class<?> receiverObjectID = getClass(className);
         try {
-            return receiverObjectID.getMethod(methodName, parameterTypes.toArray(Class[]::new));
+            return receiverObjectID.getDeclaredMethod(methodName, parameterTypes.toArray(Class[]::new));
         } catch (NoSuchMethodException e) {
             throw new Error("Unable to find method " + methodSignature + " in " + className);
         }
@@ -367,7 +427,19 @@ public class OracleInserter {
     private static Type getReturnType(String className, String methodSignature) {
         Method method = getMethod(className, methodSignature);
         Class<?> returnType = method.getReturnType();
-        return StaticJavaParser.parseType(returnType.getName());
+        String returnTypeName = returnType.getName();
+        if (returnTypeName.startsWith("[")) {
+            int arrayLevel = getArrayLevel(returnTypeName);
+            String elementGetName = returnTypeName.substring(arrayLevel);
+            String elementFqn;
+            if (allPrimitiveFieldDescriptors.contains(elementGetName)) {
+                elementFqn = fieldDescriptorToFQN(elementGetName);
+            } else {
+                elementFqn = elementGetName.substring(1, elementGetName.length() - 1);
+            }
+            return StaticJavaParser.parseType(elementFqn + "[]".repeat(arrayLevel));
+        }
+        return StaticJavaParser.parseType(returnTypeName);
     }
 
     /**
