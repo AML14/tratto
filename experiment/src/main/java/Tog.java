@@ -99,11 +99,8 @@ public class Tog {
             );
             case GENERATE_DEFECTS4J_OUTPUT -> TogUtils.generateDefects4JOutput(
                     TogType.valueOf(args[1].toUpperCase()),
-                    args[2],
-                    args[3],
-                    args[4],
-                    Paths.get(args[5]),
-                    Paths.get(args[6])
+                    Paths.get(args[2]),
+                    Paths.get(args[3])
             );
             case COUNT_TEST_METHODS -> TogUtils.countTestMethods(
                     Paths.get(args[1]),
