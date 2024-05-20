@@ -51,7 +51,16 @@ while IFS=, read -r project_id bug_id modified_classes; do
         java -cp "${classpath}" -jar "${EXPERIMENT_JAR}" "insert_oracles" "${prefix_path}" "${oracle_path}" "${src_path}" "${classpath}:${external_classpath}"
       else
         echo "Skipping oracle insertion in test prefixes for baseline"
-        baseline_tests_path="${tog_fqn_output}/${tog}-tests"
+        if [ -d "${tog_fqn_output}/${tog}-tests" ]; then
+          rm -r "${tog_fqn_output}/${tog}-tests"
+        fi
+        if [ -d "${tog_fqn_output}/${tog}-test-suite" ]; then
+          rm -r "${tog_fqn_output}/${tog}-test-suite"
+        fi
+        if [ -f "${tog_fqn_output}/baseline_defects4joutput.json" ]; then
+          rm "${tog_fqn_output}/baseline_defects4joutput.json"
+        fi
+        baseline_tests_path="${tog_fqn_output}/${tog}-tests/$(dirname ${fqn_path})"
         output_test_suite_path="${tog_fqn_output}/${tog}-test-suite"
         mkdir -p "$baseline_tests_path"
         mkdir -p "$output_test_suite_path"

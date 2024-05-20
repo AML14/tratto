@@ -1677,7 +1677,7 @@ public class TogUtils {
                 .toList();
         return methodNames
                 .stream()
-                .map(m -> fullyQualifiedClassName + "::" + m)
+                .map(m -> fullyQualifiedClassName + "_ESTest::" + m)
                 .collect(Collectors.toList());
     }
 
