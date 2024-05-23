@@ -15,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class OracleInserterTest {
     private static final Path output = Paths.get("output");
     private static final Path resourcesPath = Paths.get("src", "test", "resources");
+    private static final Path projectSrcPath = Paths.get("src", "test", "resources", "project", "src", "main", "java");
     private static final Path projectJarPath = Paths.get("src", "test", "resources", "project", "target", "Tutorial_Stack-1.0-SNAPSHOT.jar");
     private static final String projectClasspath = projectJarPath.toAbsolutePath().toString();
 
@@ -95,8 +96,9 @@ public class OracleInserterTest {
         OracleInserter.insertOracles(
                 Paths.get("output", "evosuite-prefixes"),
                 Paths.get("output", "jdoctor-oracles"),
-                Paths.get(""),
-                projectClasspath
+                projectSrcPath,
+                projectClasspath,
+                false
         );
         Path testPath = Paths.get("output", "jdoctor-tests", "tutorial", "Stack_ESTest.java");
         CompilationUnit cu = FileUtils.getCompilationUnit(testPath);
@@ -144,8 +146,9 @@ public class OracleInserterTest {
         OracleInserter.insertOracles(
                 Paths.get("output", "evosuite-prefixes"),
                 Paths.get("output", "toga-oracles"),
-                Paths.get(""),
-                projectClasspath
+                projectSrcPath,
+                projectClasspath,
+                false
         );
         Path testPath = Paths.get("output", "toga-tests", "tutorial", "Stack_ESTest.java");
         CompilationUnit cu = FileUtils.getCompilationUnit(testPath);

@@ -361,10 +361,10 @@ public class TogUtils {
                 ResolvedType focalMethodArg = focalMethodArgs.get(i);
                 String focalMethodTypeName = focalMethodArgs.get(i).describe();
 
-                if (focalMethodArg.isArray() && !param.getType().isArrayType()) {
+                if (focalMethodArg.isArray() && !(param.getType().isArrayType() || param.isVarArgs())) {
                     continue;
                 }
-                if (!focalMethodArg.isArray() && param.getType().isArrayType()) {
+                if (!focalMethodArg.isArray() && (param.getType().isArrayType() || param.isVarArgs())) {
                     continue;
                 }
                 if (focalMethodArg.describe().startsWith("java.util.List") && !param.getTypeAsString().startsWith("List")) {
@@ -373,17 +373,40 @@ public class TogUtils {
                 if (!focalMethodArg.describe().startsWith("java.util.List") && param.getTypeAsString().startsWith("List")) {
                     continue;
                 }
-                if (focalMethodArg.isArray() && param.getType().isArrayType()) {
-                    if (focalMethodArg.asArrayType().arrayLevel() != param.getType().asArrayType().getArrayLevel()) {
+                if (focalMethodArg.isArray() && (param.getType().isArrayType() || param.isVarArgs())) {
+                    if (param.isVarArgs() && (focalMethodArg.asArrayType().arrayLevel() > 1)) {
+                        continue;
+                    } else if (!param.isVarArgs() && (focalMethodArg.asArrayType().arrayLevel() != param.getType().asArrayType().getArrayLevel())) {
                         continue;
                     }
                 }
                 // Get the type of the i-th parameter of the current candidate method, as a string
                 String paramTypeName = param.getTypeAsString();
                 // Compare the parameters type names
-                if (focalMethodTypeName.contains(paramTypeName.replaceAll("List|\\[\\]|<|>", ""))) {
-                    // If the type names corresponds, increment the number of parameters in common
-                    paramsTypesInCommon += 1;
+                if (focalMethodTypeName.contains(paramTypeName.replaceAll("<.*?>|List|\\[\\]|<|>", ""))) {
+                    // Pattern to capture content within < and >
+                    Pattern pattern = Pattern.compile("<(.*?)>");
+                    Matcher matcherFocalMethod = pattern.matcher(focalMethodTypeName);
+                    if (matcherFocalMethod.find()) {
+                        String genericTypeFocalMethod = matcherFocalMethod.group(1); // Save the captured content
+                        Matcher matcherParam = pattern.matcher(paramTypeName);
+
+                        if (genericTypeFocalMethod.equals("?") || genericTypeFocalMethod.length() == 1) {
+                            paramsTypesInCommon += 1;
+                        } else {
+                            if (matcherParam.find()) {
+                                String genericTypeParam = matcherParam.group(1);
+                                if (genericTypeParam.equals("?") || genericTypeParam.length() == 1 || genericTypeFocalMethod.equals(genericTypeParam)) {
+                                    paramsTypesInCommon += 1;
+                                }
+                            } else {
+                                paramsTypesInCommon += 1;
+                            }
+                        }
+                    } else {
+                        // If the type names corresponds, increment the number of parameters in common
+                        paramsTypesInCommon += 1;
+                    }
                 }
             }
             // If the number of parameters in common with the current candidate method/constructor is

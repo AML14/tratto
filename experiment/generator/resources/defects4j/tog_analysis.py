@@ -84,13 +84,13 @@ def search_and_process(tog, root_folder, d4j_bugs_csv_path, evosuite_methods_cou
         json.dump(tog_methods_not_processed, tog_methods_not_processed_file, indent=4)
 
 if __name__ == '__main__':
-    if len(sys.argv) < 2:
-        print("Please provide the tog generator used")
+    if len(sys.argv) < 4:
+        print("Incorrect number of arguments. Please provide the tog generator used, the round of test suite, and the path to the test_methods_count.json file")
         sys.exit(1)
     tog = sys.argv[1]
-    # Replace 'root_folder_path' with the path to your root folder
-    root_folder_path = os.path.join(os.path.dirname(__file__), f'output_{tog}')
+    evosuite_round = sys.argv[2]
+    evosuite_methods_count_path = sys.argv[3]
+    root_folder_path = os.path.join(os.path.dirname(__file__), f'output_{tog}', evosuite_round)
     d4j_bugs_csv_path = os.path.join(os.path.dirname(__file__), 'modified_classes.csv')
-    evosuite_methods_count_path = os.path.join(os.path.dirname(__file__), 'evosuite_methods_count.json')
     tog_methods_count_path = os.path.join(os.path.dirname(__file__), f'{tog}_methods_count.json')
     search_and_process(tog, root_folder_path, d4j_bugs_csv_path, evosuite_methods_count_path, tog_methods_count_path)

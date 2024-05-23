@@ -981,26 +981,53 @@ public class OracleInserter {
      *
      * @param testFile a Java file of test prefixes
      * @param oracles a list of test oracles made by a non-axiomatic tog
+     * @param insertAtStatementIdx true if the oracles must be inserted after the given statement indices. If false,
+     *                             the oracles are added at the end of the test case
      */
-    private static void insertNonAxiomaticOracles(CompilationUnit testFile, List<OracleOutput> oracles) {
-        testFile.findAll(MethodDeclaration.class)
-                .forEach(testCase -> {
-                    String testName = testCase.getNameAsString();
-                    List<OracleOutput> testOracles = getOraclesWithTestName(testName, oracles);
-                    BlockStmt testBody = new BlockStmt();
-                    int stmtIdx = 0;
-                    for (Statement testStatement : testCase.getBody().orElseThrow().getStatements()) {
-                        final int currentStmtIdx = stmtIdx;
-                        testBody.addStatement(testStatement);
-                        List<OracleOutput> stmtOracles = testOracles
-                                .stream()
-                                .filter(o -> Integer.parseInt(o.statementIndex()) == currentStmtIdx)
-                                .toList();
-                        List<OracleOutput> exceptionOracles = stmtOracles
+    private static void insertNonAxiomaticOracles(CompilationUnit testFile, List<OracleOutput> oracles, boolean insertAtStatementIdx) {
+        if (insertAtStatementIdx) {
+            testFile.findAll(MethodDeclaration.class)
+                    .forEach(testCase -> {
+                        String testName = testCase.getNameAsString();
+                        List<OracleOutput> testOracles = getOraclesWithTestName(testName, oracles);
+                        BlockStmt testBody = new BlockStmt();
+                        int stmtIdx = 0;
+                        for (Statement testStatement : testCase.getBody().orElseThrow().getStatements()) {
+                            final int currentStmtIdx = stmtIdx;
+                            testBody.addStatement(testStatement);
+                            List<OracleOutput> stmtOracles = testOracles
+                                    .stream()
+                                    .filter(o -> Integer.parseInt(o.statementIndex()) == currentStmtIdx)
+                                    .toList();
+                            List<OracleOutput> exceptionOracles = stmtOracles
+                                    .stream()
+                                    .filter(OracleOutput::isExceptional)
+                                    .toList();
+                            List<OracleOutput> assertionOracles = stmtOracles
+                                    .stream()
+                                    .filter(o -> !o.isExceptional())
+                                    .toList();
+                            for (OracleOutput exceptionOracle : exceptionOracles) {
+                                insertNonAxiomaticException(testBody, exceptionOracle.exception());
+                            }
+                            for (OracleOutput assertionOracle : assertionOracles) {
+                                insertNonAxiomaticAssertion(testBody, assertionOracle.oracle());
+                            }
+                            stmtIdx++;
+                        }
+                        testCase.setBody(testBody);
+                    });
+        } else {
+            testFile.findAll(MethodDeclaration.class)
+                    .forEach(testCase -> {
+                        String testName = testCase.getNameAsString();
+                        List<OracleOutput> testOracles = getOraclesWithTestName(testName, oracles);
+                        BlockStmt testBody = testCase.getBody().orElseThrow();
+                        List<OracleOutput> exceptionOracles = testOracles
                                 .stream()
                                 .filter(OracleOutput::isExceptional)
                                 .toList();
-                        List<OracleOutput> assertionOracles = stmtOracles
+                        List<OracleOutput> assertionOracles = testOracles
                                 .stream()
                                 .filter(o -> !o.isExceptional())
                                 .toList();
@@ -1010,10 +1037,8 @@ public class OracleInserter {
                         for (OracleOutput assertionOracle : assertionOracles) {
                             insertNonAxiomaticAssertion(testBody, assertionOracle.oracle());
                         }
-                        stmtIdx++;
-                    }
-                    testCase.setBody(testBody);
-                });
+                    });
+        }
     }
 
     /**
@@ -1128,12 +1153,15 @@ public class OracleInserter {
      * @param pathToOracles the path to the TOG oracles
      * @param pathToSrc the path to the project source directory
      * @param classpath the classpath of the project under analysis
+     * @param insertAtStatementIdx true if the oracles must be inserted after the given statement indices. If false,
+     *                             the oracles are added at the end of the test case
      */
     public static void insertOracles(
             Path pathToPrefixes,
             Path pathToOracles,
             Path pathToSrc,
-            String classpath
+            String classpath,
+            boolean insertAtStatementIdx
     ) {
         setJavaParser(pathToSrc, classpath);
         List<OracleOutput> oracleOutputs = getOracleOutputs(pathToOracles);
@@ -1150,7 +1178,7 @@ public class OracleInserter {
                     if (tog.isAxiomatic()) {
                         insertAxiomaticOracles(cu, classUnderTest, oracleOutputs);
                     } else {
-                        insertNonAxiomaticOracles(cu, oracleOutputs);
+                        insertNonAxiomaticOracles(cu, oracleOutputs, insertAtStatementIdx);
                     }
                     FileUtils.writeString(p, cu.toString());
                 }
