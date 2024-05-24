@@ -1146,8 +1146,10 @@ public class OracleInserter {
      * @param pathToOracles the path to the TOG oracles
      * @param pathToSrc the path to the project source directory
      * @param classpath the classpath of the project under analysis
-     * @param insertAtStatementIdx true if the oracles must be inserted after the given statement indices. If false,
-     *                             the oracles are added at the end of the test case
+     * @param insertAtStatementIdx true if the oracles must be inserted after
+     *                             the given statement indices. If false, the
+     *                             oracles are added at the end of the test
+     *                             case
      */
     public static void insertOracles(
             Path pathToPrefixes,
