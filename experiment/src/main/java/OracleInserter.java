@@ -105,22 +105,13 @@ public class OracleInserter {
         return current;
     }
 
-    private static List<String> getParameterTypesFromMethodSignature(String methodSignature) {
+    private static List<String> getParametersFromMethodSignature(String methodSignature) {
         String parameters = methodSignature.substring(methodSignature.indexOf('(') + 1, methodSignature.indexOf(')'));
         if (parameters.length() == 0) {
             return new ArrayList<>();
         }
         return Stream.of(parameters.split(","))
-                .map(p -> {
-                    String[] paramParts = p.trim().split(" ");
-                    StringBuilder paramTypeFqnBuilder = new StringBuilder();
-                    for (int i = 0; i < paramParts.length - 1; i++) {
-                        paramTypeFqnBuilder
-                                .append(paramParts[i].trim())
-                                .append(" ");
-                    }
-                    return paramTypeFqnBuilder.toString().trim();
-                })
+                .map(String::trim)
                 .collect(Collectors.toList());
     }
 
@@ -130,13 +121,14 @@ public class OracleInserter {
      * @param methodSignature a method signature
      * @return all variable parameter names in the method signature
      */
-    private static List<String> getParameterNames(String methodSignature) {
-        String parameters = methodSignature.substring(methodSignature.indexOf('(') + 1, methodSignature.indexOf(')'));
-        if (parameters.length() == 0) {
-            return new ArrayList<>();
-        }
-        return Stream.of(parameters.split(","))
-                .map(p -> p.trim().split(" ")[1].trim())
+    private static List<String> getParameterNamesFromMethodSignature(String methodSignature) {
+        List<String> parameters = getParametersFromMethodSignature(methodSignature);
+        return parameters
+                .stream()
+                .map(p -> {
+                    String[] splitParam = p.trim().split(" ");
+                    return splitParam[splitParam.length - 1].trim();
+                })
                 .toList();
     }
 
@@ -377,7 +369,7 @@ public class OracleInserter {
             Expression oracleExpr,
             OracleOutput oracleOutput
     ) {
-        List<String> originalNames = getParameterNames(oracleOutput.methodSignature());
+        List<String> originalNames = getParameterNamesFromMethodSignature(oracleOutput.methodSignature());
         List<String> contextNames = ((NodeWithArguments<?>) oracleExpr).getArguments()
                 .stream()
                 .map(OracleInserter::getParameterContextName)
@@ -762,8 +754,9 @@ public class OracleInserter {
                     if (oracleMethodName.contains(".")) {
                         oracleMethodName = fqnToSimpleName(oracleMethodName);
                     }
-                    List<String> oracleMethodParameters = getParameterTypesFromMethodSignature(o.methodSignature())
+                    List<String> oracleMethodParameters = getParametersFromMethodSignature(o.methodSignature())
                             .stream()
+                            .map(p -> StaticJavaParser.parseParameter(p).getTypeAsString())
                             .map(OracleInserter::fqnToSimpleName)
                             .toList();
                     return oracleMethodName.equals(targetMethodName) && oracleMethodParameters.equals(targetMethodParameters);
