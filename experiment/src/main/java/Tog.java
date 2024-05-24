@@ -83,7 +83,8 @@ public class Tog {
                     Paths.get(args[1]),
                     Paths.get(args[2]),
                     Paths.get(args[3]),
-                    args[4]
+                    args[4],
+                    false
             );
             case GENERATE_TOG_INPUT -> generateTogInput(
                     TogType.valueOf(args[1].toUpperCase()),

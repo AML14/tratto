@@ -361,10 +361,10 @@ public class TogUtils {
                 ResolvedType focalMethodArg = focalMethodArgs.get(i);
                 String focalMethodTypeName = focalMethodArgs.get(i).describe();
 
-                if (focalMethodArg.isArray() && !param.getType().isArrayType()) {
+                if (focalMethodArg.isArray() && !(param.getType().isArrayType() || param.isVarArgs())) {
                     continue;
                 }
-                if (!focalMethodArg.isArray() && param.getType().isArrayType()) {
+                if (!focalMethodArg.isArray() && (param.getType().isArrayType() || param.isVarArgs())) {
                     continue;
                 }
                 if (focalMethodArg.describe().startsWith("java.util.List") && !param.getTypeAsString().startsWith("List")) {
@@ -373,17 +373,40 @@ public class TogUtils {
                 if (!focalMethodArg.describe().startsWith("java.util.List") && param.getTypeAsString().startsWith("List")) {
                     continue;
                 }
-                if (focalMethodArg.isArray() && param.getType().isArrayType()) {
-                    if (focalMethodArg.asArrayType().arrayLevel() != param.getType().asArrayType().getArrayLevel()) {
+                if (focalMethodArg.isArray() && (param.getType().isArrayType() || param.isVarArgs())) {
+                    if (param.isVarArgs() && (focalMethodArg.asArrayType().arrayLevel() > 1)) {
+                        continue;
+                    } else if (!param.isVarArgs() && (focalMethodArg.asArrayType().arrayLevel() != param.getType().asArrayType().getArrayLevel())) {
                         continue;
                     }
                 }
                 // Get the type of the i-th parameter of the current candidate method, as a string
                 String paramTypeName = param.getTypeAsString();
                 // Compare the parameters type names
-                if (focalMethodTypeName.contains(paramTypeName.replaceAll("List|\\[\\]|<|>", ""))) {
-                    // If the type names corresponds, increment the number of parameters in common
-                    paramsTypesInCommon += 1;
+                if (focalMethodTypeName.contains(paramTypeName.replaceAll("<.*?>|List|\\[\\]|<|>", ""))) {
+                    // Pattern to capture content within < and >
+                    Pattern pattern = Pattern.compile("<(.*?)>");
+                    Matcher matcherFocalMethod = pattern.matcher(focalMethodTypeName);
+                    if (matcherFocalMethod.find()) {
+                        String genericTypeFocalMethod = matcherFocalMethod.group(1); // Save the captured content
+                        Matcher matcherParam = pattern.matcher(paramTypeName);
+
+                        if (genericTypeFocalMethod.equals("?") || genericTypeFocalMethod.length() == 1) {
+                            paramsTypesInCommon += 1;
+                        } else {
+                            if (matcherParam.find()) {
+                                String genericTypeParam = matcherParam.group(1);
+                                if (genericTypeParam.equals("?") || genericTypeParam.length() == 1 || genericTypeFocalMethod.equals(genericTypeParam)) {
+                                    paramsTypesInCommon += 1;
+                                }
+                            } else {
+                                paramsTypesInCommon += 1;
+                            }
+                        }
+                    } else {
+                        // If the type names corresponds, increment the number of parameters in common
+                        paramsTypesInCommon += 1;
+                    }
                 }
             }
             // If the number of parameters in common with the current candidate method/constructor is
@@ -1663,9 +1686,7 @@ public class TogUtils {
         return projectName + "_" + bugNumber;
     }
 
-    private static List<String> getAllTestsFromFile(Path testFile, String bugNumber) {
-        String fullyQualifiedName = getSubstringBetweenWords(testFile.toString(), bugNumber + "/", ".java")
-                .replaceAll("/", ".");
+    private static List<String> getAllTestsFromFile(Path testFile, String fullyQualifiedClassName, String bugNumber) {
         CompilationUnit cu;
         try {
             cu = StaticJavaParser.parse(testFile);
@@ -1679,27 +1700,25 @@ public class TogUtils {
                 .toList();
         return methodNames
                 .stream()
-                .map(m -> fullyQualifiedName + "::" + m)
+                .map(m -> fullyQualifiedClassName + "_ESTest::" + m)
                 .collect(Collectors.toList());
     }
 
-    private static Map<String, List<String>> getAllTests(Path testDir) {
+    private static Map<String, List<String>> getAllTests(Path testDir, String fullyQualifiedClassName, String projectId, String bugId) {
         Map<String, List<String>> allTests = new HashMap<>();
         try (Stream<Path> walk = Files.walk(testDir)) {
             walk
                     .filter(p -> !Files.isDirectory(p) && !FileUtils.isScaffolding(p))
                     .forEach(p -> {
-                        String bugKey = getBugKeyFromTestPath(p);
-                        String bugNumber = getSubstringBetweenWords(bugKey, "_", null);
-                        List<String> bugTests = getAllTestsFromFile(p, bugNumber);
-                        if (allTests.containsKey(bugKey)) {
-                            // group tests from all modified classes of a bug
-                            List<String> otherTests = allTests.get(bugKey);
-                            otherTests.addAll(bugTests);
-                            allTests.put(bugKey, otherTests);
-                        } else {
-                            allTests.put(bugKey, bugTests);
+                        String bugKey = String.format("%s_%s", projectId, bugId);
+                        if (!allTests.containsKey(bugKey)) {
+                            allTests.put(bugKey, new ArrayList<>());
                         }
+                        String bugNumber = getSubstringBetweenWords(bugKey, "_", null);
+                        List<String> bugTests = getAllTestsFromFile(p, fullyQualifiedClassName, bugNumber);
+                        List<String> otherTests = allTests.get(bugKey);
+                        otherTests.addAll(bugTests);
+                        allTests.put(bugKey, otherTests);
                     });
         } catch (IOException e) {
             throw new Error("Unable to traverse directory " + testDir, e);
@@ -1787,15 +1806,21 @@ public class TogUtils {
      * generated by a TOG for the Defects4J database.
      *
      * @param tog a TOG
+     * @param fullyQualifiedClassName the fully qualified name of the class under test
+     * @param projectId the project identifier
+     * @param bugId the bug identifier
      * @param testDir test suite directory
      * @param resultsDir test output directory
      */
     public static void generateDefects4JOutput(
             TogType tog,
+            String fullyQualifiedClassName,
+            String projectId,
+            String bugId,
             Path testDir,
             Path resultsDir
     ) {
-        Map<String, List<String>> allTests = getAllTests(testDir);
+        Map<String, List<String>> allTests = getAllTests(testDir, fullyQualifiedClassName, projectId, bugId);
         Map<String, List<String>> buggyFailingTests = getFailingTests(resultsDir, true);
         Map<String, List<String>> fixedFailingTests = getFailingTests(resultsDir, false);
         Map<String, List<String>> invalidTests = getInvalidTests(resultsDir);

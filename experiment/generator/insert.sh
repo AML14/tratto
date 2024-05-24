@@ -39,24 +39,47 @@ while IFS=, read -r project_id bug_id modified_classes; do
       tog_fqn_output="${tog_project_bug_output}/${fqn_path}"
       if [ ! -d "$tog_fqn_output" ]; then
         mkdir -p "$tog_fqn_output"
+      else
+        if [ -d "${d4j_fqn_output}/${tog}-tests" ]; then
+          rm -r "${d4j_fqn_output}/${tog}-tests"
+        fi
+        if [ -d "${d4j_fqn_output}/${tog}-test-suite" ]; then
+          rm -r "${d4j_fqn_output}/${tog}-test-suite"
+        fi
+        if [ -f "${d4j_fqn_output}/${tog}_defects4joutput.json" ]; then
+          rm "${d4j_fqn_output}/${tog}_defects4joutput.json"
+        fi
+        rm -r "$tog_fqn_output"
+        mkdir -p "$tog_fqn_output"
       fi
-      mv "$d4j_fqn_output"/* "$tog_fqn_output"
+      cp -r "$d4j_fqn_output"/* "$tog_fqn_output"
       prefix_path="${tog_fqn_output}/evosuite-prefixes"
       oracle_path="${tog_fqn_output}/${tog}-oracles"
       src_path="${project_dir}/${src_rel_path}"
+      tog_tests_path="${tog_fqn_output}/${tog}-tests/$(dirname ${fqn_path})"
+      output_test_suite_path="${tog_fqn_output}/${tog}-test-suite"
+      if [ ! -d "$output_test_suite_path" ]; then
+        mkdir -p "$output_test_suite_path"
+      fi
       # Insert oracles
       if [ "$tog" != "baseline" ]; then
-        echo "source path: ${src_path}"
         sdk use java "$JAVA17"
-        java -cp "${classpath}" -jar "${EXPERIMENT_JAR}" "insert_oracles" "${prefix_path}" "${oracle_path}" "${src_path}" "${classpath}:${external_classpath}"
+        java -cp "${classpath}:${external_classpath}" -jar "${EXPERIMENT_JAR}" "insert_oracles" "${prefix_path}" "${oracle_path}" "${src_path}" "${classpath}:${external_classpath}"
+        cp -r "${tog_fqn_output}/${tog}-tests" "${d4j_fqn_output}"
+        if [ ! -d "$tog_tests_path" ]; then
+          mkdir -p "$tog_tests_path"
+        fi
+        for file in "${tog_fqn_output}/${tog}-tests"/*; do
+          if [ -f "$file" ]; then
+            mv "$file" "${tog_tests_path}"
+          fi
+        done
       else
         echo "Skipping oracle insertion in test prefixes for baseline"
-        baseline_tests_path="${tog_fqn_output}/${tog}-tests"
-        output_test_suite_path="${tog_fqn_output}/${tog}-test-suite"
-        mkdir -p "$baseline_tests_path"
-        mkdir -p "$output_test_suite_path"
-        echo "$prefix_path"
-        cp -r "${prefix_path}"/* "${baseline_tests_path}"
+        if [ ! -d "$tog_tests_path" ]; then
+          mkdir -p "$tog_tests_path"
+        fi
+        cp -r "${prefix_path}"/* "${tog_tests_path}"
       fi
       # Run tests and generate output
       if [ "$run" == "true" ]; then
@@ -66,9 +89,10 @@ while IFS=, read -r project_id bug_id modified_classes; do
         bash "${ROOT_DIR}/runner_d4j.sh" "$tog" "$project_id" "$bug_id" "${tog_fqn_output}" "${tog_fqn_output}/${tog}-test-suite"
         # Generate tests stats
         sdk use java "$JAVA17"
-        java -jar "$EXPERIMENT_JAR" generate_defects4j_output "$tog" "$target_class" "$project_id" "$bug_id" "${tog_fqn_output}/${tog}-tests" "${tog_fqn_output}/${tog}-test-suite"
+        java -jar "$EXPERIMENT_JAR" generate_defects4j_output "$tog" "$modified_class" "$project_id" "$bug_id" "${tog_fqn_output}/${tog}-tests" "${tog_fqn_output}/${tog}-test-suite"
       fi
-      cp -r "${tog_fqn_output}" "$(dirname ${d4j_fqn_output})"
+      cp -r "${tog_fqn_output}/${tog}-test-suite" "${d4j_fqn_output}"
+      cp -r "${tog_fqn_output}/${tog}_defects4joutput.json" "${d4j_fqn_output}/${tog}_defects4joutput.json"
   done
 done < "${d4j_classes_file_path}"
 echo "Experiment complete!"

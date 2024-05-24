@@ -55,14 +55,14 @@ def process(tog, root_folder, d4j_bugs_csv_path, tog_stats_path, tog_not_process
         json.dump(tog_stats, tog_stats_file, indent=4)
 
 if __name__ == '__main__':
-    if len(sys.argv) < 2:
-        print("Please provide the tog generator used")
+    if len(sys.argv) < 3:
+        print("Incorrect number of arguments. Please provide the tog generator used, and the round of test suite")
         sys.exit(1)
     tog = sys.argv[1]
-    not_processed_flag = True if len(sys.argv) > 2 and sys.argv[2] == 'not_processed' else False
-    intersection_flag = True if len(sys.argv) > 2 and sys.argv[2] == 'intersection' else False
-    # Replace 'root_folder_path' with the path to your root folder
-    root_folder_path = os.path.join(os.path.dirname(__file__), f'output_{tog}')
+    evosuite_round = sys.argv[2]
+    not_processed_flag = True if len(sys.argv) > 3 and sys.argv[2] == 'not_processed' else False
+    intersection_flag = True if len(sys.argv) > 3 and sys.argv[2] == 'intersection' else False
+    root_folder_path = os.path.join(os.path.dirname(__file__), f'output_{tog}', evosuite_round)
     d4j_bugs_csv_path = os.path.join(os.path.dirname(__file__), 'modified_classes.csv')
     tog_stats_path = os.path.join(os.path.dirname(__file__), f'{tog}_stats.json')
 

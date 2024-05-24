@@ -4,7 +4,7 @@
 # Get current directory
 current_dir=$(realpath "$(dirname "${BASH_SOURCE[@]}")")
 # Setup global variables
-source "${current_dir}/generator/utils/global_variables.sh"
+source "${current_dir}/../../utils/global_variables.sh"
 
 # argument and setup check
 if [ ! ${#} -gt 0 ]; then
@@ -73,8 +73,9 @@ while IFS=, read -r project_id bug_id modified_classes; do
     for modified_class in "${modified_classes_list[@]}"; do
         fqn_path=$(echo "$modified_class" | sed 's/\./\//g')
         evosuite_prefix_fqn_file_path="${DEFECTS4J_DIR}/defects4jprefix/src/main/${round}/evosuite-prefixes/${project_id}/${bug_id}/${fqn_path}_ESTest.java"
-        output_evosuite_prefix_path="${OUTPUT_DIR}/evosuite-prefixes"
-        output_evosuite_prefix_fqn_path="${output_evosuite_prefix_patht}/$(dirname "$fqn_path")"
+        output_methods_count_dir="${OUTPUT_DIR}/methods_count/${round}"
+        output_evosuite_prefix_path="${output_methods_count_dir}/evosuite-prefixes"
+        output_evosuite_prefix_fqn_path="${output_evosuite_prefix_path}/$(dirname ${fqn_path})"
         if [ ! -d "$output_evosuite_prefix_fqn_path" ]; then
           mkdir -p "$output_evosuite_prefix_fqn_path"
         fi
@@ -86,7 +87,7 @@ while IFS=, read -r project_id bug_id modified_classes; do
         # Count EvoSuite test methods
         echo "Counting EvoSuite test methods for class ${modified_class} - ${project_id}_${bug_id}."
         # Run the count
-        java -jar "${EXPERIMENT_JAR}" "count_test_methods" ${jars_path} ${OUTPUT_DIR} ${project_id} ${bug_id} ${modified_class}
+        java -jar "${EXPERIMENT_JAR}" "count_test_methods" ${jars_path} ${output_methods_count_dir} ${project_id} ${bug_id} ${modified_class}
         # Cleanup
         rm -r "${output_evosuite_prefix_path}"
     done
