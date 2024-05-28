@@ -1571,14 +1571,14 @@ public class TogUtils {
         int beginIdx = 0;
         int endIdx = base.length();
         if (prefix != null) {
-            beginIdx = base.indexOf(prefix);
+            beginIdx = base.lastIndexOf(prefix);
             if (beginIdx == -1) {
                 throw new Error("Unable to find delimiter \"" + prefix + "\" in: " + base);
             }
             beginIdx += prefix.length();
         }
         if (suffix != null) {
-            endIdx = base.indexOf(suffix);
+            endIdx = base.lastIndexOf(suffix);
             if (endIdx == -1) {
                 throw new Error("Unable to find delimiter \"" + suffix + "\" in: " + base);
             }
@@ -1872,7 +1872,7 @@ public class TogUtils {
         Map<String, List<String>> buggyFailingTests = getFailingTests(resultsDir, true, false);
         Map<String, List<String>> buggyFailingAssertionTests = getFailingTests(resultsDir, true, true);
         Map<String, List<String>> fixedFailingTests = getFailingTests(resultsDir, false, false);
-        Map<String, List<String>> fixedFailingAssertionTests = getFailingTests(resultsDir, false, false);
+        Map<String, List<String>> fixedFailingAssertionTests = getFailingTests(resultsDir, false, true);
         Map<String, List<String>> invalidTests = getInvalidTests(resultsDir);
         Defects4JOutput defects4JOutput = getDefects4JOutput(
                 tog,
