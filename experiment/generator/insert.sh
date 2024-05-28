@@ -9,6 +9,7 @@ tog=${1}
 round=${2}
 d4j_classes_file_path=${3}
 run=${4-false}
+evosuite_assertions=${5-false}
 
 # Read the CSV file line by line and split into project_id, bug_id, and modified_classes fields
 while IFS=, read -r project_id bug_id modified_classes; do
@@ -54,6 +55,7 @@ while IFS=, read -r project_id bug_id modified_classes; do
       fi
       cp -r "$d4j_fqn_output"/* "$tog_fqn_output"
       prefix_path="${tog_fqn_output}/evosuite-prefixes"
+      simple_tests_path="${tog_fqn_output}/evosuite-simple-tests"
       oracle_path="${tog_fqn_output}/${tog}-oracles"
       src_path="${project_dir}/${src_rel_path}"
       tog_tests_path="${tog_fqn_output}/${tog}-tests/$(dirname ${fqn_path})"
@@ -62,7 +64,7 @@ while IFS=, read -r project_id bug_id modified_classes; do
         mkdir -p "$output_test_suite_path"
       fi
       # Insert oracles
-      if [ "$tog" != "baseline" ]; then
+      if [[ "$tog" != "baseline" && "$tog" != "evosuite" ]]; then
         sdk use java "$JAVA17"
         java -cp "${classpath}:${external_classpath}" -jar "${EXPERIMENT_JAR}" "insert_oracles" "${prefix_path}" "${oracle_path}" "${src_path}" "${classpath}:${external_classpath}"
         cp -r "${tog_fqn_output}/${tog}-tests" "${d4j_fqn_output}"
@@ -79,7 +81,12 @@ while IFS=, read -r project_id bug_id modified_classes; do
         if [ ! -d "$tog_tests_path" ]; then
           mkdir -p "$tog_tests_path"
         fi
-        cp -r "${prefix_path}"/* "${tog_tests_path}"
+        if [ "$tog" == "baseline" ]; then
+          cp -r "${prefix_path}"/* "${tog_tests_path}"
+        else
+          cp "$prefix_path"/*_ESTest_scaffolding.java "${simple_tests_path}"
+          cp -r "${simple_tests_path}"/* "${tog_tests_path}"
+        fi
       fi
       # Run tests and generate output
       if [ "$run" == "true" ]; then
