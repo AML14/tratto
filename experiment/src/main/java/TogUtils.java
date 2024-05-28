@@ -46,18 +46,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.rmi.UnexpectedException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.plumelib.util.CollectionsPlume.mapList;
 
@@ -1600,12 +1594,29 @@ public class TogUtils {
      * </pre>
      *
      * @param logPath the path to a bug detection log
+     * @param assertionFailure true if the retrieval of the failing tests must be limited to assertion failures
      * @return all failing tests for the bug
      */
-    private static List<String> getFailingTestsFromLog(Path logPath) {
-        return Arrays.stream(FileUtils.readString(logPath)
-                        .split("\n"))
-                .toList()
+    private static List<String> getFailingTestsFromLog(Path logPath, boolean assertionFailure) {
+        List<String> logLines = Arrays.stream(FileUtils.readString(logPath).split("\n")).toList();
+        if (logLines.size() == 0) {
+            return new ArrayList<>();
+        }
+        if (assertionFailure) {
+            AtomicInteger logLineIdx = new AtomicInteger(0);
+            List<Integer> assertionFailingTestIdxs = logLines
+                    .stream()
+                    .map(line -> new AbstractMap.SimpleEntry<>(logLineIdx.getAndIncrement(), line))
+                    .filter(entry -> entry.getValue().equals("junit.framework.AssertionFailedError"))
+                    .map(entry -> entry.getKey() - 1)
+                    .collect(Collectors.toList());
+            return logLines
+                    .stream()
+                    .filter(l -> assertionFailingTestIdxs.contains(logLines.indexOf(l)))
+                    .map(l -> getSubstringBetweenWords(l, "--- ", null))
+                    .collect(Collectors.toList());
+        }
+        return logLines
                 .stream()
                 .filter(l -> l.startsWith("---"))
                 .map(l -> getSubstringBetweenWords(l, "--- ", null))
@@ -1614,7 +1625,8 @@ public class TogUtils {
 
     private static Map<String, List<String>> getFailingTests(
             Path resultsDir,
-            boolean isBuggyVersion
+            boolean isBuggyVersion,
+            boolean assertionFailure
     ) {
         Map<String, List<String>> allFailingTests = new HashMap<>();
         String bugSuffix = isBuggyVersion ? "b" : "f";
@@ -1626,7 +1638,7 @@ public class TogUtils {
                         String projectName = getSubstringBetweenWords(p.toString(), "bug_detection_log/", "/evosuite");
                         String bugNumber = getSubstringBetweenWords(p.toString(), "evosuite/", logSuffix);
                         String bugKey = projectName + "_" + bugNumber;
-                        List<String> failingTests = getFailingTestsFromLog(p);
+                        List<String> failingTests = getFailingTestsFromLog(p, assertionFailure);
                         allFailingTests.put(bugKey, failingTests);
                     });
         } catch (IOException e) {
@@ -1637,11 +1649,20 @@ public class TogUtils {
 
     private static List<String> getInvalidTestsFromLog(Path logPath) {
         List<String> logLines = Arrays.stream(FileUtils.readString(logPath).split("\n")).toList();
+
+        if(logLines.size() == 0) {
+            return new ArrayList<>();
+        }
+
+        AtomicInteger logLineIdx = new AtomicInteger(0);
+
         List<Integer> invalidTestIdxs = logLines
                 .stream()
-                .filter(l -> l.equals("java.lang.Error: TrattoError: Precondition failed, invalid test."))
-                .map(l -> logLines.indexOf(l) - 1)
-                .toList();
+                .map(line -> new AbstractMap.SimpleEntry<>(logLineIdx.getAndIncrement(), line))
+                .filter(entry -> entry.getValue().equals("java.lang.Error: TrattoError: Precondition failed, invalid test."))
+                .map(entry -> entry.getKey() - 1)
+                .collect(Collectors.toList());
+
         return logLines
                 .stream()
                 .filter(l -> invalidTestIdxs.contains(logLines.indexOf(l)))
@@ -1686,9 +1707,7 @@ public class TogUtils {
         return projectName + "_" + bugNumber;
     }
 
-    private static List<String> getAllTestsFromFile(Path testFile, String bugNumber) {
-        String fullyQualifiedName = getSubstringBetweenWords(testFile.toString(), bugNumber + "/", ".java")
-                .replaceAll("/", ".");
+    private static List<String> getAllTestsFromFile(Path testFile, String fullyQualifiedClassName, String bugNumber) {
         CompilationUnit cu;
         try {
             cu = StaticJavaParser.parse(testFile);
@@ -1702,27 +1721,25 @@ public class TogUtils {
                 .toList();
         return methodNames
                 .stream()
-                .map(m -> fullyQualifiedName + "::" + m)
+                .map(m -> fullyQualifiedClassName + "_ESTest::" + m)
                 .collect(Collectors.toList());
     }
 
-    private static Map<String, List<String>> getAllTests(Path testDir) {
+    private static Map<String, List<String>> getAllTests(Path testDir, String fullyQualifiedClassName, String projectId, String bugId) {
         Map<String, List<String>> allTests = new HashMap<>();
         try (Stream<Path> walk = Files.walk(testDir)) {
             walk
                     .filter(p -> !Files.isDirectory(p) && !FileUtils.isScaffolding(p))
                     .forEach(p -> {
-                        String bugKey = getBugKeyFromTestPath(p);
-                        String bugNumber = getSubstringBetweenWords(bugKey, "_", null);
-                        List<String> bugTests = getAllTestsFromFile(p, bugNumber);
-                        if (allTests.containsKey(bugKey)) {
-                            // group tests from all modified classes of a bug
-                            List<String> otherTests = allTests.get(bugKey);
-                            otherTests.addAll(bugTests);
-                            allTests.put(bugKey, otherTests);
-                        } else {
-                            allTests.put(bugKey, bugTests);
+                        String bugKey = String.format("%s_%s", projectId, bugId);
+                        if (!allTests.containsKey(bugKey)) {
+                            allTests.put(bugKey, new ArrayList<>());
                         }
+                        String bugNumber = getSubstringBetweenWords(bugKey, "_", null);
+                        List<String> bugTests = getAllTestsFromFile(p, fullyQualifiedClassName, bugNumber);
+                        List<String> otherTests = allTests.get(bugKey);
+                        otherTests.addAll(bugTests);
+                        allTests.put(bugKey, otherTests);
                     });
         } catch (IOException e) {
             throw new Error("Unable to traverse directory " + testDir, e);
@@ -1754,13 +1771,12 @@ public class TogUtils {
         return trueFalse + positiveNegative;
     }
 
-    private static Defects4JOutput getDefects4JOutput(
-            TogType tog,
+    private static Defects4JOutput.Stats computeDefects4JStats (
             Map<String, List<String>> allTests,
             Map<String, List<String>> allBuggyFailingTests,
             Map<String, List<String>> allFixedFailingTests,
             Map<String, List<String>> allInvalidTests
-    ) {
+            ) {
         int numBugsFound = 0;
         int numTruePositive = 0;
         int numFalsePositive = 0;
@@ -1794,8 +1810,8 @@ public class TogUtils {
                 numBugsFound += 1;
             }
         }
-        return new Defects4JOutput(
-                tog.toString(),
+
+        return new Defects4JOutput.Stats(
                 numBugsFound,
                 numTruePositive,
                 numFalsePositive,
@@ -1805,28 +1821,66 @@ public class TogUtils {
         );
     }
 
+    private static Defects4JOutput getDefects4JOutput(
+            TogType tog,
+            Map<String, List<String>> allTests,
+            Map<String, List<String>> overallBuggyFailingTests,
+            Map<String, List<String>> assertionBuggyFailingTests,
+            Map<String, List<String>> overallFixedFailingTests,
+            Map<String, List<String>> assertionFixedFailingTests,
+            Map<String, List<String>> invalidTests
+    ) {
+        Defects4JOutput.Stats overallStats = computeDefects4JStats(
+                allTests,
+                overallBuggyFailingTests,
+                overallFixedFailingTests,
+                invalidTests
+        );
+        Defects4JOutput.Stats assertionStats = computeDefects4JStats(
+                allTests,
+                assertionBuggyFailingTests,
+                assertionFixedFailingTests,
+                invalidTests
+        );
+        return new Defects4JOutput(
+                tog.name(),
+                overallStats,
+                assertionStats
+        );
+    }
+
     /**
      * Generates the Defects4JOutput record to get statistics for a test suite
      * generated by a TOG for the Defects4J database.
      *
      * @param tog a TOG
+     * @param fullyQualifiedClassName the fully qualified name of the class under test
+     * @param projectId the project identifier
+     * @param bugId the bug identifier
      * @param testDir test suite directory
      * @param resultsDir test output directory
      */
     public static void generateDefects4JOutput(
             TogType tog,
+            String fullyQualifiedClassName,
+            String projectId,
+            String bugId,
             Path testDir,
             Path resultsDir
     ) {
-        Map<String, List<String>> allTests = getAllTests(testDir);
-        Map<String, List<String>> buggyFailingTests = getFailingTests(resultsDir, true);
-        Map<String, List<String>> fixedFailingTests = getFailingTests(resultsDir, false);
+        Map<String, List<String>> allTests = getAllTests(testDir, fullyQualifiedClassName, projectId, bugId);
+        Map<String, List<String>> buggyFailingTests = getFailingTests(resultsDir, true, false);
+        Map<String, List<String>> buggyFailingAssertionTests = getFailingTests(resultsDir, true, true);
+        Map<String, List<String>> fixedFailingTests = getFailingTests(resultsDir, false, false);
+        Map<String, List<String>> fixedFailingAssertionTests = getFailingTests(resultsDir, false, false);
         Map<String, List<String>> invalidTests = getInvalidTests(resultsDir);
         Defects4JOutput defects4JOutput = getDefects4JOutput(
                 tog,
                 allTests,
                 buggyFailingTests,
+                buggyFailingAssertionTests,
                 fixedFailingTests,
+                fixedFailingAssertionTests,
                 invalidTests
         );
         Path defects4JOutputPath = testDir.resolveSibling(tog.toString().toLowerCase() + "_defects4joutput.json");

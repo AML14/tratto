@@ -9,7 +9,7 @@ public enum TogType {
     JDOCTOR,
     TOGA,
     TRATTO,
-
+    EVOSUITE,
     BASELINE;
 
     /** A list of all supported axiomatic test oracle generators. */
