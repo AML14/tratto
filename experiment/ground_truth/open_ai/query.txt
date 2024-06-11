@@ -1,0 +1,165 @@
+
+
+Given a Java method and the related docstring (if available), generate all the possible test oracles in the form of a preconditions, normal postconditions and exceptional postconditions.
+Preconditions, like "param1 cannot be null", predicate on the validity of the test input. Postconditions, like "the output must be positive", and exceptional conditions, like "if some argument is null, an exception is thrown", predicate on the expected behavior of a program.
+
+Q:
+
+"""
+/**
+ * Construct a vector from part of a array.
+ * 
+ * @param field Field to which the elements belong.
+ * @param d Array.
+ * @param pos Position of the first entry.
+ * @param size Number of entries to copy.
+ * @throws NullArgumentException upon detecting {@code d} as null.
+ * @throws NumberIsTooLargeException if the size of {@code d} is less
+ * than {@code pos + size}.
+ */
+public ArrayFieldVector(Field<T> field, T[] d, int pos, int size) throws NullArgumentException, NumberIsTooLargeException{
+    MathUtils.checkNotNull(d);
+    if (d.length < pos + size) {
+        throw new NumberIsTooLargeException(pos + size, d.length, true);
+    }
+    if (d.length > 100) {
+	throw new ExceededVectorLengthException("Array d too long.");
+    }
+    this.field = field;
+    data = MathArrays.buildArray(field, size);
+    System.arraycopy(d, pos, data, 0, size);
+}
+"""
+
+A: Let's think step by step. The docstring of the method contains Javadoc tags that can be translated into test oracles.
+The Javadoc tag `@throws NullArgumentException upon detecting {@code d} as null.` provides a useful information to generate: 
+1. A precondition on the argument `d`: `d != null;`
+2. An exceptional postcondition on the argument `d`: `d == null;`
+The Javadoc tag `@throws NumberIsTooLargeException if the size of {@code d} is less than {@code pos + size}.` can be mapped into:
+3. A precondition on the arguments `d`, `pos`, and `size`: `d.length >= pos + size;`
+4. An exceptional condition if the precondition is not satisfied: `d.length < pos + size;`
+Finally, analyzing the code there is an exception that is thrown if the length of the array `d` exceed the length 100. 
+It is possible to extract a precondition and an exceptional condition from the code, even if the corresponding Javadoc description is missing.
+  5. Precondition: `d <= 100;`
+  6. Exceptional condition: `d > 100;`
+In total, 6 test oracles can be generated from the analysis of the method source code and the Javadoc:
+
+"""
+{
+	"pre-conditions": [ "d != null;", "d.length >= pos + size;", "d <= 100;" ],
+	"post-conditions": [ ],
+	"exceptional-conditions" : [ "d == null;", "d.length < pos + size;", "d > 100;" ]
+}
+"""
+
+Q:
+
+"""
+/**
+ * ThisReturns a {@code Complex} whose value is {@code (this / divisor)}.
+ * Implements the definitional formula
+ * <pre>
+ *  <code>
+ *    a + bi          ac + bd + (bc - ad)i
+ *    ----------- = -------------------------
+ *    c + di         c<sup>2</sup> + d<sup>2</sup>
+ *  </code>
+ * </pre>
+ * <p>
+ * {@code Infinite} and {@code NaN} values are handled according to the
+ * following rules, applied in the order presented:
+ * <ul>
+ *  <li>If either {@code this} or {@code divisor} has a {@code NaN} value
+ *   in either part, {@link #NaN} is returned.
+ *  </li>
+ *  <li>If {@code divisor} equals {@link #ZERO}, {@link #NaN} is returned.
+ *  </li>
+ *  <li>If {@code this} and {@code divisor} are both infinite,
+ *   {@link #NaN} is returned.
+ *  </li>
+ *  <li>If {@code this} is finite (i.e., has no {@code Infinite} or
+ *   {@code NaN} parts) and {@code divisor} is infinite (one or both parts
+ *   infinite), {@link #ZERO} is returned.
+ *  </li>
+ *  <li>If {@code this} is infinite and {@code divisor} is finite,
+ *   {@code NaN} values are returned in the parts of the result if the
+ *   {@link java.lang.Double} rules applied to the definitional formula
+ *   force {@code NaN} results.
+ *  </li>
+ * </ul>
+ *
+ * @param divisor Value by which this {@code Complex} is to be divided.
+ * @return {@code this / divisor}.
+ * @throws NullArgumentException if {@code divisor} is {@code null}.
+ */
+public Complex divide(Complex divisor) throws NullArgumentException {
+    MathUtils.checkNotNull(divisor);
+    if (this.isNaN() || divisor.isNaN()) {
+        return NaN;
+    }
+
+    final double c = divisor.getReal();
+    final double d = divisor.getImaginary();
+    if (c == 0.0 && d == 0.0) {
+        return NaN;
+    }
+
+    if (divisor.isInfinite() && !isInfinite()) {
+        return ZERO;
+    }
+
+    if (FastMath.abs(c) < FastMath.abs(d)) {
+        double q = c / d;
+        double denominator = c * q + d;
+        return createComplex((real * q + imaginary) / denominator,
+            (imaginary * q - real) / denominator);
+    } else {
+        double q = d / c;
+        double denominator = d * q + c;
+        return createComplex((imaginary * q + real) / denominator,
+            (imaginary - real * q) / denominator);
+    }
+}
+
+A: Let's think step by step. The `@param` Javadoc tag describes the meaning of the argument `divisor` while the `@throws` Javadoc tag imposes a condition on the same argument, form which it is possible to extract a precondition and an exceptional condition:
+1. precondition: `d != null;`
+2. exceptional postcondition: `d == null`
+The `@return` Javadoc tag defines the regular value returned by the method, while the unstructured part of the Javadoc lists the conditions that, if satisfies, impose the method to return a different value (NaN or Complex.ZERO). The conditions are translated into `if` statements within the code. The following normal postconditions can be defined:
+3. `(this.isNaN() || divisor.isNaN()) || (divisor.getReal() == 0.0 && divisor.getImaginary() == 0.0) ? methodResultID.isNaN() : true;`
+4. `divisor.isInfinite() && (this.isInfinite())==false ? methodResultID == this.ZERO : true;`
+In total, 4 test oracles can be generated from the analysis of the method source code and the Javadoc:
+
+"""
+{
+	"pre-conditions": [ "d != null;" ],
+    "exceptional-conditions" : [ "d == null;" ],
+	"post-conditions": [ "(this.isNaN() || divisor.isNaN()) || (divisor.getReal() == 0.0 && divisor.getImaginary() == 0.0) ? methodResultID.isNaN() : true;", "divisor.isInfinite() && (this.isInfinite())==false ? methodResultID == Complex.ZERO : true;" ]
+}
+"""
+
+Q:
+
+"""
+/**
+ * Change an entry in the specified row and column.
+ *
+ * @param row Row location of entry to be set.
+ * @param column Column location of entry to be set.
+ * @param factor Multiplication factor for the current matrix entry
+ * in {@code (row,column)}
+ * @throws OutOfRangeException if the row or column index is not valid.
+ * @since 2.0
+ */
+void multiplyEntry(int row, int column, T factor) throws OutOfRangeException;
+"""
+
+A: Let's think step by step. The Javadoc of the method contains generic information that cannot be mapped into test oracles.
+The method refers to an abstract class or an interface: it is declared, but not implemented, therefore there is no code that can be analyzed to extract test oracles.
+No test oracles can be generated from the given Javadoc and the method under test.
+
+Q:
+
+<OPEN_AI_QUERY_METHOD>
+
+A:
+

@@ -59,7 +59,9 @@ public class Tratto {
         logger.info("Starting Tratto...");
         logger.info("Starting up ML models local server...");
         // TODO: Start up ML models local server
-        logger.info("Generating oracles for: \n\tClass: {}\n\tProject source: {}\n\tProject JAR: {}", classPath, projectSourcePath, projectJarPath);
+        logger.info("Generating oracles for: \n\tFully Qualified ClassName: {} \n\tClasspath: {}\n\tProject source: {}\n\tProject JAR: {}", fullyQualifiedClassName, classPath, projectSourcePath, projectJarPath);
+
+        long startTimeClass = System.currentTimeMillis();
 
         // Configure JavaParser to resolve symbols from project under test
         JavaParserUtils.updateSymbolSolver(projectJarPath);
@@ -76,6 +78,7 @@ public class Tratto {
         // Update each OracleDatapoint until the oracle is complete (ends with ';')
         for (OracleDatapoint oracleDatapoint : oracleDatapoints) {
             List<String> oracleSoFarTokens = new ArrayList<>();
+            long startTimeOracle = System.currentTimeMillis();
 
             logger.info("-------------------------------------------------------------------------");
             logger.info("Generating oracle for:\n\tMethod: {}\n\tJavadoc tag: {}\n\tOracle type: {}",
@@ -100,9 +103,18 @@ public class Tratto {
                     break;
                 }
             }
+            long endTimeOracle = System.currentTimeMillis();
+            long durationOracle = endTimeOracle - startTimeOracle;
+
+            logger.info("Oracle completed in: " + durationOracle + " milliseconds");
             logger.info("Final oracle: {}", oracleDatapoint.getOracle());
             logger.info("-------------------------------------------------------------------------");
         }
+
+        long endTimeClass = System.currentTimeMillis();
+        long durationClass = endTimeClass - startTimeClass;
+
+        logger.info("Class completed in: " + durationClass + " milliseconds");
 
         // Save final oracleDatapoints to file
         File oracleDatapointsFile = new File(oracleDatapointsPath.toString());

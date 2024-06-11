@@ -14,5 +14,6 @@ public enum OperationType {
     GENERATE_ORACLE_OUTPUT,
     /** Converts Defects4J run_bug_detection output into a {@link Defects4JOutput}. */
     GENERATE_DEFECTS4J_OUTPUT,
-    COUNT_TEST_METHODS
+    COUNT_TEST_METHODS,
+    GENERATE_OPEN_AI_GROUND_TRUTH
 }

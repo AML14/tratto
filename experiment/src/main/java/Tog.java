@@ -113,6 +113,11 @@ public class Tog {
                     args[4],
                     args[5]
             );
+            case GENERATE_OPEN_AI_GROUND_TRUTH -> GroundTruthMethodExtractor.generateProjectMethodsJSON(
+                    args[1],
+                    Paths.get(args[2]),
+                    Paths.get(args[3])
+            );
             default -> throw new IllegalArgumentException("Unknown operation " + operationType);
         }
     }

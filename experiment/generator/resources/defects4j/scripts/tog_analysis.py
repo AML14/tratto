@@ -3,17 +3,18 @@ import json
 import csv
 import sys
 
-def process_json_file(file_path):
+def process_json_file(file_path, stats_type):
     with open(file_path, 'r') as file:
         counter = 0
         json_data = json.load(file)
-        counter += json_data['numTruePositive']
-        counter += json_data['numFalsePositive']
-        counter += json_data['numFalseNegative']
-        counter += json_data['numTrueNegative']
+        counter += json_data[stats_type]['numTruePositive']
+        counter += json_data[stats_type]['numFalsePositive']
+        counter += json_data[stats_type]['numFalseNegative']
+        counter += json_data[stats_type]['numTrueNegative']
+        counter += json_data[stats_type]['numInvalid']
     return counter
 
-def search_and_process(tog, root_folder, d4j_bugs_csv_path, evosuite_methods_count_path, tog_methods_count_path):
+def search_and_process(tog, root_folder, d4j_bugs_csv_path, evosuite_methods_count_path, tog_methods_count_path, stats_type):
     evosuite_processed_classes_counter = 0
     evosuite_not_processed_classes_counter = 0
     evosuite_processed_methods_counter = 0
@@ -36,7 +37,7 @@ def search_and_process(tog, root_folder, d4j_bugs_csv_path, evosuite_methods_cou
             path_to_file = os.path.join(root_folder, project_name, bug_id, class_path, f"{tog}_defects4joutput.json")
             if os.path.exists(path_to_file):
                 tog_processed_classes_counter += 1
-                tog_class_methods_counter = process_json_file(path_to_file)
+                tog_class_methods_counter = process_json_file(path_to_file, stats_type)
                 with open(evosuite_methods_count_path, 'r') as evosuite_methods_file:
                     evosuite_methods_list = json.load(evosuite_methods_file)
                     flag = False
@@ -89,8 +90,9 @@ if __name__ == '__main__':
         sys.exit(1)
     tog = sys.argv[1]
     evosuite_round = sys.argv[2]
-    evosuite_methods_count_path = sys.argv[3]
-    root_folder_path = os.path.join(os.path.dirname(__file__), f'output_{tog}', evosuite_round)
+    stats_type = sys.argv[3]
+    evosuite_methods_count_path = sys.argv[4]
+    root_folder_path = os.path.join(os.path.dirname(__file__), 'output', f'{tog}', evosuite_round)
     d4j_bugs_csv_path = os.path.join(os.path.dirname(__file__), 'modified_classes.csv')
     tog_methods_count_path = os.path.join(os.path.dirname(__file__), f'{tog}_methods_count.json')
-    search_and_process(tog, root_folder_path, d4j_bugs_csv_path, evosuite_methods_count_path, tog_methods_count_path)
+    search_and_process(tog, root_folder_path, d4j_bugs_csv_path, evosuite_methods_count_path, tog_methods_count_path, stats_type)

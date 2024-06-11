@@ -9,7 +9,7 @@ source "${current_dir}/generator/utils/global_variables.sh"
 # Tog name
 tog=${1}
 # Server port
-server_port="${4-${SERVER_PORT}}"
+server_port="${2-${SERVER_PORT}}"
 # Setup ground truth projects folder
 bash "${UTILS_DIR}/ground_truth_setup.sh"
 # Read the CSV file line by line performing the experiments on each project

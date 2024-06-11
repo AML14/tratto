@@ -29,12 +29,16 @@ fi
 # Setup jdoctor to perform the experiment
 echo "jdoctor.sh: Setup JDoctor project"
 bash "${ROOT_DIR}/generator/utils/jdoctor_setup.sh"
+start_task=$(date +%s%3N)
 # Execute experiments with jdoctor
 java -jar "$JDOCTOR_JAR" \
   --target-class "${target_class}" \
   --source-dir "${src_dir}" \
   --class-dir "${classpath}" \
   --condition-translator-output "${jdoctor_output_file}"
+end_task=$(date +%s%3N)
+duration_task=$(( end_task - start_task ))
+echo "jdoctor.sh: Jdoctor task completed in: $duration_task"
 sdk use java "17.0.8-oracle"
 # Map jdoctor output to OracleOutput datapoints
 echo "jdoctor.sh: Map oracles generated with Jdoctor into OracleOutputs."

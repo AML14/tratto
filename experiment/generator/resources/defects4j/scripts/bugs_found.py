@@ -9,7 +9,7 @@ def must_be_processed(tog_not_processed_data, project_name, bug_id, class_name):
             return False
     return True
 
-def process(tog, root_folder, d4j_bugs_csv_path, tog_stats_path, tog_not_processed_paths=[]):
+def process(tog, root_folder, d4j_bugs_csv_path, tog_stats_path, stats_type, tog_not_processed_paths=[]):
     tog_processed_classes_counter = 0
     tog_not_processed_classes_counter = 0
     tog_processed_methods_counter = 0
@@ -20,7 +20,8 @@ def process(tog, root_folder, d4j_bugs_csv_path, tog_stats_path, tog_not_process
         "numTruePositive": 0,
         "numFalsePositive": 0,
         "numFalseNegative": 0,
-        "numTrueNegative": 0
+        "numTrueNegative": 0,
+        "numInvalid": 0
     }
 
     for tog_not_processed_path in tog_not_processed_paths:
@@ -42,11 +43,12 @@ def process(tog, root_folder, d4j_bugs_csv_path, tog_stats_path, tog_not_process
                 tog_processed_classes_counter += 1
                 with open(path_to_file, 'r') as file:
                     json_data = json.load(file)
-                    tog_stats['numBugsFound'] += json_data['numBugsFound']
-                    tog_stats['numTruePositive'] += json_data['numTruePositive']
-                    tog_stats['numFalsePositive'] += json_data['numFalsePositive']
-                    tog_stats['numFalseNegative'] += json_data['numFalseNegative']
-                    tog_stats['numTrueNegative'] += json_data['numTrueNegative']
+                    tog_stats['numBugsFound'] += json_data[stats_type]['numBugsFound']
+                    tog_stats['numTruePositive'] += json_data[stats_type]['numTruePositive']
+                    tog_stats['numFalsePositive'] += json_data[stats_type]['numFalsePositive']
+                    tog_stats['numFalseNegative'] += json_data[stats_type]['numFalseNegative']
+                    tog_stats['numTrueNegative'] += json_data[stats_type]['numTrueNegative']
+                    tog_stats['numInvalid'] += json_data[stats_type]['numInvalid']
             else:
                 print(f'File not found in {tog}: {path_to_file}')
                 tog_not_processed_classes_counter += 1
@@ -60,9 +62,10 @@ if __name__ == '__main__':
         sys.exit(1)
     tog = sys.argv[1]
     evosuite_round = sys.argv[2]
-    not_processed_flag = True if len(sys.argv) > 3 and sys.argv[2] == 'not_processed' else False
-    intersection_flag = True if len(sys.argv) > 3 and sys.argv[2] == 'intersection' else False
-    root_folder_path = os.path.join(os.path.dirname(__file__), f'output_{tog}', evosuite_round)
+    stats_type = sys.argv[3]
+    not_processed_flag = True if len(sys.argv) > 4 and sys.argv[4] == 'not_processed' else False
+    intersection_flag = True if len(sys.argv) > 4 and sys.argv[4] == 'intersection' else False
+    root_folder_path = os.path.join(os.path.dirname(__file__), f'output', f"{tog}", evosuite_round)
     d4j_bugs_csv_path = os.path.join(os.path.dirname(__file__), 'modified_classes.csv')
     tog_stats_path = os.path.join(os.path.dirname(__file__), f'{tog}_stats.json')
 
@@ -75,4 +78,4 @@ if __name__ == '__main__':
         tog_not_processed_path = [os.path.join(os.path.dirname(__file__), filename) for filename in matching_files]
     else:
         tog_not_processed_path = []
-    process(tog, root_folder_path, d4j_bugs_csv_path, tog_stats_path, tog_not_processed_path)
+    process(tog, root_folder_path, d4j_bugs_csv_path, tog_stats_path, stats_type, tog_not_processed_path)
