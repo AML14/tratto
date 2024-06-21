@@ -1607,7 +1607,7 @@ public class TogUtils {
             List<Integer> assertionFailingTestIdxs = logLines
                     .stream()
                     .map(line -> new AbstractMap.SimpleEntry<>(logLineIdx.getAndIncrement(), line))
-                    .filter(entry -> entry.getValue().equals("junit.framework.AssertionFailedError"))
+                    .filter(entry -> entry.getValue().startsWith("junit.framework.AssertionFailedError"))
                     .map(entry -> entry.getKey() - 1)
                     .collect(Collectors.toList());
             return logLines

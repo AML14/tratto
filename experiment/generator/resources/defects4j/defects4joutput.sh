@@ -2,7 +2,7 @@
 # This script generates oracles for all bugs in Defects4J for a given TOG.
 current_dir=$(realpath "$(dirname "${BASH_SOURCE[0]}")")
 # Setup global variables
-source "${current_dir}/utils/global_variables.sh"
+source "${current_dir}/../../utils/global_variables.sh"
 # setup sdkman
 source "${UTILS_DIR}/init_sdkman.sh"
 tog=${1}
