@@ -1,7 +1,7 @@
 ## TRATTO
 
 [![Build Status](https://dev.azure.com/AML14/tratto/_apis/build/status%2FAML14.tratto?branchName=main)](https://dev.azure.com/AML14/tratto/_build/latest?definitionId=1&branchName=main)
-![Azure DevOps coverage](https://img.shields.io/azure-devops/coverage/AML14/tratto/1)
+<!--![Azure DevOps coverage](https://img.shields.io/azure-devops/coverage/AML14/tratto/1)-->
 
 TRATTO stands for "**TRA**nsformer-based **T**oken-by-**T**oken **O**racle generation" and is an Italian word that means “line” or “way”. TRATTO generates oracles token by token, in a grammar-directed way, but supported by a neural module to guide the search of oracles toward optimal solutions.
 
