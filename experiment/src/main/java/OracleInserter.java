@@ -1,12 +1,7 @@
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.NodeList;
-import com.github.javaparser.ast.body.CallableDeclaration;
-import com.github.javaparser.ast.body.ConstructorDeclaration;
-import com.github.javaparser.ast.body.MethodDeclaration;
-import com.github.javaparser.ast.body.Parameter;
-import com.github.javaparser.ast.body.TypeDeclaration;
-import com.github.javaparser.ast.body.VariableDeclarator;
+import com.github.javaparser.ast.body.*;
 import com.github.javaparser.ast.comments.Comment;
 import com.github.javaparser.ast.comments.LineComment;
 import com.github.javaparser.ast.expr.AssignExpr;
@@ -34,6 +29,9 @@ import com.github.javaparser.ast.stmt.TryStmt;
 import com.github.javaparser.ast.type.Type;
 import com.github.javaparser.resolution.MethodUsage;
 import com.github.javaparser.resolution.UnsolvedSymbolException;
+import com.github.javaparser.resolution.declarations.ResolvedMethodDeclaration;
+import com.github.javaparser.resolution.declarations.ResolvedParameterDeclaration;
+import com.github.javaparser.resolution.types.ResolvedReferenceType;
 import com.github.javaparser.resolution.types.ResolvedType;
 import com.github.javaparser.symbolsolver.JavaSymbolSolver;
 import com.github.javaparser.symbolsolver.javaparsermodel.declarations.JavaParserMethodDeclaration;
@@ -41,17 +39,19 @@ import com.github.javaparser.symbolsolver.resolution.typesolvers.CombinedTypeSol
 import com.github.javaparser.symbolsolver.resolution.typesolvers.JarTypeSolver;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.JavaParserTypeSolver;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.ReflectionTypeSolver;
-import data.OracleOutput;
-import data.OracleType;
-import data.TogType;
+import data.*;
+import org.javatuples.Pair;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -73,18 +73,12 @@ public class OracleInserter {
     }
 
     private static Expression getOracleExpression(Statement statement) {
-        List<MethodCallExpr> methodCallExprs = statement.findAll(MethodCallExpr.class);
-        List<ObjectCreationExpr> objectCreationExprs = statement.findAll(ObjectCreationExpr.class);
-        List<VariableDeclarationExpr> variableDeclarationExprs = statement.findAll(VariableDeclarationExpr.class);
-        if (!methodCallExprs.isEmpty()) {
-            return methodCallExprs.get(0);
-        } else if (!objectCreationExprs.isEmpty()) {
-            return objectCreationExprs.get(0);
-        } else if (!variableDeclarationExprs.isEmpty()) {
-            return variableDeclarationExprs.get(0);
-        } else {
-            return new MarkerAnnotationExpr("UnableToIdentifyOracleExpression");
+        // A method call or constructor invocation must be an instance of ExpressionStmt
+        if (!statement.isExpressionStmt()) {
+            return null;
         }
+        // Get the expression from the current statement
+        return statement.asExpressionStmt().getExpression();
     }
 
     /**
@@ -566,7 +560,7 @@ public class OracleInserter {
         Comment comment = new LineComment(" Successfully thrown exception");
         BlockStmt catchBody = new BlockStmt();
         catchBody.addOrphanComment(comment);
-        catchBody.addStatement(new ReturnStmt());
+        //catchBody.addStatement(new ReturnStmt());
         CatchClause catchClause = new CatchClause(exceptionParameter, catchBody);
         NodeList<Statement> tryBody = new NodeList<>(
                 postStmt,
@@ -738,12 +732,34 @@ public class OracleInserter {
         return simpleName;
     }
 
+    private static String getTypeAsString(Parameter param) {
+        Type paramType = param.getType();
+        String paramTypeAsString = "";
+        int arrayLevel = 0;
+        if (param.isVarArgs()) {
+            if (paramType.isTypeParameter() || removeTypeParameters(paramType.asString()).length() == 1) {
+                return "java.lang.Object...";
+            }
+            return removeTypeParameters(param.getTypeAsString() + "...");
+        }
+        if (paramType.isArrayType()) {
+            arrayLevel = paramType.getArrayLevel();
+            while (paramType.isArrayType()) {
+                paramType = paramType.asArrayType().getComponentType();
+            }
+        }
+        if (param.getType().isTypeParameter() || removeTypeParameters(paramType.asString()).length() == 1) {
+            return "java.lang.Object" + "[]".repeat(arrayLevel);
+        }
+        return removeTypeParameters(paramType.asString()) + "[]".repeat(arrayLevel);
+    }
+
     private static List<OracleOutput> getRelatedOracles(List<OracleOutput> oracles, CallableDeclaration<?> targetMethod) {
         String targetMethodName = targetMethod.getNameAsString();
         List<String> targetMethodParameters = targetMethod
                 .getParameters()
                 .stream()
-                .map(Parameter::getTypeAsString)
+                .map(OracleInserter::getTypeAsString)
                 .map(OracleInserter::fqnToSimpleName)
                 .toList();
         return oracles
@@ -756,7 +772,7 @@ public class OracleInserter {
                     }
                     List<String> oracleMethodParameters = getParametersFromMethodSignature(o.methodSignature())
                             .stream()
-                            .map(p -> StaticJavaParser.parseParameter(p).getTypeAsString())
+                            .map(p -> getTypeAsString(StaticJavaParser.parseParameter(p)))
                             .map(OracleInserter::fqnToSimpleName)
                             .toList();
                     return oracleMethodName.equals(targetMethodName) && oracleMethodParameters.equals(targetMethodParameters);
@@ -847,6 +863,793 @@ public class OracleInserter {
         throw new Error("Unable to match method call " + objectCreationExpr);
     }
 
+    /**
+     * Parse the expression and return a list of all the occurrences of the method calls and object creations defined in the expression.
+     * @param expr the expression to parse
+     * @return a list of pairs of expressions and the type of the expression (method or constructor)
+     * @throws UnrecognizedExprException if the expression cannot be parsed
+     */
+    private static List<Pair<Expression,CallableExprType>> parseExpression(Expression expr) throws UnrecognizedExprException {
+        List<Pair<Expression,CallableExprType>> methodCallsAndObjectCreationsList = new ArrayList<>();
+        methodCallsAndObjectCreationsList.addAll(expr.findAll(MethodCallExpr.class).stream().map(e -> new Pair<>((Expression) e, CallableExprType.METHOD)).toList());
+        methodCallsAndObjectCreationsList.addAll(expr.findAll(ObjectCreationExpr.class).stream().map(e -> new Pair<>((Expression) e, CallableExprType.CONSTRUCTOR)).toList());
+        return methodCallsAndObjectCreationsList;
+    }
+
+    /**
+     * Match the resolved method declaration with the most similar signature to the given method call expression. The method supports
+     * the searchCandidateResolvedMethodDeclaration method in finding the most similar candidate method/constructor resolving the
+     * method call expression, comparing the signature and the number and types of the parameters with the list of candidate
+     * methods/constructors in the resolved class.
+     *
+     * @param focalMethodArgs the list of types of the arguments of the callable expression
+     * @param candidates the list of candidate methods/constructors in the class file
+     * @return the most similar candidate method/constructor to the method call expression in the class file
+     * @throws CandidateCallableDeclarationNotFoundException if no candidate method/constructor fully match the signature
+     *                                                       of the callable expression
+     * @throws MultipleCandidatesException if multiple candidate methods/constructors are found, and it is impossible to
+     *                                     discern the focal method
+     */
+    private static ResolvedMethodDeclaration matchResolvedMethodDeclaration(List<ResolvedType> focalMethodArgs, List<ResolvedMethodDeclaration> candidates) throws CandidateCallableDeclarationNotFoundException, MultipleCandidatesException {
+        // Define the focal method.
+        ResolvedMethodDeclaration focalMethod;
+        // Initialize the number of parameters in common to -1 (no parameters in common)
+        int bestParamsTypesInCommon = -1;
+        // Initialize the boolean flag multipleCandidates to false (only one candidate method is
+        // the most similar to the method call expression)
+        boolean multipleCandidates = false;
+        // Initialize the most similar candidate method to null
+        ResolvedMethodDeclaration mostSimilar = null;
+        // Iterate over the list of candidate methods/constructors
+        for (ResolvedMethodDeclaration candidate : candidates) {
+            // Initialize the number of parameters in common with the current candidate to 0
+            int paramsTypesInCommon = 0;
+            // Iterate over the list of parameters of the current candidate method/constructor
+            for (int i = 0; i < candidate.getNumberOfParams(); i++) {
+                // Get the i-th parameter
+                ResolvedParameterDeclaration param = candidate.getParam(i);
+                // Get the type of the i-th parameter of the focal method call in the test
+                ResolvedType focalMethodArg = focalMethodArgs.get(i);
+                String focalMethodTypeName = focalMethodArgs.get(i).describe();
+                // Perform preliminary checks to avoid comparing incompatible types
+                if (!param.getType().describe().equals("java.lang.Object") && !param.getType().isTypeVariable()) {
+                    if (focalMethodArg.isArray() && !param.getType().isArray()) {
+                        continue;
+                    }
+                    if (!focalMethodArg.isArray() && param.getType().isArray()) {
+                        continue;
+                    }
+                    if (focalMethodArg.describe().startsWith("java.util.List") && !param.getType().describe().startsWith("List")) {
+                        continue;
+                    }
+                    if (!focalMethodArg.describe().startsWith("java.util.List") && param.getType().describe().startsWith("List")) {
+                        continue;
+                    }
+                    if (focalMethodArg.isArray() && (param.getType().isArray())) {
+                        if (focalMethodArg.asArrayType().arrayLevel() != param.getType().asArrayType().arrayLevel()) {
+                            continue;
+                        }
+                    }
+                    // Get the type of the i-th parameter of the current candidate method, as a string
+                    String paramTypeName = param.getType().describe();
+                    boolean matchFound = false;
+                    // Compare the parameters type names
+                    if (focalMethodTypeName.contains(paramTypeName.replaceAll("<.*?>|List|\\[\\]|<|>", ""))) {
+                        matchFound = true;
+                    } else {
+                        if (param.getType().isReferenceType() && focalMethodArg.isReferenceType()) {
+                            List<String> paramAncestors = param.getType().asReferenceType().getAllAncestors().stream().map(ResolvedReferenceType::describe).collect(Collectors.toList());
+                            for (String ancestor : paramAncestors) {
+                                if (focalMethodTypeName.contains(ancestor.replaceAll("<.*?>|List|\\[\\]|<|>", ""))) {
+                                    paramTypeName = ancestor;
+                                    matchFound = true;
+                                    break;
+                                }
+                            }
+                            if (!matchFound) {
+                                List<String> focalAncestors = focalMethodArg.asReferenceType().getAllAncestors().stream().map(ResolvedReferenceType::describe).collect(Collectors.toList());
+                                for (String ancestor : focalAncestors) {
+                                    if (paramTypeName.contains(ancestor.replaceAll("<.*?>|List|\\[\\]|<|>", ""))) {
+                                        focalMethodTypeName = ancestor;
+                                        matchFound = true;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    if (matchFound) {
+                        // Pattern to capture content within < and >
+                        Pattern pattern = Pattern.compile("<(.*?)>");
+                        Matcher matcherFocalMethod = pattern.matcher(focalMethodTypeName);
+                        if (matcherFocalMethod.find()) {
+                            String genericTypeFocalMethod = matcherFocalMethod.group(1); // Save the captured content
+                            Matcher matcherParam = pattern.matcher(paramTypeName);
+
+                            if (genericTypeFocalMethod.equals("?") || genericTypeFocalMethod.length() == 1) {
+                                paramsTypesInCommon += 1;
+                            } else {
+                                if (matcherParam.find()) {
+                                    String genericTypeParam = matcherParam.group(1);
+                                    if (genericTypeParam.equals("?") || genericTypeParam.length() == 1 || genericTypeFocalMethod.equals(genericTypeParam)) {
+                                        paramsTypesInCommon += 1;
+                                    }
+                                } else {
+                                    paramsTypesInCommon += 1;
+                                }
+                            }
+                        } else {
+                            // If the type names corresponds, increment the number of parameters in common
+                            paramsTypesInCommon += 1;
+                        }
+                    }
+                } else {
+                    // Any type inherits from Object. Increment the number of parameters in common
+                    paramsTypesInCommon += 1;
+                }
+            }
+            // If the number of parameters in common with the current candidate method/constructor is
+            // greater or equal to the best number of parameters in common found so far, update the best
+            // number of parameters in common and assign the current candidate method/constructor to the
+            // most similar candidate method/constructor
+            if (paramsTypesInCommon >= bestParamsTypesInCommon) {
+                if (paramsTypesInCommon == bestParamsTypesInCommon) {
+                    if (mostSimilar.isAbstract() && !candidate.isAbstract()) {
+                        mostSimilar = candidate;
+                    } else if (candidate.getQualifiedName().startsWith("java.util.List") && mostSimilar.getQualifiedName().startsWith("java.util.Collection")) {
+                        mostSimilar = candidate;
+                    } else if (mostSimilar.getQualifiedName().startsWith("java.util.List") && candidate.getQualifiedName().startsWith("java.util.Collection")) {
+                        continue;
+                    } else if (mostSimilar.isAbstract() && candidate.isAbstract()) {
+                        multipleCandidates = true;
+                    }
+                } else {
+                    bestParamsTypesInCommon = paramsTypesInCommon;
+                    multipleCandidates = false;
+                    mostSimilar = candidate;
+                }
+            }
+        }
+        // If only one candidate method/constructor is the most similar to the focal method call expression, set
+        // the focal method to the most similar candidate method
+        if (!(multipleCandidates || mostSimilar == null)) {
+            focalMethod = mostSimilar;
+            if (bestParamsTypesInCommon < focalMethodArgs.size()) {
+                // If the number of parameters in common is less than the number of parameters of
+                // the method call expression, log a warning
+                throw new CandidateCallableDeclarationNotFoundException("[WARNING] - No candidate method fully match the signature of the callable expression. No focal method found.");
+            }
+        } else {
+            if (multipleCandidates) {
+                // Multiple candidates, impossible to discern
+                throw new MultipleCandidatesException(String.format("[WARNING] - Multiple candidate methods/constructors found. Impossible to discern the focal method."));
+            } else {
+                // No candidate available
+                throw new CandidateCallableDeclarationNotFoundException("[WARNING] - No candidate method fully match the signature of the callable expression. No focal method found.");
+            }
+        }
+        return focalMethod;
+    }
+
+    /**
+     * Search the resolved method declaration corresponding to a given callable expression, by comparing the method call expression
+     * with the list of methods in the resolved class file where the callable declaration is supposed to be defined (analyzing the
+     * signature and the number and types of the parameters).
+     * The method is useful when is not possible to resolve the method call expression to a method declaration by Java Symbol
+     * Solver, and it is necessary to apply heuristics to find the callable declaration.
+     * @param resolvedReferenceType the resolved reference declaration corresponding to the class where to search the
+     *                              definition of the method or constructor (i.e. the callable expression) defined
+     * @param methodCallExpr the callable expression to resolve
+     * @return the corresponding {@link ResolvedMethodDeclaration} of the callable expression, if found. Otherwise, return null.
+     * @throws MultipleCandidatesException if multiple candidates are found for the callable expression and the method
+     *                                    or constructor cannot be resolved uniquely
+     * @throws CandidateCallableDeclarationNotFoundException if the method or constructor corresponding to the callable
+     *                                                       expression cannot be found and no candidates are available
+     */
+    public static ResolvedMethodDeclaration searchCandidateResolvedMethodDeclaration(ResolvedReferenceType resolvedReferenceType, MethodCallExpr methodCallExpr) throws MultipleCandidatesException, CandidateCallableDeclarationNotFoundException {
+        // Define the list of arguments of the focal method. Initially empty.
+        NodeList<Expression> focalMethodArgs = new NodeList<>();
+        // Define the focal method. Initially null.
+        ResolvedMethodDeclaration focalMethod = null;
+        // Define a list of candidate methods/constructors (methods/constructors with the same name and number of parameters).
+        // Initially empty.
+        List<ResolvedMethodDeclaration> candidates = new ArrayList<>();
+
+        List<ResolvedMethodDeclaration> classMethodsList = resolvedReferenceType.getAllMethods();
+        String focalMethodName = methodCallExpr.getNameAsString();
+        focalMethodArgs = methodCallExpr.getArguments();
+        // Iterate over the list of methods/constructors in the class file
+        for (ResolvedMethodDeclaration m : classMethodsList) {
+            // Check if the method/constructor name is the same
+            if (m.getName().equals(focalMethodName)) {
+                // Check if the number of parameters is the same
+                if (m.getNumberOfParams() == focalMethodArgs.size()) {
+                    // Add method/constructor to candidates if the previous conditions are satisfied
+                    candidates.add(m);
+                }
+            }
+        }
+        // If no candidate methods are found, throw an exception (focal method not found)
+        if (candidates.size() == 0) {
+            return focalMethod;
+        } else if (candidates.size() == 1) {
+            // If only one candidate method/constructor is found, set the focal method to the candidate method/constructor
+            focalMethod = candidates.get(0);
+        } else {
+            List<ResolvedType> focalMethodResolvedTypes = focalMethodArgs.stream().map(a -> a.calculateResolvedType()).collect(Collectors.toList());
+            focalMethod = matchResolvedMethodDeclaration(focalMethodResolvedTypes, candidates);
+        }
+        return focalMethod;
+    }
+
+    /**
+     * Process the callable expression return the corresponding {@link CallableDeclaration}
+     * @param typeDeclaration the type declaration corresponding to the class where to search the definition of the method
+     *                        or constructor (i.e. the callable expression) defined
+     * @param callExpr the callable expression to resolve
+     * @param exprType the type of the callable expression (i.e. method or constructor)
+     * @return the corresponding {@link CallableDeclaration} of the callable expression, if found. Otherwise, return null.
+     * @throws MultipleCandidatesException if multiple candidates are found for the callable expression and the method
+     *                                     or constructor cannot be resolved uniquely
+     * @throws CandidateCallableDeclarationNotFoundException if the method or constructor corresponding to the callable
+     *                                                       expression cannot be found and no candidates are available
+     */
+    public static CallableDeclaration resolveCallExpression(TypeDeclaration typeDeclaration, Expression callExpr, CallableExprType exprType) throws MultipleCandidatesException, CandidateCallableDeclarationNotFoundException {
+        // Define the focal method. Initially null.
+        CallableDeclaration focalMethod = null;
+        try {
+            if (exprType == CallableExprType.METHOD) {
+                // Try to resolve the method call expression to a method declaration
+                MethodCallExpr methodCallExpr = callExpr.asMethodCallExpr();
+                focalMethod = (MethodDeclaration) methodCallExpr.resolve().toAst().orElseThrow(() -> new UnsolvedSymbolException(methodCallExpr.getNameAsString()));
+                // Retrieve the method within the type declaration to avoid to lose the symbol solver functionality
+                for (MethodDeclaration m : (List<MethodDeclaration>) typeDeclaration.getMethods()) {
+                    if (m.getDeclarationAsString(true, true, true).equals(focalMethod.getDeclarationAsString(true, true, true))) {
+                        return m;
+                    }
+                }
+                //logger.error("Resolved method {} not found in type declaration {}", focalMethod.getNameAsString(), typeDeclaration.getNameAsString());
+                return focalMethod;
+            } else if (exprType == CallableExprType.CONSTRUCTOR) {
+                // Try to resolve the constructor call expression to a constructor declaration
+                ObjectCreationExpr constructorCallExpr = callExpr.asObjectCreationExpr();
+                focalMethod = (ConstructorDeclaration) constructorCallExpr.resolve().toAst().orElseThrow(() -> new UnsolvedSymbolException(constructorCallExpr.getTypeAsString()));
+                // Retrieve the method within the type declaration to avoid to lose the symbol solver functionality
+                for (ConstructorDeclaration c : (List<ConstructorDeclaration>) typeDeclaration.getConstructors()) {
+                    if (c.getDeclarationAsString(true, true, true).equals(focalMethod.getDeclarationAsString(true, true, true))) {
+                        return c;
+                    }
+                }
+                //logger.error("Resolved constructor {} not found in type declaration {}", focalMethod.getNameAsString(), typeDeclaration.getNameAsString());
+                return focalMethod;
+            }
+        } catch (UnsolvedSymbolException e) {
+            // The method call expression could not be resolved to a method declaration by
+            // Java Symbol Solver
+            focalMethod = null;
+        }
+        // If the method call expression could not be resolved to a method declaration by Java
+        // Symbol Solver, try to find the method declaration by comparing the method call expression
+        // with the list of methods in the class file (analyzing the signature and the number and types
+        // of the parameters).
+        if (focalMethod == null) {
+            return searchCandidateCallableDeclaration(typeDeclaration, callExpr, exprType);
+        }
+        return focalMethod;
+    }
+
+    /**
+     * Search the method declaration corresponding to a given callable expression, by comparing the method call expression
+     * with the list of methods in the class file where the callable declaration is supposed to be defined (analyzing the
+     * signature and the number and types of the parameters).
+     * The method is useful when is not possible to resolve the method call expression to a method declaration by Java Symbol
+     * Solver and it is necessary to apply heuristics to find the callable declaration.
+     * @param typeDeclaration the type declaration corresponding to the class where to search the definition of the method
+     *                        or constructor (i.e. the callable expression) defined
+     * @param lastCallExpr the callable expression to resolve
+     * @param exprType the type of the callable expression (i.e. method or constructor)
+     * @return the corresponding {@link CallableDeclaration} of the callable expression, if found. Otherwise, return null.
+     * @throws MultipleCandidatesException if multiple candidates are found for the callable expression and the method
+     *                                    or constructor cannot be resolved uniquely
+     * @throws CandidateCallableDeclarationNotFoundException if the method or constructor corresponding to the callable
+     *                                                       expression cannot be found and no candidates are available
+     */
+    private static CallableDeclaration searchCandidateCallableDeclaration(TypeDeclaration typeDeclaration, Expression lastCallExpr, CallableExprType exprType) throws MultipleCandidatesException, CandidateCallableDeclarationNotFoundException {
+        // Define the list of all the callable methods/constructors in the class file. Initially empty.
+        List<? extends CallableDeclaration<?>> classCallableList = new ArrayList<>();
+        // Define the name of the focal method. Initially null.
+        String focalMethodName = null;
+        // Define the list of arguments of the focal method. Initially empty.
+        NodeList<Expression> focalMethodArgs = new NodeList<>();
+        // Define the focal method. Initially null.
+        CallableDeclaration focalMethod = null;
+        // Define a list of candidate methods/constructors (methods/constructors with the same name and number of parameters).
+        // Initially empty.
+        List<CallableDeclaration> candidatesCallables = new ArrayList<>();
+
+        if (exprType == CallableExprType.METHOD) {
+            classCallableList = typeDeclaration.getMethods();
+            focalMethodName = ((MethodCallExpr) lastCallExpr).getNameAsString();
+            focalMethodArgs = ((MethodCallExpr) lastCallExpr).getArguments();
+        } else if (exprType == CallableExprType.CONSTRUCTOR) {
+            classCallableList = typeDeclaration.getConstructors();
+            focalMethodName = ((ObjectCreationExpr) lastCallExpr).getTypeAsString();
+            focalMethodArgs = ((ObjectCreationExpr) lastCallExpr).getArguments();
+        }
+        // Iterate over the list of methods/constructors in the class file
+        for (CallableDeclaration callable : classCallableList) {
+            // Check if the method/constructor name is the same
+            if (callable.getNameAsString().equals(focalMethodName)) {
+                // Check if the number of parameters is the same
+                if (callable.getParameters().size() == focalMethodArgs.size()) {
+                    // Add method/constructor to candidates if the previous conditions are satisfied
+                    candidatesCallables.add(callable);
+                }
+            }
+        }
+        // If no candidate methods are found, throw an exception (focal method not found)
+        if (candidatesCallables.size() == 0) {
+            return focalMethod;
+        } else if (candidatesCallables.size() == 1) {
+            // If only one candidate method/constructor is found, set the focal method to the candidate method/constructor
+            focalMethod = candidatesCallables.get(0);
+        } else {
+            List<ResolvedType> focalMethodResolvedTypes = focalMethodArgs.stream().map(a -> a.calculateResolvedType()).collect(Collectors.toList());
+            focalMethod = matchCallableDeclaration(focalMethodResolvedTypes, candidatesCallables);
+        }
+        return focalMethod;
+    }
+
+    /**
+     * Match the callable declaration with the most similar signature to the given method call expression. The method supports
+     * the searchCandidateCallableDeclaration method in finding the most similar candidate method/constructor resolving the
+     * method call expression, comparing the signature and the number and types of the parameters with the list of candidate
+     * methods/constructors in the class file.
+     *
+     * @param focalMethodArgs the list of types of the arguments of the callable expression
+     * @param candidatesCallables the list of candidate methods/constructors in the class file
+     * @return the most similar candidate method/constructor to the method call expression in the class file
+     * @throws CandidateCallableDeclarationNotFoundException if no candidate method/constructor fully match the signature
+     *                                                       of the callable expression
+     * @throws MultipleCandidatesException if multiple candidate methods/constructors are found, and it is impossible to
+     *                                     discern the focal method
+     */
+    private static CallableDeclaration matchCallableDeclaration(List<ResolvedType> focalMethodArgs, List<CallableDeclaration> candidatesCallables) throws CandidateCallableDeclarationNotFoundException, MultipleCandidatesException {
+        // Define the focal method.
+        CallableDeclaration focalMethod;
+        // Initialize the number of parameters in common to -1 (no parameters in common)
+        int bestParamsTypesInCommon = -1;
+        // Initialize the boolean flag multipleCandidates to false (only one candidate method is
+        // the most similar to the method call expression)
+        boolean multipleCandidates = false;
+        // Initialize the most similar candidate method to null
+        CallableDeclaration mostSimilar = null;
+        // Iterate over the list of candidate methods/constructors
+        for (CallableDeclaration callable : candidatesCallables) {
+            // Get the list of parameters of the candidate method/constructor
+            NodeList<com.github.javaparser.ast.body.Parameter> paramsList = callable.getParameters();
+            // Initialize the number of parameters in common with the current candidate to 0
+            int paramsTypesInCommon = 0;
+            // Iterate over the list of parameters of the current candidate method/constructor
+            for (int i = 0; i < paramsList.size(); i++) {
+                // Get the i-th parameter
+                com.github.javaparser.ast.body.Parameter param = paramsList.get(i);
+                // Get the type of the i-th parameter of the focal method call in the test
+                ResolvedType focalMethodArg = focalMethodArgs.get(i);
+                String focalMethodTypeName = focalMethodArgs.get(i).describe();
+                if (!param.getType().resolve().describe().equals("java.lang.Object") || !param.getType().resolve().isTypeVariable()) {
+                    // Perform preliminary checks to avoid comparing incompatible types
+                    if (focalMethodArg.isArray() && !(param.getType().isArrayType() || param.isVarArgs())) {
+                        continue;
+                    }
+                    if (!focalMethodArg.isArray() && (param.getType().isArrayType() || param.isVarArgs())) {
+                        continue;
+                    }
+                    if (focalMethodArg.describe().startsWith("java.util.List") && !param.getTypeAsString().startsWith("List")) {
+                        continue;
+                    }
+                    if (!focalMethodArg.describe().startsWith("java.util.List") && param.getTypeAsString().startsWith("List")) {
+                        continue;
+                    }
+                    if (focalMethodArg.isArray() && (param.getType().isArrayType() || param.isVarArgs())) {
+                        if (param.isVarArgs() && (focalMethodArg.asArrayType().arrayLevel() > 1)) {
+                            continue;
+                        } else if (!param.isVarArgs() && (focalMethodArg.asArrayType().arrayLevel() != param.getType().asArrayType().getArrayLevel())) {
+                            continue;
+                        }
+                    }
+                    // Get the type of the i-th parameter of the current candidate method, as a string
+                    String paramTypeName = param.getTypeAsString();
+                    // Compare the parameters type names
+                    if (focalMethodTypeName.contains(paramTypeName.replaceAll("<.*?>|List|\\[\\]|<|>", ""))) {
+                        // Pattern to capture content within < and >
+                        Pattern pattern = Pattern.compile("<(.*?)>");
+                        Matcher matcherFocalMethod = pattern.matcher(focalMethodTypeName);
+                        if (matcherFocalMethod.find()) {
+                            String genericTypeFocalMethod = matcherFocalMethod.group(1); // Save the captured content
+                            Matcher matcherParam = pattern.matcher(paramTypeName);
+
+                            if (genericTypeFocalMethod.equals("?") || genericTypeFocalMethod.length() == 1) {
+                                paramsTypesInCommon += 1;
+                            } else {
+                                if (matcherParam.find()) {
+                                    String genericTypeParam = matcherParam.group(1);
+                                    if (genericTypeParam.equals("?") || genericTypeParam.length() == 1 || genericTypeFocalMethod.equals(genericTypeParam)) {
+                                        paramsTypesInCommon += 1;
+                                    }
+                                } else {
+                                    paramsTypesInCommon += 1;
+                                }
+                            }
+                        } else {
+                            // If the type names corresponds, increment the number of parameters in common
+                            paramsTypesInCommon += 1;
+                        }
+                    }
+                } else {
+                    // Any type inherits from Object. Increment the number of parameters in common
+                    paramsTypesInCommon += 1;
+                }
+            }
+            // If the number of parameters in common with the current candidate method/constructor is
+            // greater or equal to the best number of parameters in common found so far, update the best
+            // number of parameters in common and assign the current candidate method/constructor to the
+            // most similar candidate method/constructor
+            if (paramsTypesInCommon >= bestParamsTypesInCommon) {
+                if (paramsTypesInCommon == bestParamsTypesInCommon) {
+                    if ((mostSimilar.isAbstract() && !callable.isAbstract()) || (mostSimilar.isPrivate() && callable.isPublic())) {
+                        mostSimilar = callable;
+                    } else if (mostSimilar.isAbstract() && callable.isAbstract()) {
+                        multipleCandidates = true;
+                    }
+                } else {
+                    bestParamsTypesInCommon = paramsTypesInCommon;
+                    multipleCandidates = false;
+                    mostSimilar = callable;
+                }
+            }
+        }
+        // If only one candidate method/constructor is the most similar to the focal method call expression, set
+        // the focal method to the most similar candidate method
+        if (!(multipleCandidates || mostSimilar == null)) {
+            focalMethod = mostSimilar;
+            if (bestParamsTypesInCommon < focalMethodArgs.size()) {
+                // If the number of parameters in common is less than the number of parameters of
+                // the method call expression, log a warning
+                throw new CandidateCallableDeclarationNotFoundException("[WARNING] - No candidate method fully match the signature of the callable expression. No focal method found.");
+            }
+        } else {
+            if (multipleCandidates) {
+                // Multiple candidates, impossible to discern
+                throw new MultipleCandidatesException(String.format("[WARNING] - Multiple candidate methods/constructors found. Impossible to discern the focal method."));
+            } else {
+                // No candidate available
+                throw new CandidateCallableDeclarationNotFoundException("[WARNING] - No candidate method fully match the signature of the callable expression. No focal method found.");
+            }
+        }
+        return focalMethod;
+    }
+
+    /**
+     * Search the {@link MethodUsage} corresponding to a given method call expression, by comparing the method call expression
+     * with the list of methods in the class file where the method call expression is supposed to be defined (analyzing the
+     * signature and the number and types of the parameters).
+     * The method is useful when is not possible to resolve the method call expression to a method declaration by Java Symbol
+     * Solver, and it is necessary to apply heuristics to find the method in the form of {@link MethodUsage}.
+     * @param typeDeclaration the type declaration corresponding to the class where to search the definition of the method
+     *                        defined in the method call expression
+     * @param expr the method call expression to resolve
+     * @return the corresponding {@link MethodUsage} of the method call expression, if found. Otherwise, return null.
+     * @throws CandidateCallableMethodUsageNotFoundException if the method corresponding to the method call expression
+     *                                                       cannot be found and no candidates are available
+     * @throws MultipleCandidatesException if multiple candidates are found for the method call expression and the method
+     *                                     cannot be resolved uniquely
+     */
+    public static MethodUsage searchCandidateMethodUsage(TypeDeclaration typeDeclaration, Expression expr) throws CandidateCallableMethodUsageNotFoundException, MultipleCandidatesException {
+        try {
+            return iterateOverCandidatesMethodUsage(typeDeclaration.resolve().getAllMethods(), expr.asMethodCallExpr());
+        } catch (CandidateCallableMethodUsageNotFoundException | UnsolvedSymbolException e) {
+            return null;
+        }
+    }
+
+    private static MethodUsage iterateOverCandidatesMethodUsage(Set<MethodUsage> methods, MethodCallExpr methodCallExpr) throws CandidateCallableMethodUsageNotFoundException, MultipleCandidatesException {
+        List<MethodUsage> methodNotConverted = new ArrayList<>();
+        List<MethodDeclaration> methodConverted = new ArrayList<>();
+        // Define the focal method. Initially null.
+        MethodUsage focalMethod = null;
+        // Define a list of candidate methods/constructors (methods/constructors with the same name and number of parameters).
+        // Initially empty.
+        List<MethodUsage> candidatesMethodUsage = new ArrayList<>();
+        // Get the name of the focal method
+        String focalMethodName = methodCallExpr.getNameAsString();
+        // Get the list of arguments of the focal method
+        NodeList<Expression> focalMethodArgs = methodCallExpr.getArguments();
+
+        for(MethodUsage m : methods) {
+            try {
+                methodConverted.add((MethodDeclaration) m.getDeclaration().toAst().get());
+            } catch(Exception e) {
+                methodNotConverted.add(m);
+            }
+        }
+
+        // Iterate over the list of methods/constructors in the class file
+        for (MethodUsage methodUsage : methodNotConverted) {
+            // Check if the method/constructor name is the same
+            if (methodUsage.getName().equals(focalMethodName)) {
+                // Check if the number of parameters is the same
+                if (methodUsage.getParamTypes().size() == focalMethodArgs.size()) {
+                    // Add method/constructor to candidates if the previous conditions are satisfied
+                    candidatesMethodUsage.add(methodUsage);
+                }
+            }
+        }
+
+        if (candidatesMethodUsage.size() == 0) {
+            throw new CandidateCallableMethodUsageNotFoundException("[WARNING] - No candidate method usage found in the original class, analyzing both the name and the number of parameters. Focal method not found. ");
+        } else if (candidatesMethodUsage.size() == 1) {
+            // If only one candidate method/constructor is found, set the focal method to the candidate method/constructor
+            focalMethod = candidatesMethodUsage.get(0);
+        } else {
+            // If multiple candidate methods are found, try to discern the focal method by analyzing
+            // the types of the parameters of the focal method call expression and the parameters of the
+            // candidate methods/constructors.
+            // Initialize the number of parameters in common to -1 (no parameters in common)
+            int bestParamsTypesInCommon = -1;
+            // Initialize the boolean flag multipleCandidates to false (only one candidate method/constructor is
+            // the most similar to the method call expression)
+            boolean multipleCandidates = false;
+            // Initialize the most similar candidate method/constructor to null
+            MethodUsage mostSimilar = null;
+            // Iterate over the list of candidate methods/constructors
+            for (MethodUsage candidate : candidatesMethodUsage) {
+                // Get the list of parameters of the candidate method/constructor
+                List<ResolvedType> paramsTypeList = candidate.getParamTypes();
+                // Initialize the number of parameters in common with the current candidate to 0
+                int paramsTypesInCommon = 0;
+                // Iterate over the list of parameters of the current candidate method/constructor
+                for (int i = 0; i < paramsTypeList.size(); i++) {
+                    // Get the i-th parameter
+                    ResolvedType paramType = paramsTypeList.get(i);
+                    // Get the type of the i-th parameter of the focal method call in the test
+                    // prefix, as a string
+                    String focalMethodTypeName = focalMethodArgs.get(i).calculateResolvedType().describe();
+                    // Get the type of the i-th parameter of the current candidate method, as a string
+                    String paramTypeName = paramType.describe();
+                    // Compare the parameters type names
+                    if (focalMethodTypeName.endsWith(paramTypeName) || paramTypeName.endsWith("Object") || paramType.isTypeVariable()) {
+                        // If the type names corresponds or the candidate param type is Object,
+                        // increment the number of parameters in common (any type inherits from Object)
+                        paramsTypesInCommon += 1;
+                    }
+                }
+                // If the number of parameters in common with the current candidate method/constructor is
+                // greater or equal to the best number of parameters in common found so far, update the best
+                // number of parameters in common and assign the current candidate method/constructor to the
+                // most similar candidate method/constructor
+                if (paramsTypesInCommon >= bestParamsTypesInCommon) {
+                    if (paramsTypesInCommon == bestParamsTypesInCommon) {
+                        if (mostSimilar.getDeclaration().isAbstract() && !candidate.getDeclaration().isAbstract()) {
+                            mostSimilar = candidate;
+                        } else if (mostSimilar.getDeclaration().isAbstract() && candidate.getDeclaration().isAbstract()) {
+                            multipleCandidates = true;
+                        }
+                    } else {
+                        bestParamsTypesInCommon = paramsTypesInCommon;
+                        multipleCandidates = false;
+                        mostSimilar = candidate;
+                    }
+                }
+            }
+            // If only one candidate method/constructor is the most similar to the focal method call expression, set
+            // the focal method to the most similar candidate method
+            if (!(multipleCandidates || mostSimilar == null)) {
+                focalMethod = mostSimilar;
+                if (bestParamsTypesInCommon < focalMethodArgs.size()) {
+                    // If the number of parameters in common is less than the number of parameters of
+                    // the method call expression, log a warning
+                    throw new CandidateCallableMethodUsageNotFoundException("[WARNING] - No candidate method fully match the signature of the callable expression. No focal method found.");
+                }
+            } else {
+                // Multiple candidates, impossible to discern
+                throw new MultipleCandidatesException("[WARNING] - Multiple candidate methods/constructors found. Impossible to discern the focal method.");
+            }
+        }
+        return focalMethod;
+    }
+
+    /**
+     * Match the method declaration with the most similar signature to the given method in the form of {@link MethodUsage}.
+     * @param referenceMethodUsage the method usage to resolve
+     * @param methodDeclarationList the list of methods in the reference class where to search the corresponding method declaration
+     * @return the corresponding {@link MethodDeclaration} of the method usage, if found.
+     * @throws CandidateCallableDeclarationNotFoundException if the method corresponding to the method usage
+     *                                                       cannot be found and no candidates are available
+     * @throws MultipleCandidatesException if multiple candidates are found for the method usage and the method
+     *                                     cannot be resolved uniquely
+     */
+    public static CallableDeclaration matchMethodUsageWithMethodDeclaration(MethodUsage referenceMethodUsage, List<MethodDeclaration> methodDeclarationList) throws  CandidateCallableDeclarationNotFoundException, MultipleCandidatesException {
+        String referenceMethodUsageName = referenceMethodUsage.getName();
+        List<ResolvedType> referenceMehodUsageArgs = referenceMethodUsage.getParamTypes();
+        // Define the focal method. Initially null.
+        CallableDeclaration focalMethod = null;
+        // Define a list of candidate methods (methods with the same name and number of parameters).
+        // Initially empty.
+        List<CallableDeclaration> candidatesMethods = new ArrayList<>();
+        // Iterate over the list of methods/constructors in the class file
+        for (MethodDeclaration method : methodDeclarationList) {
+            // Check if the method/constructor name is the same
+            if (method.getNameAsString().equals(referenceMethodUsageName)) {
+                // Check if the number of parameters is the same
+                if (method.getParameters().size() == referenceMehodUsageArgs.size()) {
+                    // Add method/constructor to candidates if the previous conditions are satisfied
+                    candidatesMethods.add(method);
+                }
+            }
+        }
+        // If no candidate methods are found, throw an exception (focal method not found)
+        if (candidatesMethods.size() == 0) {
+            return focalMethod;
+        } else if (candidatesMethods.size() == 1) {
+            // If only one candidate method/constructor is found, set the focal method to the candidate method/constructor
+            focalMethod = candidatesMethods.get(0);
+        } else {
+            focalMethod = matchCallableDeclaration(referenceMethodUsage.getParamTypes(), candidatesMethods);
+        }
+        return focalMethod;
+    }
+
+    private static Pair<CallableDeclaration<?>,HashMap<String, TypeDeclaration>> processInvokedMethod(Path srcDir, TypeDeclaration classUnderTest, Expression oracleExpr, HashMap<String, TypeDeclaration> projectVariables) {
+        try {
+            if (projectVariables.isEmpty()) {
+                for (FieldDeclaration classField : classUnderTest.findAll(FieldDeclaration.class)) {
+                    for (VariableDeclarator variable : classField.getVariables()) {
+                        Type variableType = variable.getType();
+                        while (variableType.isArrayType()) {
+                            variableType = variableType.asArrayType().getComponentType();
+                        }
+                        // TODO: Handle the case when the variable type is an array
+                        if (variableType.isReferenceType() && !variableType.resolve().isTypeVariable()) {
+                            try {
+                                ResolvedReferenceType resolvedReferenceType = variableType.resolve().asReferenceType();
+                                Path fqnVarType = FileUtils.getFQNPath(resolvedReferenceType.getQualifiedName());
+                                Path classFilePath = srcDir.resolve(fqnVarType);
+                                if (Files.exists(classFilePath)) {
+                                    try {
+                                        CompilationUnit cuVarType = FileUtils.getCompilationUnit(classFilePath);
+                                        projectVariables.put(variable.getNameAsString(), cuVarType.getPrimaryType().orElseThrow(() -> new NoPrimaryTypeException("[ERROR] - ClassFile from method usage, with no primary file.")));
+                                    } catch (Error e) {
+                                        System.err.println("Error reading file: " + classFilePath);
+                                    }
+                                }
+                            } catch (UnsolvedSymbolException e) {
+                                System.err.println("Unable to resolve variable type " + variableType.toString() + " in test class " + classUnderTest.getNameAsString());
+                            }
+                        }
+                    }
+                }
+            }
+
+            Expression expr = null;
+            CallableExprType exprType = null;
+            // Parse the expression to understand if it refers to a method call or construction invocation
+            List<Pair<Expression,CallableExprType>> expressionAnalysisResult = parseExpression(oracleExpr);
+            for (Pair<Expression,CallableExprType> exprPair : expressionAnalysisResult) {
+                try {
+                    // Get the expression and its type
+                    expr = exprPair.getValue0();
+                    exprType = exprPair.getValue1();
+                    // Initialize the invoked class to the reference class. The invoked class is the instance of the class
+                    // that contains the invoked method.
+                    TypeDeclaration invokedClass = classUnderTest;
+
+                    if (exprType == CallableExprType.METHOD) {
+                        if (expr.asMethodCallExpr().getScope().isPresent()) {
+                            Expression scope = expr.asMethodCallExpr().getScope().get();
+                            while (scope.isArrayAccessExpr()) {
+                                scope = scope.asArrayAccessExpr().getName();
+                            }
+                            if (scope.isNameExpr()) {
+                                String scopeName = scope.asNameExpr().getNameAsString();
+                                if (projectVariables.containsKey(scopeName)) {
+                                    invokedClass = projectVariables.get(scopeName);
+                                }
+                            }
+                        }
+                    }
+
+                    // Get the invoked method. The invoked method must be a method declaration or a constructor declaration.
+                    // Start searching the method or constructor in the test class
+                    CallableDeclaration invokedMethod = resolveCallExpression(invokedClass, expr, exprType);
+                    // If the focal method is still not found, search it within the inherited methods of the focal class
+                    if (invokedMethod == null) {
+                        if (exprType == CallableExprType.CONSTRUCTOR) {
+                            String candidateClassPath = expr.asObjectCreationExpr().getType().resolve().asReferenceType().getQualifiedName();
+                            Path fullyQualifiedCandidateFilePath = srcDir.resolve(FileUtils.getFQNPath(candidateClassPath));
+                            if (Files.exists(fullyQualifiedCandidateFilePath)) {
+                                invokedClass = FileUtils.getCompilationUnit(fullyQualifiedCandidateFilePath).getPrimaryType().get();
+                                invokedMethod = resolveCallExpression(invokedClass, expr, exprType);
+                                if (invokedMethod == null) {
+                                    throw new NoFocalMethodMatchingException("The constructor in the expression " + expr.toString() + " cannot be resolved in the given focal class " + invokedClass.getNameAsString());
+                                }
+                            }
+                        } else {
+                            MethodUsage invokedMethodUsage = searchCandidateMethodUsage(invokedClass, expr);
+                            // If the focal method is still not found, raise an exception
+                            if (!(invokedMethodUsage == null)) {
+                                Path fullyQualifiedClassNameLastExpressionPath = FileUtils.getFQNPath(invokedMethodUsage.declaringType().getQualifiedName());
+                                Path classFileInvokedMethodUsagePath = srcDir.resolve(fullyQualifiedClassNameLastExpressionPath);
+                                if (Files.exists(classFileInvokedMethodUsagePath)) {
+                                    try {
+                                        CompilationUnit cuInvokedMethodUsage = FileUtils.getCompilationUnit(classFileInvokedMethodUsagePath);
+                                        invokedClass = cuInvokedMethodUsage.getPrimaryType().orElseThrow(() -> new NoPrimaryTypeException("[ERROR] - ClassFile from method usage, with no primary file."));
+                                        List<MethodDeclaration> candidateMethods = invokedClass.getMethods();
+                                        invokedMethod = matchMethodUsageWithMethodDeclaration(invokedMethodUsage, candidateMethods);
+                                    } catch (Error e) {
+                                        System.err.println("Error reading file: " + classFileInvokedMethodUsagePath);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if (oracleExpr.isVariableDeclarationExpr() ) {
+                        VariableDeclarationExpr varExpr = oracleExpr.asVariableDeclarationExpr();
+                        for (VariableDeclarator var : varExpr.getVariables()) {
+                            Type varType = var.getType();
+                            while (varType.isArrayType()) {
+                                varType = varType.asArrayType().getComponentType();
+                            }
+                            // TODO: Handle the case when the variable type is an array
+                            if (varType.isReferenceType()) {
+                                try {
+                                    Path fqnReturnType = FileUtils.getFQNPath(varType.resolve().asReferenceType().getQualifiedName());
+                                    Path classFilePath = srcDir.resolve(fqnReturnType);
+                                    if (Files.exists(classFilePath)) {
+                                        try {
+                                            CompilationUnit cuReturnType = FileUtils.getCompilationUnit(classFilePath);
+                                            projectVariables.put(var.getNameAsString(), cuReturnType.getPrimaryType().orElseThrow(() -> new NoPrimaryTypeException("[ERROR] - ClassFile from method usage, with no primary file.")));
+                                        } catch (Error e) {
+                                            System.err.println("Error reading file: " + classFilePath);
+                                        }
+                                    }
+                                } catch (UnsolvedSymbolException e) {
+                                    System.err.println("Unable to resolve variable type " + varType + " in test class " + classUnderTest.getNameAsString());
+                                }
+                            }
+                        }
+                    }
+                    // If the invoked method is still not found, process the expression as a call from an external library
+                    if (invokedMethod != null) {
+                        return new Pair<>(invokedMethod,projectVariables);
+                    }
+                    return new Pair<>(null,projectVariables);
+                } catch (
+                        NoFocalMethodMatchingException | NoPrimaryTypeException | UnrecognizedExprException |
+                        CandidateCallableDeclarationNotFoundException | CandidateCallableMethodUsageNotFoundException |
+                        MultipleCandidatesException | UnsolvedSymbolException | IllegalStateException e
+                ) {
+                    System.err.println(String.format("Error processing expression %s of test case", expr));
+                }
+            }
+        } catch (Exception e) {
+            String errMsg = String.format(
+                    "[ERROR] - Unexpected error while retrieving callable declaration of class %s - expression %s - exception: %s",
+                    classUnderTest.getNameAsString(),
+                    oracleExpr.toString(),
+                    e.getClass().getName()
+            );
+            System.err.println(errMsg);
+        }
+        return new Pair<>(null,projectVariables);
+    }
+
+
+
+
+
+
     private static CallableDeclaration<?> resolveDeclaration(
             TypeDeclaration<?> classUnderTest,
             Expression oracleExpr
@@ -876,6 +1679,7 @@ public class OracleInserter {
      * @param oracles a list of test oracles made by an axiomatic tog
      */
     private static void insertAxiomaticOracles(
+            Path srcDir,
             CompilationUnit testFile,
             TypeDeclaration<?> classUnderTest,
             List<OracleOutput> oracles
@@ -884,10 +1688,18 @@ public class OracleInserter {
         for (MethodDeclaration test : tests) {
             NodeList<Statement> oldTestBody = test.getBody().orElseThrow().getStatements();
             NodeList<Statement> newTestBody = new NodeList<>();
+            // Define an HashMap saving information about the variable progressively defined (and used) within the test case
+            HashMap<String, TypeDeclaration> projectVariables = new HashMap<>();
             for (Statement testStatement : oldTestBody) {
                 // get all oracles related to a method call
                 Expression oracleExpr = getOracleExpression(testStatement);
-                CallableDeclaration<?> callableDeclaration = resolveDeclaration(classUnderTest, oracleExpr);
+                if (oracleExpr == null) {
+                    newTestBody.add(testStatement.clone());
+                    continue;
+                }
+                Pair<CallableDeclaration<?>,HashMap<String, TypeDeclaration>> callableDeclarationPair = processInvokedMethod(srcDir, classUnderTest, oracleExpr, projectVariables); //resolveDeclaration(classUnderTest, oracleExpr);
+                CallableDeclaration<?> callableDeclaration = callableDeclarationPair.getValue0();
+                projectVariables = callableDeclarationPair.getValue1();
                 if (callableDeclaration == null) {
                     newTestBody.add(testStatement.clone());
                     continue;
@@ -1171,7 +1983,7 @@ public class OracleInserter {
                     CompilationUnit cu = FileUtils.getCompilationUnit(p);
                     TypeDeclaration<?> classUnderTest = getClassUnderTest(cu, pathToSrc);
                     if (tog.isAxiomatic()) {
-                        insertAxiomaticOracles(cu, classUnderTest, oracleOutputs);
+                        insertAxiomaticOracles(pathToSrc, cu, classUnderTest, oracleOutputs);
                     } else {
                         insertNonAxiomaticOracles(cu, oracleOutputs, insertAtStatementIdx);
                     }

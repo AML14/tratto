@@ -20,6 +20,8 @@ public class Stack_ESTest extends Stack_ESTest_scaffolding {
     @Test(timeout = 4000)
     public void test0()  throws Throwable  {
         Stack<String> stack0 = new Stack<String>();
+        //stack0.tempfunc(new String[2][2][2], new String[3], new Object());
+        //stack0.tempfunc((String[][][]) null, null, (String) null);
     }
 
     @Test(timeout = 4000)

@@ -14,7 +14,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.attribute.FileAttribute;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 
@@ -483,6 +485,24 @@ public class FileUtils {
             return StaticJavaParser.parse(path);
         } catch (IOException e) {
             throw new Error("Unable to parse the file " + path + " using JavaParser");
+        }
+    }
+
+
+    /**
+     * List the directories in the given path.
+     * @param path the path to list directories from
+     * @return the list of directories in the given path. An empty list if the path does not exist or is not a directory.
+     */
+    public static List<Path> listDirectories(Path path) {
+        if (!Files.exists(path) || !Files.isDirectory(path)) {
+            return new ArrayList<>();
+        }
+        try {
+            return Files.list(path).filter(Files::isDirectory).collect(Collectors.toList());
+        } catch (IOException e) {
+            System.err.println("Error when trying to list directories in path " + path);
+            return new ArrayList<>();
         }
     }
 }

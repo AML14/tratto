@@ -7,6 +7,8 @@ public class Stack<T> {
     private int pointer  = 0;
     private T[] objects = (T[]) new Object[capacity];
 
+    public Stack() {}
+
     /**
      * Adds a new object to the stack.
      *
@@ -19,6 +21,10 @@ public class Stack<T> {
         if (o == null)
             throw new IllegalArgumentException("The given object is null!");
         objects[pointer++] = o;
+    }
+
+    public void tempfunc(T[][][] temp, T... objs, T<Object> obj) {
+        return null;
     }
 
     /**

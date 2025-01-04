@@ -38,6 +38,15 @@ public class OracleInserterTest {
                         "java.lang.IllegalArgumentException",
                         "",
                         ""
+                ),
+                new OracleOutput(
+                        "tutorial.Stack",
+                        "tempfunc(java.lang.Object[][][] temp, java.lang.Object... objs, java.lang.Object<java.lang.Object> obj)",
+                        OracleType.EXCEPT_POST,
+                        "temp == null",
+                        "java.lang.IllegalArgumentException",
+                        "",
+                        ""
                 )
         );
     }

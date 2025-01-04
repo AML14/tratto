@@ -122,8 +122,8 @@ public Complex divide(Complex divisor) throws NullArgumentException {
 }
 
 A: Let's think step by step. The `@param` Javadoc tag describes the meaning of the argument `divisor` while the `@throws` Javadoc tag imposes a condition on the same argument, form which it is possible to extract a precondition and an exceptional condition:
-1. precondition: `d != null;`
-2. exceptional postcondition: `d == null`
+1. precondition: `divisor != null;`
+2. exceptional postcondition: `divisor == null`
 The `@return` Javadoc tag defines the regular value returned by the method, while the unstructured part of the Javadoc lists the conditions that, if satisfies, impose the method to return a different value (NaN or Complex.ZERO). The conditions are translated into `if` statements within the code. The following normal postconditions can be defined:
 3. `(this.isNaN() || divisor.isNaN()) || (divisor.getReal() == 0.0 && divisor.getImaginary() == 0.0) ? methodResultID.isNaN() : true;`
 4. `divisor.isInfinite() && (this.isInfinite())==false ? methodResultID == this.ZERO : true;`
@@ -131,8 +131,8 @@ In total, 4 test oracles can be generated from the analysis of the method source
 
 """
 {
-	"pre-conditions": [ "d != null;" ],
-    "exceptional-conditions" : [ "d == null;" ],
+	"pre-conditions": [ "divisor != null;" ],
+    "exceptional-conditions" : [ "divisor == null;" ],
 	"post-conditions": [ "(this.isNaN() || divisor.isNaN()) || (divisor.getReal() == 0.0 && divisor.getImaginary() == 0.0) ? methodResultID.isNaN() : true;", "divisor.isInfinite() && (this.isInfinite())==false ? methodResultID == Complex.ZERO : true;" ]
 }
 """
