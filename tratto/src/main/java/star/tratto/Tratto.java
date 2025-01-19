@@ -39,27 +39,27 @@ public class Tratto {
     private static final JavaParser javaParser = JavaParserUtils.getJavaParser();
     private static final ObjectMapper objectMapper = new ObjectMapper();
     private static final String ML_MODEL_API_URL = String.format("http://127.0.0.1:5000/api/next_token?filename=%s/src/main/resources/token_datapoints.json", System.getProperty("user.dir"));
-    public static String CLASS_PATH = "src/main/resources/projects-source/commons-collections4-4.1/raw/src/main/java/org/apache/commons/collections4/BagUtils.java";
-    public static String PROJECT_SOURCE_PATH = "src/main/resources/projects-source/commons-collections4-4.1/raw/src/main/java/";
-    public static String PROJECT_JAR_PATH = "src/main/resources/projects-packaged/commons-collections4-4.1-jar-with-dependencies.jar";
-    public static String TOKEN_DATAPOINTS_PATH = "src/main/resources/token_datapoints.json";
-    public static String ORACLE_DATAPOINTS_PATH = "src/main/resources/oracle_datapoints.json";
+    public static String CLASS_FILENAME = "src/main/resources/projects-source/commons-collections4-4.1/raw/src/main/java/org/apache/commons/collections4/BagUtils.java";
+    public static String PROJECT_SOURCE_DIRNAME = "src/main/resources/projects-source/commons-collections4-4.1/raw/src/main/java/";
+    public static String PROJECT_JAR_FILENAME = "src/main/resources/projects-packaged/commons-collections4-4.1-jar-with-dependencies.jar";
+    public static String TOKEN_DATAPOINTS_FILENAME = "src/main/resources/token_datapoints.json";
+    public static String ORACLE_DATAPOINTS_FILENAME = "src/main/resources/oracle_datapoints.json";
 
     public static void main(String[] args) throws IOException {
         logger.info("Starting Tratto...");
         logger.info("Starting up ML models local server...");
         // TODO: Start up ML models local server
-        logger.info("Generating oracles for: \n\tClass: {}\n\tProject source: {}\n\tProject JAR: {}", CLASS_PATH, PROJECT_SOURCE_PATH, PROJECT_JAR_PATH);
+        logger.info("Generating oracles for: \n\tClass: {}\n\tProject source: {}\n\tProject JAR: {}", CLASS_FILENAME, PROJECT_SOURCE_DIRNAME, PROJECT_JAR_FILENAME);
 
         // Configure JavaParser to resolve symbols from project under test
-        JavaParserUtils.updateSymbolSolver(PROJECT_JAR_PATH);
+        JavaParserUtils.updateSymbolSolver(PROJECT_JAR_FILENAME);
 
         // Set up OracleDatapointBuilder within ClassAnalyzer based on project and class under test
-        String className = getClassNameFromPath(CLASS_PATH);
-        String classSourceCode = readString(Paths.get(CLASS_PATH));
+        String className = getClassNameFromPath(CLASS_FILENAME);
+        String classSourceCode = readString(Paths.get(CLASS_FILENAME));
         CompilationUnit classCu = javaParser.parse(classSourceCode).getResult().get();
         TypeDeclaration<?> classTd = getClassOrInterface(classCu, className);
-        classAnalyzer.setProjectPath(PROJECT_SOURCE_PATH);
+        classAnalyzer.setProjectPath(PROJECT_SOURCE_DIRNAME);
         classAnalyzer.setClassFeatures(className, classSourceCode, classCu, classTd);
 
         List<OracleDatapoint> oracleDatapoints = classAnalyzer.getOracleDatapointsFromClass();
@@ -77,7 +77,7 @@ public class Tratto {
             while (!oracleDatapoint.getOracle().endsWith(";")) {
                 // Generate token datapoints and save to file
                 List<TokenDatapoint> tokenDatapoints = oracleSoFarAndTokenToTokenDatapoints(oracleDatapoint, oracleSoFarTokens, tokenClassesSoFar, "", TokenDPType.TOKEN);
-                FileOutputStream tokenDatapointsOutputStream = new FileOutputStream(TOKEN_DATAPOINTS_PATH);
+                FileOutputStream tokenDatapointsOutputStream = new FileOutputStream(TOKEN_DATAPOINTS_FILENAME);
                 tokenDatapointsOutputStream.write(objectMapper.writeValueAsBytes(tokenDatapoints));
                 tokenDatapointsOutputStream.close();
 
@@ -94,13 +94,13 @@ public class Tratto {
         }
 
         // Save final oracleDatapoints to file
-        File oracleDatapointsFile = new File(ORACLE_DATAPOINTS_PATH);
+        File oracleDatapointsFile = new File(ORACLE_DATAPOINTS_FILENAME);
         FileOutputStream oracleDatapointsOutputStream = new FileOutputStream(oracleDatapointsFile);
         oracleDatapointsOutputStream.write(objectMapper.writeValueAsBytes(oracleDatapoints));
         oracleDatapointsOutputStream.close();
-        new File(TOKEN_DATAPOINTS_PATH).delete();
+        new File(TOKEN_DATAPOINTS_FILENAME).delete();
 
-        logger.info("Finished generating oracles for: \n\tClass: {}\n\tProject source: {}\n\tProject JAR: {}", CLASS_PATH, PROJECT_SOURCE_PATH, PROJECT_JAR_PATH);
+        logger.info("Finished generating oracles for: \n\tClass: {}\n\tProject source: {}\n\tProject JAR: {}", CLASS_FILENAME, PROJECT_SOURCE_DIRNAME, PROJECT_JAR_FILENAME);
     }
 
     private static Pair<String, String> getNextTokenValueClass() throws IOException {

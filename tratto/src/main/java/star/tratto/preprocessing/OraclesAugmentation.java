@@ -29,13 +29,13 @@ public class OraclesAugmentation {
     private static final Logger logger = LoggerFactory.getLogger(OraclesAugmentation.class);
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
-    private static final String ALTERNATE_ORACLES_PATH = "src/main/resources/data-augmentation/oracles.json";
+    private static final String ALTERNATE_ORACLES_FILENAME = "src/main/resources/data-augmentation/oracles.json";
     private static final String AUGMENTED_SUFFIX = "-augmented.json";
 
     public static void main(String[] args) throws IOException {
         logger.info("Generating alternate versions of existing oracles...");
         logger.info("Reading oracles from: {}", ORACLES_DATASET.getPath());
-        logger.info("Writing alternate oracles to: {}", ALTERNATE_ORACLES_PATH);
+        logger.info("Writing alternate oracles to: {}", ALTERNATE_ORACLES_FILENAME);
         Map<String, List<String>> alternateOracles = new HashMap<>();
 
         DirectoryStream<Path> oraclesDatasetStream = Files.newDirectoryStream(ORACLES_DATASET.getPath());
@@ -54,7 +54,7 @@ public class OraclesAugmentation {
             }
         }
 
-        objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(ALTERNATE_ORACLES_PATH), alternateOracles);
+        objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(ALTERNATE_ORACLES_FILENAME), alternateOracles);
         logger.info("Finished generating alternate versions of existing oracles.");
     }
 
